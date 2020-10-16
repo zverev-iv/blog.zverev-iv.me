@@ -6,7 +6,6 @@
     <description>Recent content on Zverev IV</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ru-ru</language>
-    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
     <lastBuildDate>Mon, 27 Jan 2020 08:22:00 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.me/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Boxstarter Task for ConEmu</title>
@@ -107,16 +106,6 @@ os:windowslanguage:shellbranches:only:- masterscript:- choco pack path_to\\packa
       <guid>https://blog.zverev-iv.me/posts/2019-07-04-quick-check-witds/</guid>
       <description>Быстро проверить определения WIT на возможные проблемы (все в папке)
 ls *.xml | foreach -process { echo (&amp;#34;`r`n`r`n&amp;#34;+$_.name) ; start -file &amp;#39;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\witadmin.exe&amp;#39; -args (&amp;#39;importwitd /collection:http://localhost:8080/tfs/Colllection/ /p:Project /f:&amp;#34;&amp;#39;+ $_.name +&amp;#39;&amp;#34; /v&amp;#39;) -noNewWindow -wait } </description>
-    </item>
-    
-    <item>
-      <title>Сонар и ветки</title>
-      <link>https://blog.zverev-iv.me/posts/2019-06-17-sonar-i-branchi/</link>
-      <pubDate>Mon, 17 Jun 2019 19:42:00 +0300</pubDate>
-      
-      <guid>https://blog.zverev-iv.me/posts/2019-06-17-sonar-i-branchi/</guid>
-      <description>Как мы знаем, Sonar в версии Community умеет анализировать только основную ветку. Ключевое слово основную, хотя в Sonar она всегда называется master Для Community версии с периодически выходят OSS плагины которые воспроизводят в некотором приближении функциональность Branch-плагина доступного для Developer и прочих версий. В связи с этим hint: всегда при создании нового проекта, первый анализ проводите для основной ветки. Алгоритм действий (работает для TFS и Azure DevOps Server)
- Создается проект в SQ Правим шаблон названий долгоживущих веток (если основная ветка называется dev, лучше добавить в шаблон и dev и master) Производим проверку основной ветки (вне зависимости от ее названия.</description>
     </item>
     
   </channel>
