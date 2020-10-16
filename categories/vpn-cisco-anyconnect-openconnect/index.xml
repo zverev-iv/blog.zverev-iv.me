@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>vpn cisco anyconnect openconnect on Zverev IV</title>
+    <link>https://blog.zverev-iv.me/categories/vpn-cisco-anyconnect-openconnect/</link>
+    <description>Recent content in vpn cisco anyconnect openconnect on Zverev IV</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ru-ru</language>
+    <lastBuildDate>Fri, 08 Nov 2019 06:50:00 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.me/categories/vpn-cisco-anyconnect-openconnect/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Как использовать OpenConnect вместо CiscoAnyConnect</title>
+      <link>https://blog.zverev-iv.me/posts/2019-11-08-from-anyconnect-to-openconnect/</link>
+      <pubDate>Fri, 08 Nov 2019 06:50:00 +0300</pubDate>
+      
+      <guid>https://blog.zverev-iv.me/posts/2019-11-08-from-anyconnect-to-openconnect/</guid>
+      <description>Устанавливаем нужный софт  Chocolatey (если ещё не установили) - https://chocolatey.org/ choco install openssl choco install openconnect-gui  Готовим сертификат для использования  Обычно на вход дают сертификат в формате pfx и пароль к нему. Наша цель - получить сертификат в формате crt и ключ key в формате pem открываем cmd в папке с pfx файлом выполняем команду openssl pkcs12 -in [yourfile.pfx] -clcerts -nokeys -out [certificate.crt] вводим пароль нужное количество раз (обычно 1).</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>git openssl certificates on Zverev IV</title>
+    <link>https://blog.zverev-iv.me/categories/git-openssl-certificates/</link>
+    <description>Recent content in git openssl certificates on Zverev IV</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ru-ru</language>
+    <lastBuildDate>Fri, 08 Nov 2019 07:22:00 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.me/categories/git-openssl-certificates/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Как научить git доверять незнакомому CA сертификату а не выключать верификацию SSL</title>
+      <link>https://blog.zverev-iv.me/posts/2019-11-08-make-git-trust-your-selfsigned-ca-cert/</link>
+      <pubDate>Fri, 08 Nov 2019 07:22:00 +0300</pubDate>
+      
+      <guid>https://blog.zverev-iv.me/posts/2019-11-08-make-git-trust-your-selfsigned-ca-cert/</guid>
+      <description>Мануал сделан под windows но работать должен работать и с *nix, использовать мы будем openssl, который есть везде и менее глючный чем schannel.
+Собственно как выглядит ошибка C:\Git&amp;gt;git clone https://domain/gitrep/ Cloning into &amp;#39;gitrep&amp;#39;... fatal: unable to access &amp;#39;https://domain/gitrep/&amp;#39;: SSL certificate problem: unable to get local issuer certificate Что нам может потребоваться из софта  собственно git браузер - в статье я буду описывать вариант для chromium notepad++ или любой другой редактор который аккуратно относится кодировкам и символам переноса строк openssl - опционально.</description>
+    </item>
+    
+  </channel>
+</rss>

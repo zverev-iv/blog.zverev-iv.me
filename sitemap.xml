@@ -8,6 +8,16 @@
   </url>
   
   <url>
+    <loc>https://blog.zverev-iv.me/categories/</loc>
+    <lastmod>2020-01-27T08:22:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/categories/conemu-cmd-term-terminal-console-chocolatey-boxstarter/</loc>
+    <lastmod>2020-01-27T08:22:00+03:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://blog.zverev-iv.me/posts/</loc>
     <lastmod>2020-01-27T08:22:00+03:00</lastmod>
   </url>
@@ -18,8 +28,18 @@
   </url>
   
   <url>
+    <loc>https://blog.zverev-iv.me/categories/docker-docker-compose-docker-machine-wsl-ubuntu-windows/</loc>
+    <lastmod>2020-01-15T06:54:00+03:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://blog.zverev-iv.me/posts/2020-01-15-make-wsl1-great-again/</loc>
     <lastmod>2020-01-15T06:54:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/categories/azure-devops-server-configuration/</loc>
+    <lastmod>2019-12-17T22:25:00+03:00</lastmod>
   </url>
   
   <url>
@@ -28,8 +48,18 @@
   </url>
   
   <url>
+    <loc>https://blog.zverev-iv.me/categories/azure-devops-extensions-coding/</loc>
+    <lastmod>2019-12-02T09:17:00+03:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://blog.zverev-iv.me/posts/2019-12-02-change-azure-devops-server-max-extension-size/</loc>
     <lastmod>2019-12-02T09:17:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/categories/git-openssl-certificates/</loc>
+    <lastmod>2019-11-08T07:22:00+03:00</lastmod>
   </url>
   
   <url>
@@ -38,8 +68,18 @@
   </url>
   
   <url>
+    <loc>https://blog.zverev-iv.me/categories/vpn-cisco-anyconnect-openconnect/</loc>
+    <lastmod>2019-11-08T06:50:00+03:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://blog.zverev-iv.me/posts/2019-11-08-from-anyconnect-to-openconnect/</loc>
     <lastmod>2019-11-08T06:50:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/categories/chatops-rocket.chat-sonarqube/</loc>
+    <lastmod>2019-09-16T07:59:00+03:00</lastmod>
   </url>
   
   <url>
@@ -48,8 +88,18 @@
   </url>
   
   <url>
+    <loc>https://blog.zverev-iv.me/categories/ci-cd-choco-travis/</loc>
+    <lastmod>2019-08-24T08:02:00+03:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://blog.zverev-iv.me/posts/2019-08-26-travis-ci-for-chocolatey-package/</loc>
     <lastmod>2019-08-24T08:02:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/categories/code-ps1/</loc>
+    <lastmod>2019-08-23T07:29:00+03:00</lastmod>
   </url>
   
   <url>
@@ -58,8 +108,18 @@
   </url>
   
   <url>
+    <loc>https://blog.zverev-iv.me/categories/alm-tfs/</loc>
+    <lastmod>2019-07-04T08:42:00+03:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://blog.zverev-iv.me/posts/2019-07-04-quick-check-witds/</loc>
     <lastmod>2019-07-04T08:42:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/categories/ci-cd-sonar/</loc>
+    <lastmod>2019-06-17T19:42:00+03:00</lastmod>
   </url>
   
   <url>
@@ -68,7 +128,7 @@
   </url>
   
   <url>
-    <loc>https://blog.zverev-iv.me/index.html</loc>
+    <loc>https://blog.zverev-iv.me/tags/</loc>
   </url>
   
 </urlset>

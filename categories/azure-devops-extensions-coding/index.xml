@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>azure devops extensions coding on Zverev IV</title>
+    <link>https://blog.zverev-iv.me/categories/azure-devops-extensions-coding/</link>
+    <description>Recent content in azure devops extensions coding on Zverev IV</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ru-ru</language>
+    <lastBuildDate>Mon, 02 Dec 2019 09:17:00 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.me/categories/azure-devops-extensions-coding/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to fix &#39;The extension package size exceeds the maximum package size&#39; error in your Azure Devops Server</title>
+      <link>https://blog.zverev-iv.me/posts/2019-12-02-change-azure-devops-server-max-extension-size/</link>
+      <pubDate>Mon, 02 Dec 2019 09:17:00 +0300</pubDate>
+      
+      <guid>https://blog.zverev-iv.me/posts/2019-12-02-change-azure-devops-server-max-extension-size/</guid>
+      <description>First check that there are no junk files in your vsix (like .git folder). If Found - delete it. If this didn&amp;rsquo;t help, Run this sql in your Configuration DB:
+USE &amp;#34;Tfs_Configuration&amp;#34;; EXEC dbo.prc_SetRegistryValue @partitionId = 1, @key = &amp;#39;#\Configuration\Service\Gallery\LargeExtensionUpload\MaxPackageSizeMB\&amp;#39;, @value = 128, @identityName = null; But change this value carefully, it can affect performance.</description>
+    </item>
+    
+  </channel>
+</rss>

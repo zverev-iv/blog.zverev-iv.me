@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker docker-compose docker-machine WSL ubuntu windows on Zverev IV</title>
+    <link>https://blog.zverev-iv.me/categories/docker-docker-compose-docker-machine-wsl-ubuntu-windows/</link>
+    <description>Recent content in docker docker-compose docker-machine WSL ubuntu windows on Zverev IV</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ru-ru</language>
+    <lastBuildDate>Wed, 15 Jan 2020 06:54:00 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.me/categories/docker-docker-compose-docker-machine-wsl-ubuntu-windows/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Как сделать docker доступным в WSL 1</title>
+      <link>https://blog.zverev-iv.me/posts/2020-01-15-make-wsl1-great-again/</link>
+      <pubDate>Wed, 15 Jan 2020 06:54:00 +0300</pubDate>
+      
+      <guid>https://blog.zverev-iv.me/posts/2020-01-15-make-wsl1-great-again/</guid>
+      <description>У нас есть docker for windows. он работает из windows У нас есть WSL1 с ubuntu 18.4 (вообще версия не так важна) Как их подружить?  Цепочка непроста.
+Включаем порт 2375  В трее выбираем в Docker for Windows → Settings → General → Expose daemon on tcp://localhost:2375 without tls (включаем. Варианта с 2376 и tls я пока не нашел) После перезапуска проверяем что порт открыт telnet localhost 2375 если отобразилось черное окно - всё ок и можно пропустить следующий пункт.</description>
+    </item>
+    
+  </channel>
+</rss>

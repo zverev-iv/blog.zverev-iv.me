@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>azure devops server configuration on Zverev IV</title>
+    <link>https://blog.zverev-iv.me/categories/azure-devops-server-configuration/</link>
+    <description>Recent content in azure devops server configuration on Zverev IV</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ru-ru</language>
+    <lastBuildDate>Tue, 17 Dec 2019 22:25:00 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.me/categories/azure-devops-server-configuration/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>List Azure DevOps Server Features</title>
+      <link>https://blog.zverev-iv.me/posts/2019-12-17-list-features-of-azure-devops-server/</link>
+      <pubDate>Tue, 17 Dec 2019 22:25:00 +0300</pubDate>
+      
+      <guid>https://blog.zverev-iv.me/posts/2019-12-17-list-features-of-azure-devops-server/</guid>
+      <description>First of all: Don&amp;rsquo;t change states of Features. Especially if you don&amp;rsquo;t have backups. Especially on Productive Server. You can loss all your data. I warned you. so, if you&amp;rsquo;re curious enough, run this select in your configuration database:
+USE &amp;#34;Tfs_Configuration&amp;#34;; SELECT ISNULL(d.[ KEY],a.[ KEY]) AS FeatureKey , CASE WHEN a.AvailabilityState=1 THEN N&amp;#39;Enabled&amp;#39; WHEN a.AvailabilityState=0 THEN N&amp;#39;Disabled&amp;#39; WHEN a.AvailabilityState IS NULL THEN N&amp;#39;Disabled&amp;#39; END AS State , o.Owner , n.Name , d.</description>
+    </item>
+    
+  </channel>
+</rss>

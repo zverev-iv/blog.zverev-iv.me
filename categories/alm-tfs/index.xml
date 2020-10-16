@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>alm tfs on Zverev IV</title>
+    <link>https://blog.zverev-iv.me/categories/alm-tfs/</link>
+    <description>Recent content in alm tfs on Zverev IV</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ru-ru</language>
+    <lastBuildDate>Thu, 04 Jul 2019 08:42:00 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.me/categories/alm-tfs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>проверка всех элементов шаблона TFS</title>
+      <link>https://blog.zverev-iv.me/posts/2019-07-04-quick-check-witds/</link>
+      <pubDate>Thu, 04 Jul 2019 08:42:00 +0300</pubDate>
+      
+      <guid>https://blog.zverev-iv.me/posts/2019-07-04-quick-check-witds/</guid>
+      <description>Быстро проверить определения WIT на возможные проблемы (все в папке)
+ls *.xml | foreach -process { echo (&amp;#34;`r`n`r`n&amp;#34;+$_.name) ; start -file &amp;#39;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\witadmin.exe&amp;#39; -args (&amp;#39;importwitd /collection:http://localhost:8080/tfs/Colllection/ /p:Project /f:&amp;#34;&amp;#39;+ $_.name +&amp;#39;&amp;#34; /v&amp;#39;) -noNewWindow -wait } </description>
+    </item>
+    
+  </channel>
+</rss>

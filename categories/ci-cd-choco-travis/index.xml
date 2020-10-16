@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ci-cd choco travis on Zverev IV</title>
+    <link>https://blog.zverev-iv.me/categories/ci-cd-choco-travis/</link>
+    <description>Recent content in ci-cd choco travis on Zverev IV</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ru-ru</language>
+    <lastBuildDate>Sat, 24 Aug 2019 08:02:00 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.me/categories/ci-cd-choco-travis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to build and push chocolatey package with Travis CI </title>
+      <link>https://blog.zverev-iv.me/posts/2019-08-26-travis-ci-for-chocolatey-package/</link>
+      <pubDate>Sat, 24 Aug 2019 08:02:00 +0300</pubDate>
+      
+      <guid>https://blog.zverev-iv.me/posts/2019-08-26-travis-ci-for-chocolatey-package/</guid>
+      <description>You can use this code for your .travis.yml:
+os:windowslanguage:shellbranches:only:- masterscript:- choco pack path_to\\package.nuspecafter_script:- choco apikey --key $CHOCOAPIKEY --source https://push.chocolatey.org/- choco pushHide your private api key in CHOCOAPIKEY secret variable. Enjoy!</description>
+    </item>
+    
+  </channel>
+</rss>
