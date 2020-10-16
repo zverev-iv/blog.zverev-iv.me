@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/posts/2020-01-27-conemu-boxstarter-task/</loc>
+    <lastmod>2020-01-27T08:22:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/posts/</loc>
+    <lastmod>2020-01-27T08:22:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/</loc>
+    <lastmod>2020-01-27T08:22:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/posts/2020-01-15-make-wsl1-great-again/</loc>
+    <lastmod>2020-01-15T06:54:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/posts/2019-12-17-list-features-of-azure-devops-server/</loc>
+    <lastmod>2019-12-17T22:25:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/posts/2019-12-02-change-azure-devops-server-max-extension-size/</loc>
+    <lastmod>2019-12-02T09:17:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/posts/2019-11-08-make-git-trust-your-selfsigned-ca-cert/</loc>
+    <lastmod>2019-11-08T07:22:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/posts/2019-11-08-from-anyconnect-to-openconnect/</loc>
+    <lastmod>2019-11-08T06:50:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/posts/2019-09-16-rocket-sonar-integration/</loc>
+    <lastmod>2019-09-16T07:59:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/posts/2019-08-26-travis-ci-for-chocolatey-package/</loc>
+    <lastmod>2019-08-24T08:02:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/posts/2019-08-23-quick-json-2-table/</loc>
+    <lastmod>2019-08-23T07:29:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/posts/2019-07-04-quick-check-witds/</loc>
+    <lastmod>2019-07-04T08:42:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/posts/2019-06-17-sonar-i-branchi/</loc>
+    <lastmod>2019-06-17T19:42:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/index.html</loc>
+  </url>
+  
+</urlset>

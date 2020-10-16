@@ -1,0 +1,689 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Posts on Zverev IV</title>
+		<link>https://blog.zverev-iv.me/posts/</link>
+		<description>Recent content in Posts on Zverev IV</description>
+		<generator>Hugo -- gohugo.io</generator>
+		<language>ru-ru</language>
+		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+		<lastBuildDate>Mon, 27 Jan 2020 08:22:00 +0300</lastBuildDate>
+		<atom:link href="https://blog.zverev-iv.me/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Boxstarter Task for ConEmu</title>
+			<link>https://blog.zverev-iv.me/posts/2020-01-27-conemu-boxstarter-task/</link>
+			<pubDate>Mon, 27 Jan 2020 08:22:00 +0300</pubDate>
+			
+			<guid>https://blog.zverev-iv.me/posts/2020-01-27-conemu-boxstarter-task/</guid>
+			<description>Sample task to run Boxstarter from ConEmu.
+  Set name Tools::Boxstarter (Admin)
+  Set commands:
+  powershell.exe -ExecutionPolicy bypass -NoExit -Command &amp;#34;&amp;amp;&amp;#39;C:\ProgramData\Boxstarter\BoxstarterShell.ps1&amp;#39;&amp;#34; -new_console:a </description>
+			<content type="html"><![CDATA[<p>Sample task to run Boxstarter from ConEmu.</p>
+<ol>
+<li>
+<p>Set name <code>Tools::Boxstarter (Admin)</code></p>
+</li>
+<li>
+<p>Set commands:</p>
+</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">powershell</span><span class="p">.</span><span class="n">exe</span> <span class="n">-ExecutionPolicy</span> <span class="n">bypass</span> <span class="n">-NoExit</span> <span class="n">-Command</span> <span class="s2">&#34;&amp;&#39;C:\ProgramData\Boxstarter\BoxstarterShell.ps1&#39;&#34;</span> <span class="n">-new_console</span><span class="err">:</span><span class="n">a</span>
+</code></pre></div>]]></content>
+		</item>
+		
+		<item>
+			<title>Как сделать docker доступным в WSL 1</title>
+			<link>https://blog.zverev-iv.me/posts/2020-01-15-make-wsl1-great-again/</link>
+			<pubDate>Wed, 15 Jan 2020 06:54:00 +0300</pubDate>
+			
+			<guid>https://blog.zverev-iv.me/posts/2020-01-15-make-wsl1-great-again/</guid>
+			<description>У нас есть docker for windows. он работает из windows У нас есть WSL1 с ubuntu 18.4 (вообще версия не так важна) Как их подружить?  Цепочка непроста.
+Включаем порт 2375  В трее выбираем в Docker for Windows → Settings → General → Expose daemon on tcp://localhost:2375 without tls (включаем. Варианта с 2376 и tls я пока не нашел) После перезапуска проверяем что порт открыт telnet localhost 2375 если отобразилось черное окно - всё ок и можно пропустить следующий пункт.</description>
+			<content type="html"><![CDATA[<ol>
+<li>У нас есть docker for windows. он работает из windows</li>
+<li>У нас есть WSL1 с ubuntu 18.4 (вообще версия не так важна)</li>
+<li>Как их подружить?</li>
+</ol>
+<p>Цепочка непроста.</p>
+<h3 id="включаем-порт-2375">Включаем порт 2375</h3>
+<ol>
+<li>В трее выбираем в Docker for Windows → Settings → General → Expose daemon on tcp://localhost:2375 without tls (включаем. Варианта с 2376 и tls я пока не нашел)</li>
+<li>После перезапуска проверяем что порт открыт <code>telnet localhost 2375</code> если отобразилось черное окно - всё ок и можно пропустить следующий пункт.</li>
+</ol>
+<h3 id="меняем-настройки-диапазона-динамических-портов-в-ipv4">Меняем настройки диапазона динамических портов в IPv4</h3>
+<ol>
+<li>
+<p>проверяем командами стартовые значения динамических диапазонов портов в Windows (нужен CMD c правами администратора):</p>
+<div class="highlight"><pre class="chroma"><code class="language-bat" data-lang="bat">netsh int ipv4 show dynamicport tcp
+netsh int ipv6 show dynamicport tcp
+netsh int ipv4 show dynamicport udp
+netsh int ipv6 show dynamicport udp
+</code></pre></div><p>Скорее всего во всех случаях кроме 1-го вы получите значение 49152. Оно верное. В моём случае оно было равно 1025. Детали проблемы можно найти здесь: <a href="https://support.microsoft.com/en-ca/help/929851/the-default-dynamic-port-range-for-tcp-ip-has-changed-in-windows-vista">https://support.microsoft.com/en-ca/help/929851/the-default-dynamic-port-range-for-tcp-ip-has-changed-in-windows-vista</a> .</p>
+</li>
+<li>
+<p>Меняем для ipv4/tcp значение на корректное</p>
+<div class="highlight"><pre class="chroma"><code class="language-bat" data-lang="bat">netsh int ipv4 set dynamic tcp start=49152 num=16384
+</code></pre></div><p>если с ipv6/tcp диапазон так же начинается с 1025 (у меня такого не было)  - решение аналогичное</p>
+</li>
+<li>
+<p>Перезагружаемся</p>
+</li>
+<li>
+<p>Перепроверяем что порт 2375 открылся</p>
+</li>
+</ol>
+<h3 id="устанавливаем-клиенты-docker-в-wsl">Устанавливаем клиенты docker в WSL</h3>
+<ol>
+<li>
+<p>docker потребуется только клиент. Есть ли версия свежее можно проверить по первой ссылке в скрипте. в bash WSL последовательно выполняем:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">export</span> <span class="nv">docker_url</span><span class="o">=</span>https://download.docker.com/linux/static/stable/x86_64
+<span class="nb">export</span> <span class="nv">docker_version</span><span class="o">=</span>19.03.5
+curl -Lo docker-<span class="nv">$docker_version</span>.tgz <span class="nv">$docker_url</span>/docker-<span class="nv">$docker_version</span>.tgz
+tar -xzvf docker-<span class="nv">$docker_version</span>.tgz docker/docker
+mkdir -p ~/bin
+mv docker/docker ~/bin
+rmdir docker
+rm docker-<span class="nv">$docker_version</span>.tgz
+</code></pre></div></li>
+<li>
+<p>Теперь у нас есть docker. полная установка не имеет смысла потому что daemon не работоспособен в WSL</p>
+</li>
+<li>
+<p>Устанавливаем docker-compose:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -L https://github.com/docker/compose/releases/download/1.25.1/docker-compose-<span class="sb">`</span>uname -s<span class="sb">`</span>-<span class="sb">`</span>uname -m<span class="sb">`</span> -o ~/bin/docker-compose
+chmod +x ~/bin/docker-compose
+</code></pre></div></li>
+<li>
+<p>ставим lazydocker (это не обязательно, но мне нравится этот клиент):</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl https://raw.githubusercontent.com/zverev-iv/lazydocker-home-bin-installer/master/install_update_linux.sh <span class="p">|</span> bash
+</code></pre></div></li>
+<li>
+<p>так же можем добавить docker-machine если есть необходимость:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -L https://github.com/docker/machine/releases/download/v0.16.2/docker-machine-<span class="sb">`</span>uname -s<span class="sb">`</span>-<span class="sb">`</span>uname -m<span class="sb">`</span> &gt;/tmp/docker-machine <span class="o">&amp;&amp;</span>
+    chmod +x /tmp/docker-machine <span class="o">&amp;&amp;</span>
+    mv /tmp/docker-machine ~/bin/
+</code></pre></div></li>
+<li>
+<p>Клиенты есть, но им еще не к чему присоединиться</p>
+</li>
+</ol>
+<h3 id="прописываем-host-для-docker-клиентов">Прописываем host для docker клиентов</h3>
+<ol>
+<li>
+<p>выполняем, что бы  переменная прописывалась во всех последующих сессиях</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s2">&#34;export DOCKER_HOST=tcp://localhost:2375&#34;</span> &gt;&gt; ~/.bashrc <span class="o">&amp;&amp;</span> <span class="nb">source</span> ~/.bashrc
+</code></pre></div></li>
+<li>
+<p>Закрываем текущую сессию WSL и открываем новую.</p>
+</li>
+<li>
+<p><strong>PROFIT!</strong> теперь у нас и из windows и из WSL - одинаковая доступность к службе Docker for Windows. Проверим ( и в windows и в WSL команда одинаковая):</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">docker system info
+</code></pre></div><p>Информация о системе должна быть одинаковой.</p>
+</li>
+</ol>
+<p><strong>P.S.&gt;</strong> Скрипты написаны в разных стилях, каюсь. Красивый вариант финального скрипта выложу позже.</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>List Azure DevOps Server Features</title>
+			<link>https://blog.zverev-iv.me/posts/2019-12-17-list-features-of-azure-devops-server/</link>
+			<pubDate>Tue, 17 Dec 2019 22:25:00 +0300</pubDate>
+			
+			<guid>https://blog.zverev-iv.me/posts/2019-12-17-list-features-of-azure-devops-server/</guid>
+			<description>First of all: Don&amp;rsquo;t change states of Features. Especially if you don&amp;rsquo;t have backups. Especially on Productive Server. You can loss all your data. I warned you. so, if you&amp;rsquo;re curious enough, run this select in your configuration database:
+USE &amp;#34;Tfs_Configuration&amp;#34;; SELECT ISNULL(d.[ KEY],a.[ KEY]) AS FeatureKey , CASE WHEN a.AvailabilityState=1 THEN N&amp;#39;Enabled&amp;#39; WHEN a.AvailabilityState=0 THEN N&amp;#39;Disabled&amp;#39; WHEN a.AvailabilityState IS NULL THEN N&amp;#39;Disabled&amp;#39; END AS State , o.Owner , n.Name , d.</description>
+			<content type="html"><![CDATA[<p>First of all: Don&rsquo;t change states of Features. Especially if you don&rsquo;t have backups. Especially on Productive Server. You can loss all your data. I warned you. 
+so, if you&rsquo;re curious enough, run this select in your configuration database:</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">USE</span> <span class="s2">&#34;Tfs_Configuration&#34;</span><span class="p">;</span>
+<span class="k">SELECT</span>
+  <span class="k">ISNULL</span><span class="p">(</span><span class="n">d</span><span class="p">.[</span> <span class="k">KEY</span><span class="p">],</span><span class="n">a</span><span class="p">.[</span> <span class="k">KEY</span><span class="p">])</span> <span class="k">AS</span> <span class="n">FeatureKey</span>
+<span class="p">,</span> <span class="k">CASE</span>
+    <span class="k">WHEN</span> <span class="n">a</span><span class="p">.</span><span class="n">AvailabilityState</span><span class="o">=</span><span class="mi">1</span>
+      <span class="k">THEN</span> <span class="n">N</span><span class="s1">&#39;Enabled&#39;</span>
+    <span class="k">WHEN</span> <span class="n">a</span><span class="p">.</span><span class="n">AvailabilityState</span><span class="o">=</span><span class="mi">0</span>
+      <span class="k">THEN</span> <span class="n">N</span><span class="s1">&#39;Disabled&#39;</span>
+    <span class="k">WHEN</span> <span class="n">a</span><span class="p">.</span><span class="n">AvailabilityState</span> <span class="k">IS</span> <span class="k">NULL</span>
+      <span class="k">THEN</span> <span class="n">N</span><span class="s1">&#39;Disabled&#39;</span>
+  <span class="k">END</span> <span class="k">AS</span> <span class="k">State</span>
+<span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="k">Owner</span>
+<span class="p">,</span> <span class="n">n</span><span class="p">.</span><span class="n">Name</span>
+<span class="p">,</span> <span class="n">d</span><span class="p">.</span><span class="n">Description</span>
+<span class="k">FROM</span>
+  <span class="p">(</span>
+    <span class="k">SELECT</span>
+      <span class="k">SUBSTRING</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">,</span> <span class="n">LEN</span><span class="p">(</span><span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Definitions\&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">LEN</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">))</span> <span class="k">AS</span> <span class="p">[</span><span class="k">key</span><span class="p">]</span>
+    <span class="p">,</span> <span class="n">regvalue</span>                                                                             <span class="k">AS</span> <span class="n">Description</span>
+    <span class="k">FROM</span>
+      <span class="n">tbl_registryitems</span>
+    <span class="k">WHERE</span>
+      <span class="n">ParentPath</span> <span class="k">LIKE</span> <span class="s1">&#39;#\FeatureAvailability\Definitions\%&#39;</span>
+      <span class="k">AND</span> <span class="n">ChildItem</span> <span class="o">=</span> <span class="n">N</span><span class="s1">&#39;Description\&#39;</span>
+  <span class="p">)</span>
+  <span class="k">AS</span> <span class="n">d</span>
+  <span class="k">JOIN</span>
+    <span class="p">(</span>
+      <span class="k">SELECT</span>
+        <span class="k">SUBSTRING</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">,</span> <span class="n">LEN</span><span class="p">(</span><span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Definitions\&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">LEN</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">))</span> <span class="k">AS</span> <span class="p">[</span><span class="k">key</span><span class="p">]</span>
+      <span class="p">,</span> <span class="n">regvalue</span>                                                                             <span class="k">AS</span> <span class="n">Name</span>
+      <span class="k">FROM</span>
+        <span class="n">tbl_registryitems</span>
+      <span class="k">WHERE</span>
+        <span class="n">ParentPath</span> <span class="k">LIKE</span> <span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Definitions\%&#39;</span>
+        <span class="k">AND</span> <span class="n">ChildItem</span> <span class="o">=</span> <span class="n">N</span><span class="s1">&#39;Name\&#39;</span>
+    <span class="p">)</span>
+    <span class="k">AS</span> <span class="n">n</span>
+    <span class="k">ON</span>
+      <span class="n">n</span><span class="p">.[</span> <span class="k">KEY</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">.[</span> <span class="k">KEY</span><span class="p">]</span>
+  <span class="k">JOIN</span>
+    <span class="p">(</span>
+      <span class="k">SELECT</span>
+        <span class="k">SUBSTRING</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">,</span> <span class="n">LEN</span><span class="p">(</span><span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Definitions\&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">LEN</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">))</span> <span class="k">AS</span> <span class="p">[</span><span class="k">key</span><span class="p">]</span>
+      <span class="p">,</span> <span class="n">regvalue</span>                                                                             <span class="k">AS</span> <span class="k">Owner</span>
+      <span class="k">FROM</span>
+        <span class="n">tbl_registryitems</span>
+      <span class="k">WHERE</span>
+        <span class="n">ParentPath</span> <span class="k">LIKE</span> <span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Definitions\%&#39;</span>
+        <span class="k">AND</span> <span class="n">ChildItem</span> <span class="o">=</span> <span class="n">N</span><span class="s1">&#39;Owner\&#39;</span>
+    <span class="p">)</span>
+    <span class="k">AS</span> <span class="n">o</span>
+    <span class="k">ON</span>
+      <span class="n">o</span><span class="p">.[</span> <span class="k">KEY</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">.[</span> <span class="k">KEY</span><span class="p">]</span>
+  <span class="k">FULL</span> <span class="k">OUTER</span> <span class="k">JOIN</span>
+    <span class="p">(</span>
+      <span class="k">SELECT</span>
+        <span class="k">SUBSTRING</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">,</span> <span class="n">LEN</span><span class="p">(</span><span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Entries\&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">LEN</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">))</span> <span class="k">AS</span> <span class="p">[</span><span class="k">key</span><span class="p">]</span>
+      <span class="p">,</span> <span class="k">isnull</span><span class="p">(</span><span class="n">regvalue</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                                                              <span class="k">AS</span> <span class="n">AvailabilityState</span>
+      <span class="k">FROM</span>
+        <span class="n">tbl_registryitems</span>
+      <span class="k">WHERE</span>
+        <span class="n">ParentPath</span> <span class="k">LIKE</span> <span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Entries\%&#39;</span>
+        <span class="k">AND</span> <span class="n">ChildItem</span> <span class="o">=</span> <span class="n">N</span><span class="s1">&#39;AvailabilityState\&#39;</span>
+    <span class="p">)</span>
+    <span class="k">AS</span> <span class="n">a</span>
+    <span class="k">ON</span>
+      <span class="n">a</span><span class="p">.[</span><span class="k">KEY</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">.[</span><span class="k">KEY</span><span class="p">]</span>
+<span class="k">ORDER</span> <span class="k">BY</span>
+  <span class="mi">3</span>
+<span class="p">,</span> <span class="mi">4</span>
+<span class="p">,</span> <span class="mi">5</span>
+</code></pre></div>]]></content>
+		</item>
+		
+		<item>
+			<title>How to fix &#39;The extension package size exceeds the maximum package size&#39; error in your Azure Devops Server</title>
+			<link>https://blog.zverev-iv.me/posts/2019-12-02-change-azure-devops-server-max-extension-size/</link>
+			<pubDate>Mon, 02 Dec 2019 09:17:00 +0300</pubDate>
+			
+			<guid>https://blog.zverev-iv.me/posts/2019-12-02-change-azure-devops-server-max-extension-size/</guid>
+			<description>First check that there are no junk files in your vsix (like .git folder). If Found - delete it. If this didn&amp;rsquo;t help, Run this sql in your Configuration DB:
+USE &amp;#34;Tfs_Configuration&amp;#34;; EXEC dbo.prc_SetRegistryValue @partitionId = 1, @key = &amp;#39;#\Configuration\Service\Gallery\LargeExtensionUpload\MaxPackageSizeMB\&amp;#39;, @value = 128, @identityName = null; But change this value carefully, it can affect performance.</description>
+			<content type="html"><![CDATA[<p>First check that there are no junk files in your vsix (like .git folder). If Found - delete it.
+If this didn&rsquo;t help, Run this sql in your Configuration DB:</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">USE</span> <span class="s2">&#34;Tfs_Configuration&#34;</span><span class="p">;</span>
+<span class="k">EXEC</span> <span class="n">dbo</span><span class="p">.</span><span class="n">prc_SetRegistryValue</span> <span class="o">@</span><span class="n">partitionId</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">@</span><span class="k">key</span> <span class="o">=</span> <span class="s1">&#39;#\Configuration\Service\Gallery\LargeExtensionUpload\MaxPackageSizeMB\&#39;</span><span class="p">,</span> <span class="o">@</span><span class="n">value</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span> <span class="o">@</span><span class="n">identityName</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+</code></pre></div><p>But change this value carefully, it can affect performance.</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Как научить git доверять незнакомому CA сертификату а не выключать верификацию SSL</title>
+			<link>https://blog.zverev-iv.me/posts/2019-11-08-make-git-trust-your-selfsigned-ca-cert/</link>
+			<pubDate>Fri, 08 Nov 2019 07:22:00 +0300</pubDate>
+			
+			<guid>https://blog.zverev-iv.me/posts/2019-11-08-make-git-trust-your-selfsigned-ca-cert/</guid>
+			<description>Мануал сделан под windows но работать должен работать и с *nix, использовать мы будем openssl, который есть везде и менее глючный чем schannel.
+Собственно как выглядит ошибка C:\Git&amp;gt;git clone https://domain/gitrep/ Cloning into &amp;#39;gitrep&amp;#39;... fatal: unable to access &amp;#39;https://domain/gitrep/&amp;#39;: SSL certificate problem: unable to get local issuer certificate Что нам может потребоваться из софта  собственно git браузер - в статье я буду описывать вариант для chromium notepad++ или любой другой редактор который аккуратно относится кодировкам и символам переноса строк openssl - опционально.</description>
+			<content type="html"><![CDATA[<p>Мануал сделан под windows но работать должен работать и с *nix, использовать мы будем openssl, который есть везде и менее глючный чем schannel.</p>
+<h2 id="собственно-как-выглядит-ошибка">Собственно как выглядит ошибка</h2>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;git clone https://domain/gitrep/</span>
+Cloning into &#39;gitrep&#39;...
+fatal: unable to access &#39;https://domain/gitrep/&#39;: SSL certificate problem: unable to get local issuer certificate
+</code></pre></div><h2 id="что-нам-может-потребоваться-из-софта">Что нам может потребоваться из софта</h2>
+<ol>
+<li>собственно git</li>
+<li>браузер - в статье я буду описывать вариант для chromium</li>
+<li>notepad++ или любой другой редактор который аккуратно относится кодировкам и символам переноса строк</li>
+<li>openssl - опционально. можно посмотреть информацию о сертификатах</li>
+<li>keytool из jdk или jre, что бы прочитать файл со связкой сертификатов</li>
+</ol>
+<h2 id="как-подтвердить-ошибку">Как подтвердить ошибку</h2>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;openssl s_client -connect domain:443</span>
+CONNECTED(00000194)
+depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+<span class="k">verify</span> error:num=20:unable to get local issuer certificate
+<span class="k">verify</span> return:1
+depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+<span class="k">verify</span> error:num=21:unable to verify the first certificate
+<span class="k">verify</span> return:1
+</code></pre></div><p>как видим openssl тоже ничего не знает о сертификатах, правда openssl и git могут смотреть на разные хранилища известных корневых сертификатов (git сам отдаст ему нужное), ошибка не обязательно воспроизведется. Поэтому нужно отдать openssl тоже самое что отдаст ему git</p>
+<p>выполняем команду в git и находим расположение хранилища доверенных сертификатов:</p>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git\</span><span class="c1">&gt;git config --system --list</span>
+http.sslcainfo=C:/Program Files/Git/mingw64/ssl/certs/ca-bundle.crt
+http.sslbackend=openssl
+diff.astextplain.textconv=astextplain
+filter.lfs.clean=git-lfs clean -- %f
+filter.lfs.smudge=git-lfs smudge --skip -- %f
+filter.lfs.process=git-lfs filter-process --skip
+filter.lfs.required=true
+credential.helper=manager
+</code></pre></div><p>Мы видим что git хранит цепочку сертификатов в файле <code>C:\Program Files\Git\mingw64\ssl\certs</code></p>
+<p><code>ca-bundle.crt</code></p>
+<p>проверим что выдаст openssl:</p>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;openssl s_client -connect domain:443 -CAfile C:\Program Files\Git\mingw64\ssl\certs\ca-bundle.crt</span>
+CONNECTED(00000194)
+depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+<span class="k">verify</span> error:num=20:unable to get local issuer certificate
+<span class="k">verify</span> return:1
+depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+<span class="k">verify</span> error:num=21:unable to verify the first certificate
+<span class="k">verify</span> return:1
+</code></pre></div><p>мы подтвердили - openssl не может подтвердить git корректность сертификатов, т.к. не знает корневого издателя сертификата.</p>
+<p>При желании мы можем сами прочитать что лежит в ca-bundle.crt используя <code>keytool</code>, т.к. выдача будет длинная сразу стоит отправить её в текстовый файл:</p>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;keytool -printcert -v -file C:\Program Files\Git\mingw64\ssl\certs\ca-bundle.crt &gt; certs_info.txt</span>
+</code></pre></div><p>Начало файла будет выглядеть приблизительно так:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">Certificate[1]</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="nt">Owner</span><span class="p">:</span><span class="w"> </span><span class="l">C=ES, O=ACCV, OU=PKIACCV, CN=ACCVRAIZ1</span><span class="w">
+</span><span class="w"></span><span class="nt">Issuer</span><span class="p">:</span><span class="w"> </span><span class="l">C=ES, O=ACCV, OU=PKIACCV, CN=ACCVRAIZ1</span><span class="w">
+</span><span class="w"></span><span class="nt">Serial number</span><span class="p">:</span><span class="w"> </span><span class="l">5ec3b7a6437fa4e0</span><span class="w">
+</span><span class="w"></span><span class="nt">Valid from: Thu May 05 13:37:37 MSK 2011 until</span><span class="p">:</span><span class="w"> </span><span class="l">Tue Dec 31 12:37:37 MSK 2030</span><span class="w">
+</span><span class="w"></span><span class="nt">Certificate fingerprints</span><span class="p">:</span><span class="w">
+</span><span class="w">         </span><span class="nt">MD5</span><span class="p">:</span><span class="w">  </span><span class="l">D0:A0:5A:EE:05:B6:09:94:21:A1:7D:F1:B2:29:82:02</span><span class="w">
+</span><span class="w">         </span><span class="nt">SHA1</span><span class="p">:</span><span class="w"> </span><span class="m">93</span><span class="p">:</span><span class="m">05</span><span class="p">:</span><span class="l">7A:88:15:C6:4F:CE:88:2F:FA:91:16:52:28:78:BC:53:64:17</span><span class="w">
+</span><span class="w">         </span><span class="nt">SHA256</span><span class="p">:</span><span class="w"> </span><span class="l">9A:6E:C0:12:E1:A7:DA:9D:BE:34:19:4D:47:8A:D7:C0:DB:18:22:FB:07:1D:F1:29:81:49:6E:D1:04:38:41:13</span><span class="w">
+</span><span class="w"></span><span class="nt">Signature algorithm name</span><span class="p">:</span><span class="w"> </span><span class="l">SHA1withRSA</span><span class="w">
+</span><span class="w"></span><span class="nt">Subject Public Key Algorithm</span><span class="p">:</span><span class="w"> </span><span class="m">4096</span>-<span class="l">bit RSA key</span><span class="w">
+</span><span class="w"></span><span class="nt">Version</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="nt">Extensions</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="nn">...</span><span class="w">
+</span></code></pre></div><p>в файле будет весь список CA сертификатов которым Git доверяет.</p>
+<h2 id="как-сделать-что-бы-git-начал-доверять-ca-сертификату-сервера">Как сделать что бы Git начал доверять CA сертификату сервера</h2>
+<h3 id="подготовим-ca-сертификат-нашего-https-репозитория-к-дальнейшему-использованию">Подготовим CA сертификат нашего https репозитория к дальнейшему использованию</h3>
+<ol>
+<li>заходим браузером на адрес, и вне зависимости от того выдает он ошибку подключения или нет - открываем на просмотр сертификат</li>
+<li>Переходим на вкладку с цепочкой сертификации, и ищем CA сертификат (самый верхний в цепочке). открываем его на просмотр</li>
+<li>Переходим на вкладку <strong>Details</strong>/<strong>Состав</strong> для CA сертификата. нажимаем кнопку <strong>Copy to File</strong>/<strong>Копировать в файл</strong> в мастере выбираем X.509 (.CER) в Base64 кодировке. сохраняем файл например с названием <code>ca.crt</code></li>
+</ol>
+<p>Альтернативно можно выгрузить его с помощью openssl, т.к. в его выдаче при выполнении подключения мы получаем сертификат сервера (или цепочку сертификатов) . сохранив их в файл <code>.cer</code> можно с помощью оснастки так же найти корневой сертификат</p>
+<h3 id="подготавливаем-цепочку-доверенных-сертификатов-к-изменению">Подготавливаем цепочку доверенных сертификатов к изменению</h3>
+<p>выполняем команду в git и находим расположение хранилища доверенных сертификатов:</p>
+<p>Ранее мы уже нашли где git хранит свою цепочку доверенных ssl CA сертификатов:  <code>C:\Program Files\Git\mingw64\ssl\certs</code></p>
+<p>Мне не понравилась папка в которой расположен текущий поэтому я переместил файл и затем указал новый путь командой:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">git config --system http.sslcainfo C:/Git/_certs/ca-bundle.crt
+</code></pre></div><p>Если вы не являетесь администратором машины, или хотите сохранить изменения только для себя, команда немного изменится:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">git config --global http.sslcainfo C:/Git/_certs/ca-bundle.crt
+</code></pre></div><p>Важно! по хорошему папка в которой должна храниться цепочка должна быть недоступна для редактирования никому кроме администратора машины, в целях безопасности, поэтому перемещение - опционально, и только если вы понимаете что делаете.</p>
+<p>теперь открываем текстовым редактором (крайне желательно - не notepad! и желательно - делайте резервные копии!) наш <code>ca-bundle.crt</code> видим сертификаты</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">-----BEGIN CERTIFICATE-----</span>
+<span class="na">куча символов в Base64</span>
+<span class="na">-----END CERTIFICATE-----</span>
+<span class="na">-----BEGIN CERTIFICATE-----</span>
+<span class="na">еще одна куча</span>
+<span class="na">-----END CERTIFICATE-----</span>
+<span class="na">...</span>
+</code></pre></div><p>открываем файл <code>ca.crt</code> и извлекаем из него текст нашего CA сертификата</p>
+<p>аккуратно копируем сертификат из <code>ca.crt</code> в конец файла <code>ca-bundle.crt</code> так что бы не сломать структуру файла, и сохраняем.</p>
+<p>можем проверить что все ок последовательно теми же командами что ошибку помогли локализовать:</p>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;keytool -printcert -v -file C:\Git\_certs\ca-bundle.crt &gt; certs_info.txt</span>
+</code></pre></div><p>В конце файла последним мы должны увидеть данные нашего добавленного сертификата</p>
+<p>далее проверим что openssl не выдаст больше ошибку о том что не может подтвердить ssl сертификат сервера:</p>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;openssl s_client -connect domain:443 -CAfile C:\Git\_certs\ca-bundle.crt</span>
+CONNECTED(00000194)
+depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+<span class="k">verify</span> return:1
+depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+<span class="k">verify</span> return:1
+</code></pre></div><p>ошибки исправлены - теперь нужно снова попробовать склонировать git-репозиторий.</p>
+<p>PROFIT!</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Как использовать OpenConnect вместо CiscoAnyConnect</title>
+			<link>https://blog.zverev-iv.me/posts/2019-11-08-from-anyconnect-to-openconnect/</link>
+			<pubDate>Fri, 08 Nov 2019 06:50:00 +0300</pubDate>
+			
+			<guid>https://blog.zverev-iv.me/posts/2019-11-08-from-anyconnect-to-openconnect/</guid>
+			<description>Устанавливаем нужный софт  Chocolatey (если ещё не установили) - https://chocolatey.org/ choco install openssl choco install openconnect-gui  Готовим сертификат для использования  Обычно на вход дают сертификат в формате pfx и пароль к нему. Наша цель - получить сертификат в формате crt и ключ key в формате pem открываем cmd в папке с pfx файлом выполняем команду openssl pkcs12 -in [yourfile.pfx] -clcerts -nokeys -out [certificate.crt] вводим пароль нужное количество раз (обычно 1).</description>
+			<content type="html"><![CDATA[<h2 id="устанавливаем-нужный-софт">Устанавливаем нужный софт</h2>
+<ol>
+<li>Chocolatey (если ещё не установили) - <a href="https://chocolatey.org/">https://chocolatey.org/</a></li>
+<li><code>choco install openssl</code></li>
+<li><code>choco install openconnect-gui</code></li>
+</ol>
+<h2 id="готовим-сертификат-для-использования">Готовим сертификат для использования</h2>
+<ol>
+<li>Обычно на вход дают сертификат в формате <code>pfx</code> и пароль к нему. Наша цель - получить сертификат в формате <code>crt</code> и  ключ <code>key</code> в формате <code>pem</code></li>
+<li>открываем <code>cmd</code> в папке с pfx файлом</li>
+<li>выполняем команду <code>openssl pkcs12 -in [yourfile.pfx] -clcerts -nokeys -out [certificate.crt]</code></li>
+<li>вводим пароль нужное количество раз (обычно 1). сертификат <code>crt</code> получен</li>
+<li>выполняем команду <code>openssl pkcs12 -in [yourfile.pfx] -nocerts -out [keyfile-encrypted.key]</code></li>
+<li>вводим пароль нужное количество раз (обычно 3 раза. вводите тот же пароль все 3 раза). мы получили ключ <code>key</code> но не в том формате который нам нужен.</li>
+<li>опционально можем снять пароль с ключа если он достаточно защищен, выполнив команду <code>openssl rsa -in [keyfile-encrypted.key] -out [keyfile-decrypted.key]</code></li>
+<li>и конвертируем ключ в формат pem командой <code>openssl rsa -in [keyfile-decrypted.key] -outform PEM -out [keyfile-decrypted-pem.key]</code> если ключ расшифровали или <code>openssl rsa -in [keyfile-encrypted.key] -outform PEM -out [keyfile-encrypted-pem.key]</code></li>
+</ol>
+<h2 id="настраиваем-соединение">Настраиваем соединение</h2>
+<ol>
+<li>Запускаем <code>OpenConnect-GUI VPN client</code></li>
+<li>Жмем на кнопку с <strong>шестерёнкой</strong>, выбираем опцию <code>New Profile (advanced)</code> и заполняем поля</li>
+<li><code>Name</code> - имя соединения (любое), можно ввести домен который дали, что бы не запутаться</li>
+<li><code>Gateway</code> - <strong>вводим</strong> <code>https://vpn.domain.name</code> - доменное имя или ip который дали вместе с сертификатом и паролем</li>
+<li><code>GroupName</code> - <strong>пропускаем</strong>, заполнится при необходимости при первом подключении</li>
+<li><code>CA Certificate</code> - <strong>пропускаем</strong> (не обязательно, но есть есть <code>crt</code> соответствующий - можно указать)</li>
+<li><code>OTP Token</code> - <strong>пропускаем</strong> (если в инструкциях к Cisco не предлагалось опций в настройках.)</li>
+<li><code>VPN protocol</code> - <strong>оставляем</strong> <code>Cisco AnyConnect</code> по-умолчанию</li>
+<li>Вкладка <code>Local Certificate</code> - указываем <code>crt</code> и <code>key</code> в формате  <code>pem</code> из файлов которые подготовлены на предыдущем шаге</li>
+<li>Остальное можно оставить по-умолчанию. Жмем <strong>Save</strong></li>
+</ol>
+<h2 id="первое-подключение">Первое подключение</h2>
+<ol>
+<li>
+<p>Выбираем профиль из списка, жмем <strong>Connect</strong></p>
+</li>
+<li>
+<p>При запросе могут предложить выбрать группу - выбираем соответственно переданной инструкции к VPN</p>
+</li>
+<li>
+<p>При просьбе ввести логин+пароль или только пароль - вводим указанные данные.</p>
+</li>
+<li>
+<p>PROFIT</p>
+</li>
+</ol>
+]]></content>
+		</item>
+		
+		<item>
+			<title>How to integrate SonarQube with Rocket.Chat</title>
+			<link>https://blog.zverev-iv.me/posts/2019-09-16-rocket-sonar-integration/</link>
+			<pubDate>Mon, 16 Sep 2019 07:59:00 +0300</pubDate>
+			
+			<guid>https://blog.zverev-iv.me/posts/2019-09-16-rocket-sonar-integration/</guid>
+			<description>SonarQube can send webhooks. Rocket.Chat ca can receive and parse webhooks  You can script it like that:
+class Script { process_incoming_request({ request }) { // console is a global helper to improve debug  //console.log(request.content);  if (request.content.status != &amp;#34;SUCCESS&amp;#34;) { return { error: { success: false, message: &amp;#34;analysis finished with error, task id: &amp;#34; + request.content.taskId } }; } let msgText = &amp;#34;Analysis &amp;#34; + request.content.project.name + &amp;#34; completed&amp;#34;; let attColor = &amp;#34;gray&amp;#34;; switch (request.</description>
+			<content type="html"><![CDATA[<ol>
+<li>SonarQube can send <a href="https://docs.sonarqube.org/latest/project-administration/webhooks/">webhooks</a>.</li>
+<li><a href="https://rocket.chat">Rocket.Chat</a> ca can receive and parse <a href="https://rocket.chat/docs/administrator-guides/integrations/">webhooks</a></li>
+</ol>
+<p>You can script it like that:</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="kr">class</span> <span class="nx">Script</span> <span class="p">{</span>
+
+    <span class="nx">process_incoming_request</span><span class="p">({</span>
+        <span class="nx">request</span>
+    <span class="p">})</span> <span class="p">{</span>
+
+        <span class="c1">// console is a global helper to improve debug
+</span><span class="c1"></span>        <span class="c1">//console.log(request.content);
+</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">status</span> <span class="o">!=</span> <span class="s2">&#34;SUCCESS&#34;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="nx">error</span><span class="o">:</span> <span class="p">{</span>
+                    <span class="nx">success</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+                    <span class="nx">message</span><span class="o">:</span> <span class="s2">&#34;analysis finished with error, task id: &#34;</span> <span class="o">+</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">taskId</span>
+                <span class="p">}</span>
+            <span class="p">};</span>
+        <span class="p">}</span>
+
+        <span class="kd">let</span> <span class="nx">msgText</span> <span class="o">=</span> <span class="s2">&#34;Analysis &#34;</span> <span class="o">+</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&#34; completed&#34;</span><span class="p">;</span>
+
+        <span class="kd">let</span> <span class="nx">attColor</span> <span class="o">=</span> <span class="s2">&#34;gray&#34;</span><span class="p">;</span>
+        <span class="k">switch</span> <span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">qualityGate</span><span class="p">.</span><span class="nx">status</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="s2">&#34;OK&#34;</span><span class="o">:</span>
+            <span class="nx">attColor</span> <span class="o">=</span> <span class="s2">&#34;#00FF00&#34;</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="s2">&#34;ERROR&#34;</span><span class="o">:</span>
+            <span class="nx">attColor</span> <span class="o">=</span> <span class="s2">&#34;#FF0000&#34;</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">default</span><span class="o">:</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kd">let</span> <span class="nx">att2</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">qualityGate</span><span class="p">.</span><span class="nx">conditions</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">condition</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">switch</span> <span class="p">(</span><span class="nx">condition</span><span class="p">.</span><span class="nx">metric</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="s2">&#34;new_reliability_rating&#34;</span><span class="o">:</span>
+                <span class="nx">att2</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+                    <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Reliability&#34;</span><span class="p">,</span>
+                    <span class="nx">value</span><span class="o">:</span> <span class="nx">condition</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
+                    <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
+                <span class="p">});</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="s2">&#34;new_security_rating&#34;</span><span class="o">:</span>
+                <span class="nx">att2</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+                    <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Security&#34;</span><span class="p">,</span>
+                    <span class="nx">value</span><span class="o">:</span> <span class="nx">condition</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
+                    <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
+                <span class="p">});</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="s2">&#34;new_maintainability_rating&#34;</span><span class="o">:</span>
+                <span class="nx">att2</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+                    <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Maintainability&#34;</span><span class="p">,</span>
+                    <span class="nx">value</span><span class="o">:</span> <span class="nx">condition</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
+                    <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
+                <span class="p">});</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="s2">&#34;new_duplicated_lines_density&#34;</span><span class="o">:</span>
+                <span class="nx">att2</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+                    <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Duplicated lines&#34;</span><span class="p">,</span>
+                    <span class="nx">value</span><span class="o">:</span> <span class="nx">condition</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
+                    <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
+                <span class="p">});</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="s2">&#34;new_coverage&#34;</span><span class="o">:</span>
+                <span class="nx">att2</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+                    <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Code coverage&#34;</span><span class="p">,</span>
+                    <span class="nx">value</span><span class="o">:</span> <span class="nx">condition</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
+                    <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
+                <span class="p">});</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="k">default</span><span class="o">:</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">})</span>
+
+        <span class="kd">let</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nx">content</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">username</span><span class="o">:</span> <span class="s2">&#34;SonarQube&#34;</span><span class="p">,</span>
+                <span class="nx">icon_url</span><span class="o">:</span> <span class="s2">&#34;/avatar/SonarQube.jpg&#34;</span><span class="p">,</span>
+                <span class="nx">attachments</span><span class="o">:</span> <span class="p">[{</span>
+                        <span class="nx">color</span><span class="o">:</span> <span class="nx">attColor</span><span class="p">,</span>
+                        <span class="nx">title</span><span class="o">:</span> <span class="nx">msgText</span><span class="p">,</span>
+                        <span class="nx">title_link</span><span class="o">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">branch</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
+                        <span class="nx">fields</span><span class="o">:</span> <span class="p">[{</span>
+                                <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Quality Gate Status&#34;</span><span class="p">,</span>
+                                <span class="nx">value</span><span class="o">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">qualityGate</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
+                                <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
+                            <span class="p">},</span> <span class="p">{</span>
+                                <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Analysed At&#34;</span><span class="p">,</span>
+                                <span class="nx">value</span><span class="o">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">analysedAt</span><span class="p">,</span>
+                                <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
+                            <span class="p">},</span> <span class="p">{</span>
+                                <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Revision&#34;</span><span class="p">,</span>
+                                <span class="nx">value</span><span class="o">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">revision</span><span class="p">,</span>
+                                <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
+                            <span class="p">},</span> <span class="p">{</span>
+                                <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Branch&#34;</span><span class="p">,</span>
+                                <span class="nx">value</span><span class="o">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">branch</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+                                <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
+                            <span class="p">}</span>
+                        <span class="p">]</span>
+                    <span class="p">}</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">att2</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">result</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">attachments</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+                <span class="nx">color</span><span class="o">:</span> <span class="nx">attColor</span><span class="p">,</span>
+                <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Quality Indicators&#34;</span><span class="p">,</span>
+                <span class="nx">fields</span><span class="o">:</span> <span class="nx">att2</span>
+            <span class="p">});</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>Happy chatting with bots :)</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>How to build and push chocolatey package with Travis CI </title>
+			<link>https://blog.zverev-iv.me/posts/2019-08-26-travis-ci-for-chocolatey-package/</link>
+			<pubDate>Sat, 24 Aug 2019 08:02:00 +0300</pubDate>
+			
+			<guid>https://blog.zverev-iv.me/posts/2019-08-26-travis-ci-for-chocolatey-package/</guid>
+			<description>You can use this code for your .travis.yml:
+os:windowslanguage:shellbranches:only:- masterscript:- choco pack path_to\\package.nuspecafter_script:- choco apikey --key $CHOCOAPIKEY --source https://push.chocolatey.org/- choco pushHide your private api key in CHOCOAPIKEY secret variable. Enjoy!</description>
+			<content type="html"><![CDATA[<p>You can use this code for your <code>.travis.yml</code>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">os</span><span class="p">:</span><span class="w"> </span><span class="l">windows</span><span class="w">
+</span><span class="w"></span><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l">shell</span><span class="w">
+</span><span class="w"></span><span class="nt">branches</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">only</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- <span class="l">master</span><span class="w">
+</span><span class="w"></span><span class="nt">script</span><span class="p">:</span><span class="w">
+</span><span class="w"></span>- <span class="l">choco pack path_to\\package.nuspec</span><span class="w">
+</span><span class="w"></span><span class="nt">after_script</span><span class="p">:</span><span class="w">
+</span><span class="w"></span>- <span class="l">choco apikey --key $CHOCOAPIKEY --source https://push.chocolatey.org/</span><span class="w">
+</span><span class="w"></span>- <span class="l">choco push</span><span class="w">
+</span></code></pre></div><p>Hide your private api key in CHOCOAPIKEY secret variable. Enjoy!</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>powershell: json -&gt; csv</title>
+			<link>https://blog.zverev-iv.me/posts/2019-08-23-quick-json-2-table/</link>
+			<pubDate>Fri, 23 Aug 2019 07:29:00 +0300</pubDate>
+			
+			<guid>https://blog.zverev-iv.me/posts/2019-08-23-quick-json-2-table/</guid>
+			<description>Иногда бывает необходимость найти что-то в длинном JSON, например вот такого вида:
+{ &amp;#34;relations&amp;#34;: [{ &amp;#34;ID&amp;#34;: 8449, &amp;#34;LinkType&amp;#34;: 2, &amp;#34;Changed Date&amp;#34;: &amp;#34;2019-08-23T08:36:52.627Z&amp;#34;, &amp;#34;Revised Date&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;AuthorizedAddedDate&amp;#34;: &amp;#34;2019-08-23T08:36:52.627Z&amp;#34;, &amp;#34;AuthorizedRemovedDate&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;Changed By&amp;#34;: 23953, &amp;#34;Revised By&amp;#34;: -1, &amp;#34;Lock&amp;#34;: false, &amp;#34;Comment&amp;#34;: &amp;#34;&amp;#34; }, { &amp;#34;ID&amp;#34;: 8452, &amp;#34;LinkType&amp;#34;: 2, &amp;#34;Changed Date&amp;#34;: &amp;#34;2019-08-23T08:55:54.503Z&amp;#34;, &amp;#34;Revised Date&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;AuthorizedAddedDate&amp;#34;: &amp;#34;2019-08-23T08:55:54.503Z&amp;#34;, &amp;#34;AuthorizedRemovedDate&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;Changed By&amp;#34;: 23953, &amp;#34;Revised By&amp;#34;: -1, &amp;#34;Lock&amp;#34;: false, &amp;#34;Comment&amp;#34;: &amp;#34;&amp;#34; }, { &amp;#34;ID&amp;#34;: 8451, &amp;#34;LinkType&amp;#34;: 2, &amp;#34;Changed Date&amp;#34;: &amp;#34;2019-08-23T08:55:54.</description>
+			<content type="html"><![CDATA[<p>Иногда бывает необходимость найти что-то в длинном JSON, например вот такого вида:</p>
+<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
+    <span class="nt">&#34;relations&#34;</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8449</span><span class="p">,</span>
+            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:36:52.627Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:36:52.627Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">23953</span><span class="p">,</span>
+            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8452</span><span class="p">,</span>
+            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:55:54.503Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:55:54.503Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">23953</span><span class="p">,</span>
+            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8451</span><span class="p">,</span>
+            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:55:54.503Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:55:54.503Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">23953</span><span class="p">,</span>
+            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8450</span><span class="p">,</span>
+            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:35:54.387Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:35:54.387Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">19418</span><span class="p">,</span>
+            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8453</span><span class="p">,</span>
+            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:46:00.823Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:46:00.823Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">19418</span><span class="p">,</span>
+            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8448</span><span class="p">,</span>
+            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:36:10.91Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:36:10.91Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">23953</span><span class="p">,</span>
+            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8454</span><span class="p">,</span>
+            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:57:02.873Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:57:02.873Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">19418</span><span class="p">,</span>
+            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div><p>Намного удобнее искать значения когда такие данные представлены в виде таблицы.
+решаем проблему такой командой:</p>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">Get-Content</span> <span class="n">-Path</span> <span class="s1">&#39;.\relations.json&#39;</span> <span class="p">|</span> <span class="nb">ConvertFrom-Json</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">-ExpandProperty</span> <span class="n">relations</span> <span class="p">|</span> <span class="nb">ConvertTo-Csv</span> <span class="n">-NoTypeInformation</span> <span class="n">-Delimiter</span> <span class="s1">&#39;;&#39;</span> <span class="p">|</span> <span class="nb">Out-File</span> <span class="n">-FilePath</span> <span class="s1">&#39;relations.csv&#39;</span> <span class="n">-Encoding</span> <span class="n">utf8</span>
+</code></pre></div>]]></content>
+		</item>
+		
+		<item>
+			<title>проверка всех элементов шаблона TFS</title>
+			<link>https://blog.zverev-iv.me/posts/2019-07-04-quick-check-witds/</link>
+			<pubDate>Thu, 04 Jul 2019 08:42:00 +0300</pubDate>
+			
+			<guid>https://blog.zverev-iv.me/posts/2019-07-04-quick-check-witds/</guid>
+			<description>Быстро проверить определения WIT на возможные проблемы (все в папке)
+ls *.xml | foreach -process { echo (&amp;#34;`r`n`r`n&amp;#34;+$_.name) ; start -file &amp;#39;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\witadmin.exe&amp;#39; -args (&amp;#39;importwitd /collection:http://localhost:8080/tfs/Colllection/ /p:Project /f:&amp;#34;&amp;#39;+ $_.name +&amp;#39;&amp;#34; /v&amp;#39;) -noNewWindow -wait } </description>
+			<content type="html"><![CDATA[<p>Быстро проверить определения WIT на возможные проблемы (все в папке)</p>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">ls </span><span class="p">*.</span><span class="n">xml</span> <span class="p">|</span> <span class="k">foreach</span> <span class="n">-process</span> <span class="p">{</span> <span class="nb">echo </span><span class="p">(</span><span class="s2">&#34;</span><span class="se">`r`n`r`n</span><span class="s2">&#34;</span><span class="p">+</span><span class="nv">$_</span><span class="p">.</span><span class="n">name</span><span class="p">)</span> <span class="p">;</span> <span class="nb">start </span><span class="o">-file</span> <span class="s1">&#39;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\witadmin.exe&#39;</span> <span class="n">-args</span> <span class="p">(</span><span class="s1">&#39;importwitd /collection:http://localhost:8080/tfs/Colllection/ /p:Project /f:&#34;&#39;</span><span class="p">+</span> <span class="nv">$_</span><span class="p">.</span><span class="n">name</span> <span class="p">+</span><span class="s1">&#39;&#34; /v&#39;</span><span class="p">)</span> <span class="n">-noNewWindow</span> <span class="n">-wait</span> <span class="p">}</span>
+</code></pre></div>]]></content>
+		</item>
+		
+		<item>
+			<title>Сонар и ветки</title>
+			<link>https://blog.zverev-iv.me/posts/2019-06-17-sonar-i-branchi/</link>
+			<pubDate>Mon, 17 Jun 2019 19:42:00 +0300</pubDate>
+			
+			<guid>https://blog.zverev-iv.me/posts/2019-06-17-sonar-i-branchi/</guid>
+			<description>Как мы знаем, Sonar в версии Community умеет анализировать только основную ветку. Ключевое слово основную, хотя в Sonar она всегда называется master Для Community версии с периодически выходят OSS плагины которые воспроизводят в некотором приближении функциональность Branch-плагина доступного для Developer и прочих версий. В связи с этим hint: всегда при создании нового проекта, первый анализ проводите для основной ветки. Алгоритм действий (работает для TFS и Azure DevOps Server)
+ Создается проект в SQ Правим шаблон названий долгоживущих веток (если основная ветка называется dev, лучше добавить в шаблон и dev и master) Производим проверку основной ветки (вне зависимости от ее названия.</description>
+			<content type="html"><![CDATA[<p>Как мы знаем, Sonar в версии Community умеет анализировать только основную ветку.
+Ключевое слово основную, хотя в Sonar она всегда называется <code>master</code>
+Для Community версии с периодически выходят OSS плагины которые воспроизводят в некотором приближении функциональность Branch-плагина доступного для Developer и прочих версий.
+В связи с этим hint: всегда при создании нового проекта, первый анализ проводите для <em>основной</em> ветки.
+Алгоритм действий (работает для TFS и Azure DevOps Server)</p>
+<ol>
+<li>Создается проект в SQ</li>
+<li>Правим шаблон названий долгоживущих веток (если основная ветка называется <code>dev</code>, лучше добавить в шаблон и <code>dev</code> и <code>master</code>)</li>
+<li>Производим проверку <em>основной ветки</em> (вне зависимости от ее названия. Признак основной ветки должен быть указан в TFS)</li>
+<li>переименовываем основную ветку (по умолчанию SQ назовет её <code>master</code> если же основной у нас <code>dev</code> &ndash; имя должно совпасть)</li>
+<li>после этого уже анализируем <code>master</code> и другие ветки.</li>
+</ol>
+<p>Смена основной ветки после подключения SQ в проект может привести к поломке. потому что SQ смотрит на <em>признак</em> (является ли ветка основной) в приоритете, и только если правило не выполняется - смотрит на её имя.</p>
+]]></content>
+		</item>
+		
+	</channel>
+</rss>

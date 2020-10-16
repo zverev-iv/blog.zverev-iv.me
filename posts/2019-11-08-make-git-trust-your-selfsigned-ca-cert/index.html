@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ru-ru">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="Как научить git доверять незнакомому CA сертификату а не выключать верификацию SSL">
+<meta itemprop="description" content="Мануал сделан под windows но работать должен работать и с *nix, использовать мы будем openssl, который есть везде и менее глючный чем schannel.
+Собственно как выглядит ошибка C:\Git&gt;git clone https://domain/gitrep/ Cloning into &#39;gitrep&#39;... fatal: unable to access &#39;https://domain/gitrep/&#39;: SSL certificate problem: unable to get local issuer certificate Что нам может потребоваться из софта  собственно git браузер - в статье я буду описывать вариант для chromium notepad&#43;&#43; или любой другой редактор который аккуратно относится кодировкам и символам переноса строк openssl - опционально.">
+<meta itemprop="datePublished" content="2019-11-08T07:22:00+03:00" />
+<meta itemprop="dateModified" content="2019-11-08T07:22:00+03:00" />
+<meta itemprop="wordCount" content="786">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta property="og:title" content="Как научить git доверять незнакомому CA сертификату а не выключать верификацию SSL" />
+<meta property="og:description" content="Мануал сделан под windows но работать должен работать и с *nix, использовать мы будем openssl, который есть везде и менее глючный чем schannel.
+Собственно как выглядит ошибка C:\Git&gt;git clone https://domain/gitrep/ Cloning into &#39;gitrep&#39;... fatal: unable to access &#39;https://domain/gitrep/&#39;: SSL certificate problem: unable to get local issuer certificate Что нам может потребоваться из софта  собственно git браузер - в статье я буду описывать вариант для chromium notepad&#43;&#43; или любой другой редактор который аккуратно относится кодировкам и символам переноса строк openssl - опционально." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.zverev-iv.me/posts/2019-11-08-make-git-trust-your-selfsigned-ca-cert/" />
+<meta property="article:published_time" content="2019-11-08T07:22:00+03:00" />
+<meta property="article:modified_time" content="2019-11-08T07:22:00+03:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Как научить git доверять незнакомому CA сертификату а не выключать верификацию SSL"/>
+<meta name="twitter:description" content="Мануал сделан под windows но работать должен работать и с *nix, использовать мы будем openssl, который есть везде и менее глючный чем schannel.
+Собственно как выглядит ошибка C:\Git&gt;git clone https://domain/gitrep/ Cloning into &#39;gitrep&#39;... fatal: unable to access &#39;https://domain/gitrep/&#39;: SSL certificate problem: unable to get local issuer certificate Что нам может потребоваться из софта  собственно git браузер - в статье я буду описывать вариант для chromium notepad&#43;&#43; или любой другой редактор который аккуратно относится кодировкам и символам переноса строк openssl - опционально."/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>Как научить git доверять незнакомому CA сертификату а не выключать верификацию SSL</title>
+	<link rel="stylesheet" href="https://blog.zverev-iv.me/css/style.min.eac77496566fd7d5768fd650ddb0b2b181ca6a2d7c5fdd6fe6b8ba4bf47e566f.css" integrity="sha256-6sd0llZv19V2j9ZQ3bCysYHKai18X91v5ri6S/R+Vm8=" crossorigin="anonymous">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://blog.zverev-iv.me">Zverev IV</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					
+				<a href="https://blog.zverev-iv.me/posts/">Posts</a>
+
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://t.me/zitter88" target="_blank" rel="noopener me" title="Telegram"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-8.609 3.33c-2.068.8-4.133 1.598-5.724 2.21a405.15 405.15 0 0 1-2.849 1.09c-.42.147-.99.332-1.473.901-.728.968.193 1.798.919 2.286 1.61.516 3.275 1.009 4.654 1.472.509 1.793.997 3.592 1.48 5.388.16.36.506.494.864.498l-.002.018s.281.028.555-.038a2.1 2.1 0 0 0 .933-.517c.345-.324 1.28-1.244 1.811-1.764l3.999 2.952.032.018s.442.311 1.09.355c.324.022.75-.04 1.116-.308.37-.27.613-.702.728-1.196.342-1.492 2.61-12.285 2.997-14.072l-.01.042c.27-1.006.17-1.928-.455-2.474a1.654 1.654 0 0 0-1.034-.407z"/></svg></a><a href="https://github.com/zverev-iv" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="https://chocolatey.org/profiles/zverev-iv" target="_blank" rel="noopener me" title="Chocolatey"><svg xmlns="http://www.w3.org/2000/svg" class="feather feather-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://blog.zverev-iv.me/posts/">Posts</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>8 Nov 2019</span></div>
+				<h1>Как научить git доверять незнакомому CA сертификату а не выключать верификацию SSL</h1>
+			</header>
+			<div class="content">
+				<p>Мануал сделан под windows но работать должен работать и с *nix, использовать мы будем openssl, который есть везде и менее глючный чем schannel.</p>
+<h2 id="собственно-как-выглядит-ошибка">Собственно как выглядит ошибка<a href="#собственно-как-выглядит-ошибка" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;git clone https://domain/gitrep/</span>
+Cloning into &#39;gitrep&#39;...
+fatal: unable to access &#39;https://domain/gitrep/&#39;: SSL certificate problem: unable to get local issuer certificate
+</code></pre></div><h2 id="что-нам-может-потребоваться-из-софта">Что нам может потребоваться из софта<a href="#что-нам-может-потребоваться-из-софта" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<ol>
+<li>собственно git</li>
+<li>браузер - в статье я буду описывать вариант для chromium</li>
+<li>notepad++ или любой другой редактор который аккуратно относится кодировкам и символам переноса строк</li>
+<li>openssl - опционально. можно посмотреть информацию о сертификатах</li>
+<li>keytool из jdk или jre, что бы прочитать файл со связкой сертификатов</li>
+</ol>
+<h2 id="как-подтвердить-ошибку">Как подтвердить ошибку<a href="#как-подтвердить-ошибку" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;openssl s_client -connect domain:443</span>
+CONNECTED(00000194)
+depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+<span class="k">verify</span> error:num=20:unable to get local issuer certificate
+<span class="k">verify</span> return:1
+depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+<span class="k">verify</span> error:num=21:unable to verify the first certificate
+<span class="k">verify</span> return:1
+</code></pre></div><p>как видим openssl тоже ничего не знает о сертификатах, правда openssl и git могут смотреть на разные хранилища известных корневых сертификатов (git сам отдаст ему нужное), ошибка не обязательно воспроизведется. Поэтому нужно отдать openssl тоже самое что отдаст ему git</p>
+<p>выполняем команду в git и находим расположение хранилища доверенных сертификатов:</p>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git\</span><span class="c1">&gt;git config --system --list</span>
+http.sslcainfo=C:/Program Files/Git/mingw64/ssl/certs/ca-bundle.crt
+http.sslbackend=openssl
+diff.astextplain.textconv=astextplain
+filter.lfs.clean=git-lfs clean -- %f
+filter.lfs.smudge=git-lfs smudge --skip -- %f
+filter.lfs.process=git-lfs filter-process --skip
+filter.lfs.required=true
+credential.helper=manager
+</code></pre></div><p>Мы видим что git хранит цепочку сертификатов в файле <code>C:\Program Files\Git\mingw64\ssl\certs</code></p>
+<p><code>ca-bundle.crt</code></p>
+<p>проверим что выдаст openssl:</p>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;openssl s_client -connect domain:443 -CAfile C:\Program Files\Git\mingw64\ssl\certs\ca-bundle.crt</span>
+CONNECTED(00000194)
+depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+<span class="k">verify</span> error:num=20:unable to get local issuer certificate
+<span class="k">verify</span> return:1
+depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+<span class="k">verify</span> error:num=21:unable to verify the first certificate
+<span class="k">verify</span> return:1
+</code></pre></div><p>мы подтвердили - openssl не может подтвердить git корректность сертификатов, т.к. не знает корневого издателя сертификата.</p>
+<p>При желании мы можем сами прочитать что лежит в ca-bundle.crt используя <code>keytool</code>, т.к. выдача будет длинная сразу стоит отправить её в текстовый файл:</p>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;keytool -printcert -v -file C:\Program Files\Git\mingw64\ssl\certs\ca-bundle.crt &gt; certs_info.txt</span>
+</code></pre></div><p>Начало файла будет выглядеть приблизительно так:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">Certificate[1]</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="nt">Owner</span><span class="p">:</span><span class="w"> </span><span class="l">C=ES, O=ACCV, OU=PKIACCV, CN=ACCVRAIZ1</span><span class="w">
+</span><span class="w"></span><span class="nt">Issuer</span><span class="p">:</span><span class="w"> </span><span class="l">C=ES, O=ACCV, OU=PKIACCV, CN=ACCVRAIZ1</span><span class="w">
+</span><span class="w"></span><span class="nt">Serial number</span><span class="p">:</span><span class="w"> </span><span class="l">5ec3b7a6437fa4e0</span><span class="w">
+</span><span class="w"></span><span class="nt">Valid from: Thu May 05 13:37:37 MSK 2011 until</span><span class="p">:</span><span class="w"> </span><span class="l">Tue Dec 31 12:37:37 MSK 2030</span><span class="w">
+</span><span class="w"></span><span class="nt">Certificate fingerprints</span><span class="p">:</span><span class="w">
+</span><span class="w">         </span><span class="nt">MD5</span><span class="p">:</span><span class="w">  </span><span class="l">D0:A0:5A:EE:05:B6:09:94:21:A1:7D:F1:B2:29:82:02</span><span class="w">
+</span><span class="w">         </span><span class="nt">SHA1</span><span class="p">:</span><span class="w"> </span><span class="m">93</span><span class="p">:</span><span class="m">05</span><span class="p">:</span><span class="l">7A:88:15:C6:4F:CE:88:2F:FA:91:16:52:28:78:BC:53:64:17</span><span class="w">
+</span><span class="w">         </span><span class="nt">SHA256</span><span class="p">:</span><span class="w"> </span><span class="l">9A:6E:C0:12:E1:A7:DA:9D:BE:34:19:4D:47:8A:D7:C0:DB:18:22:FB:07:1D:F1:29:81:49:6E:D1:04:38:41:13</span><span class="w">
+</span><span class="w"></span><span class="nt">Signature algorithm name</span><span class="p">:</span><span class="w"> </span><span class="l">SHA1withRSA</span><span class="w">
+</span><span class="w"></span><span class="nt">Subject Public Key Algorithm</span><span class="p">:</span><span class="w"> </span><span class="m">4096</span>-<span class="l">bit RSA key</span><span class="w">
+</span><span class="w"></span><span class="nt">Version</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="nt">Extensions</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="nn">...</span><span class="w">
+</span></code></pre></div><p>в файле будет весь список CA сертификатов которым Git доверяет.</p>
+<h2 id="как-сделать-что-бы-git-начал-доверять-ca-сертификату-сервера">Как сделать что бы Git начал доверять CA сертификату сервера<a href="#как-сделать-что-бы-git-начал-доверять-ca-сертификату-сервера" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<h3 id="подготовим-ca-сертификат-нашего-https-репозитория-к-дальнейшему-использованию">Подготовим CA сертификат нашего https репозитория к дальнейшему использованию<a href="#подготовим-ca-сертификат-нашего-https-репозитория-к-дальнейшему-использованию" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<ol>
+<li>заходим браузером на адрес, и вне зависимости от того выдает он ошибку подключения или нет - открываем на просмотр сертификат</li>
+<li>Переходим на вкладку с цепочкой сертификации, и ищем CA сертификат (самый верхний в цепочке). открываем его на просмотр</li>
+<li>Переходим на вкладку <strong>Details</strong>/<strong>Состав</strong> для CA сертификата. нажимаем кнопку <strong>Copy to File</strong>/<strong>Копировать в файл</strong> в мастере выбираем X.509 (.CER) в Base64 кодировке. сохраняем файл например с названием <code>ca.crt</code></li>
+</ol>
+<p>Альтернативно можно выгрузить его с помощью openssl, т.к. в его выдаче при выполнении подключения мы получаем сертификат сервера (или цепочку сертификатов) . сохранив их в файл <code>.cer</code> можно с помощью оснастки так же найти корневой сертификат</p>
+<h3 id="подготавливаем-цепочку-доверенных-сертификатов-к-изменению">Подготавливаем цепочку доверенных сертификатов к изменению<a href="#подготавливаем-цепочку-доверенных-сертификатов-к-изменению" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>выполняем команду в git и находим расположение хранилища доверенных сертификатов:</p>
+<p>Ранее мы уже нашли где git хранит свою цепочку доверенных ssl CA сертификатов:  <code>C:\Program Files\Git\mingw64\ssl\certs</code></p>
+<p>Мне не понравилась папка в которой расположен текущий поэтому я переместил файл и затем указал новый путь командой:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">git config --system http.sslcainfo C:/Git/_certs/ca-bundle.crt
+</code></pre></div><p>Если вы не являетесь администратором машины, или хотите сохранить изменения только для себя, команда немного изменится:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">git config --global http.sslcainfo C:/Git/_certs/ca-bundle.crt
+</code></pre></div><p>Важно! по хорошему папка в которой должна храниться цепочка должна быть недоступна для редактирования никому кроме администратора машины, в целях безопасности, поэтому перемещение - опционально, и только если вы понимаете что делаете.</p>
+<p>теперь открываем текстовым редактором (крайне желательно - не notepad! и желательно - делайте резервные копии!) наш <code>ca-bundle.crt</code> видим сертификаты</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">-----BEGIN CERTIFICATE-----</span>
+<span class="na">куча символов в Base64</span>
+<span class="na">-----END CERTIFICATE-----</span>
+<span class="na">-----BEGIN CERTIFICATE-----</span>
+<span class="na">еще одна куча</span>
+<span class="na">-----END CERTIFICATE-----</span>
+<span class="na">...</span>
+</code></pre></div><p>открываем файл <code>ca.crt</code> и извлекаем из него текст нашего CA сертификата</p>
+<p>аккуратно копируем сертификат из <code>ca.crt</code> в конец файла <code>ca-bundle.crt</code> так что бы не сломать структуру файла, и сохраняем.</p>
+<p>можем проверить что все ок последовательно теми же командами что ошибку помогли локализовать:</p>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;keytool -printcert -v -file C:\Git\_certs\ca-bundle.crt &gt; certs_info.txt</span>
+</code></pre></div><p>В конце файла последним мы должны увидеть данные нашего добавленного сертификата</p>
+<p>далее проверим что openssl не выдаст больше ошибку о том что не может подтвердить ssl сертификат сервера:</p>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;openssl s_client -connect domain:443 -CAfile C:\Git\_certs\ca-bundle.crt</span>
+CONNECTED(00000194)
+depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+<span class="k">verify</span> return:1
+depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+<span class="k">verify</span> return:1
+</code></pre></div><p>ошибки исправлены - теперь нужно снова попробовать склонировать git-репозиторий.</p>
+<p>PROFIT!</p>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>786 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-11-08 07:22 &#43;0300</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://blog.zverev-iv.me/posts/2019-12-02-change-azure-devops-server-max-extension-size/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>How to fix &#39;The extension package size exceeds the maximum package size&#39; error in your Azure Devops Server</span>
+			</a>
+			<a class="prev-post" href="https://blog.zverev-iv.me/posts/2019-11-08-from-anyconnect-to-openconnect/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Как использовать OpenConnect вместо CiscoAnyConnect</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2020 <a href="https://blog.zverev-iv.me">Zverev Ilya</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://blog.zverev-iv.me/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+
+	<script src="https://blog.zverev-iv.me/js/bundle.min.4a9a0ac3d2217822c7865b4161e6c2a71de1d70492264337755427898dd718f6.js" integrity="sha256-SpoKw9IheCLHhltBYebCpx3h1wSSJkM3dVQniY3XGPY=" crossorigin="anonymous"></script>
+	
+
+</body>
+
+</html>
