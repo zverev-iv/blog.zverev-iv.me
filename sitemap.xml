@@ -3,6 +3,21 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://blog.zverev-iv.me/posts/</loc>
+    <lastmod>2020-11-17T08:03:18+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/</loc>
+    <lastmod>2020-11-17T08:03:18+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.zverev-iv.me/posts/2020-11-17-docker-desktop-to-another-drive/</loc>
+    <lastmod>2020-11-17T08:03:18+03:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://blog.zverev-iv.me/posts/2020-01-27-conemu-boxstarter-task/</loc>
     <lastmod>2020-01-27T08:22:00+03:00</lastmod>
   </url>
@@ -14,16 +29,6 @@
   
   <url>
     <loc>https://blog.zverev-iv.me/categories/conemu-cmd-term-terminal-console-chocolatey-boxstarter/</loc>
-    <lastmod>2020-01-27T08:22:00+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.zverev-iv.me/posts/</loc>
-    <lastmod>2020-01-27T08:22:00+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.zverev-iv.me/</loc>
     <lastmod>2020-01-27T08:22:00+03:00</lastmod>
   </url>
   

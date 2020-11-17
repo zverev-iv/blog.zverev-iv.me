@@ -6,7 +6,18 @@
     <description>Recent content on Zverev IV</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ru-ru</language>
-    <lastBuildDate>Mon, 27 Jan 2020 08:22:00 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.me/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 17 Nov 2020 08:03:18 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.me/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Переносим нагрузку от Docker Desktop с системного диска</title>
+      <link>https://blog.zverev-iv.me/posts/2020-11-17-docker-desktop-to-another-drive/</link>
+      <pubDate>Tue, 17 Nov 2020 08:03:18 +0300</pubDate>
+      
+      <guid>https://blog.zverev-iv.me/posts/2020-11-17-docker-desktop-to-another-drive/</guid>
+      <description>Столкнулся с тем что docker-desktop съедает место на системном диске? Речь конечно про Windows 10 и WSL2. Если docker-desktop используем именно его, то нужно понимать что перенос инсталляции ничего не даст. Нужно переносить именно WSL2 подсистемы (их виртуальные диски)
+Делюсь на мой взгляд самым коротким и удобным способом:
+ устанавливаем LxRunOffline (удобная CLI утилита для работы с wsl). В моем случае это было просто:  choco install lxrunoffline теперь в терминале на всякий запустим refreshenv если устанавливали из chocolatey Посмотрим какие подсистемы видит lxrunoffline:  &amp;gt;LxRunOffline.</description>
+    </item>
+    
     <item>
       <title>Boxstarter Task for ConEmu</title>
       <link>https://blog.zverev-iv.me/posts/2020-01-27-conemu-boxstarter-task/</link>
@@ -96,16 +107,6 @@ os:windowslanguage:shellbranches:only:- masterscript:- choco pack path_to\\packa
       <guid>https://blog.zverev-iv.me/posts/2019-08-23-quick-json-2-table/</guid>
       <description>Иногда бывает необходимость найти что-то в длинном JSON, например вот такого вида:
 { &amp;#34;relations&amp;#34;: [{ &amp;#34;ID&amp;#34;: 8449, &amp;#34;LinkType&amp;#34;: 2, &amp;#34;Changed Date&amp;#34;: &amp;#34;2019-08-23T08:36:52.627Z&amp;#34;, &amp;#34;Revised Date&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;AuthorizedAddedDate&amp;#34;: &amp;#34;2019-08-23T08:36:52.627Z&amp;#34;, &amp;#34;AuthorizedRemovedDate&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;Changed By&amp;#34;: 23953, &amp;#34;Revised By&amp;#34;: -1, &amp;#34;Lock&amp;#34;: false, &amp;#34;Comment&amp;#34;: &amp;#34;&amp;#34; }, { &amp;#34;ID&amp;#34;: 8452, &amp;#34;LinkType&amp;#34;: 2, &amp;#34;Changed Date&amp;#34;: &amp;#34;2019-08-23T08:55:54.503Z&amp;#34;, &amp;#34;Revised Date&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;AuthorizedAddedDate&amp;#34;: &amp;#34;2019-08-23T08:55:54.503Z&amp;#34;, &amp;#34;AuthorizedRemovedDate&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;Changed By&amp;#34;: 23953, &amp;#34;Revised By&amp;#34;: -1, &amp;#34;Lock&amp;#34;: false, &amp;#34;Comment&amp;#34;: &amp;#34;&amp;#34; }, { &amp;#34;ID&amp;#34;: 8451, &amp;#34;LinkType&amp;#34;: 2, &amp;#34;Changed Date&amp;#34;: &amp;#34;2019-08-23T08:55:54.</description>
-    </item>
-    
-    <item>
-      <title>проверка всех элементов шаблона TFS</title>
-      <link>https://blog.zverev-iv.me/posts/2019-07-04-quick-check-witds/</link>
-      <pubDate>Thu, 04 Jul 2019 08:42:00 +0300</pubDate>
-      
-      <guid>https://blog.zverev-iv.me/posts/2019-07-04-quick-check-witds/</guid>
-      <description>Быстро проверить определения WIT на возможные проблемы (все в папке)
-ls *.xml | foreach -process { echo (&amp;#34;`r`n`r`n&amp;#34;+$_.name) ; start -file &amp;#39;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\witadmin.exe&amp;#39; -args (&amp;#39;importwitd /collection:http://localhost:8080/tfs/Colllection/ /p:Project /f:&amp;#34;&amp;#39;+ $_.name +&amp;#39;&amp;#34; /v&amp;#39;) -noNewWindow -wait } </description>
     </item>
     
   </channel>

@@ -5,8 +5,54 @@
 		<description>Recent content in Posts on Zverev IV</description>
 		<generator>Hugo -- gohugo.io</generator>
 		<language>ru-ru</language>
-		<lastBuildDate>Mon, 27 Jan 2020 08:22:00 +0300</lastBuildDate>
+		<lastBuildDate>Tue, 17 Nov 2020 08:03:18 +0300</lastBuildDate>
 		<atom:link href="https://blog.zverev-iv.me/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Переносим нагрузку от Docker Desktop с системного диска</title>
+			<link>https://blog.zverev-iv.me/posts/2020-11-17-docker-desktop-to-another-drive/</link>
+			<pubDate>Tue, 17 Nov 2020 08:03:18 +0300</pubDate>
+			
+			<guid>https://blog.zverev-iv.me/posts/2020-11-17-docker-desktop-to-another-drive/</guid>
+			<description>Столкнулся с тем что docker-desktop съедает место на системном диске? Речь конечно про Windows 10 и WSL2. Если docker-desktop используем именно его, то нужно понимать что перенос инсталляции ничего не даст. Нужно переносить именно WSL2 подсистемы (их виртуальные диски)
+Делюсь на мой взгляд самым коротким и удобным способом:
+ устанавливаем LxRunOffline (удобная CLI утилита для работы с wsl). В моем случае это было просто:  choco install lxrunoffline теперь в терминале на всякий запустим refreshenv если устанавливали из chocolatey Посмотрим какие подсистемы видит lxrunoffline:  &amp;gt;LxRunOffline.</description>
+			<content type="html"><![CDATA[<p>Столкнулся с тем что docker-desktop съедает место на системном диске?
+Речь конечно про Windows 10 и WSL2. Если docker-desktop используем именно его, то нужно понимать что перенос инсталляции ничего не даст.
+Нужно переносить именно WSL2 подсистемы (их виртуальные диски)</p>
+<p>Делюсь на мой взгляд самым коротким и удобным способом:</p>
+<ol>
+<li>устанавливаем LxRunOffline (удобная CLI утилита для работы с wsl). В моем случае это было просто:</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">choco install lxrunoffline
+</code></pre></div><ol start="2">
+<li>теперь в терминале на всякий запустим <code>refreshenv</code> если устанавливали из chocolatey</li>
+<li>Посмотрим какие подсистемы видит <code>lxrunoffline</code>:</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd"><span class="p">&gt;</span>LxRunOffline.exe  l
+docker-desktop
+docker-desktop-data
+</code></pre></div><ol start="4">
+<li>Отлично. <code>docker-desktop</code> это базовый образ с docker.  <code>docker-desktop-data</code> - здесь докер хранит свой граф - все образы, контейнеры, вольюмы и прочее.</li>
+<li>посмотрим где они располагаются по-умолчанию:</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd"><span class="p">&gt;</span>LxRunOffline.exe di -n docker-desktop
+\\?\C:\Users\{username}\AppData\Local\Docker\wsl\distro
+
+<span class="p">&gt;</span>LxRunOffline.exe di -n docker-desktop-data
+\\?\C:\Users\{username}\AppData\Local\Docker\wsl\data
+</code></pre></div><p>Теперь понятно - если папка профиля пользователя оставлена на системном диске (С: в нашем случае), То все наши опыты с Docker и Kubernetes будут съедать драгоценное место на системном диске. Их нужно перенести. Но переносить основной образ Docker не обязательно: Он меньше 200 MiB и не будет расти в процессе эксплуатации (изменение его размера обусловлено только дистрибутивом docker). Если системный диск быстрее - рекомендую ```docker-desktop оставить на нём. Однако если решите его перенести - список команд будет аналогичный</p>
+<ol start="6">
+<li>подготавливаем папку на другом диске, например так:</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd"><span class="k">mkdir</span> D:\wsl2\docker\data\
+</code></pre></div><ol start="7">
+<li>С помощью <code>lxrunoffline</code> переносим образ (docker-desktop должен быть выключен!)</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">LxRunOffline.exe m -n docker-desktop-data -d \\?\D:\wsl2\docker\data\
+</code></pre></div><p>После окончания переноса, запускаем docker-desktop как обычно - всё будет работать, и теперь место на системном диске не будет зависеть от опытов с Docker и Kubernetes :)</p>
+]]></content>
+		</item>
 		
 		<item>
 			<title>Boxstarter Task for ConEmu</title>
