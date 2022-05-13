@@ -6,7 +6,19 @@
     <description>Recent content on Zverev IV</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ru-ru</language>
-    <lastBuildDate>Tue, 17 Nov 2020 08:03:18 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.me/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 12 May 2022 07:49:14 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.me/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Как настроить авторизацию в git с помощью PAT для Azure Devops</title>
+      <link>https://blog.zverev-iv.me/posts/2022-05-12-azure-devops-git-with-pat/</link>
+      <pubDate>Thu, 12 May 2022 07:49:14 +0300</pubDate>
+      
+      <guid>https://blog.zverev-iv.me/posts/2022-05-12-azure-devops-git-with-pat/</guid>
+      <description>Особенность PAT авторизации через PAT в том, что она работает поверх Basic аутентификации, используя пустое имя пользователя. Git не воспринимает авторизацию через Basic с пустым логином, потому нам нужно обходное решение.
+Технически git позволяет специальной настройкой передавать дополнительные http заголовки, в случае если используется протокол http. Эту настройку можно:
+  Добавить на любой уровень настроек системные, глобальные настройки репозитория, я предпочитаю хранить такие настройки в каждом репозитории индивидуально
+  Передать в команду двумя способами (только для одноразового применения или для постоянного сохранения настройки).</description>
+    </item>
+    
     <item>
       <title>Переносим нагрузку от Docker Desktop с системного диска</title>
       <link>https://blog.zverev-iv.me/posts/2020-11-17-docker-desktop-to-another-drive/</link>
@@ -46,8 +58,7 @@
       <pubDate>Tue, 17 Dec 2019 22:25:00 +0300</pubDate>
       
       <guid>https://blog.zverev-iv.me/posts/2019-12-17-list-features-of-azure-devops-server/</guid>
-      <description>First of all: Don&amp;rsquo;t change states of Features. Especially if you don&amp;rsquo;t have backups. Especially on Productive Server. You can loss all your data. I warned you. so, if you&amp;rsquo;re curious enough, run this select in your configuration database:
-USE &amp;#34;Tfs_Configuration&amp;#34;; SELECT ISNULL(d.[ KEY],a.[ KEY]) AS FeatureKey , CASE WHEN a.AvailabilityState=1 THEN N&amp;#39;Enabled&amp;#39; WHEN a.AvailabilityState=0 THEN N&amp;#39;Disabled&amp;#39; WHEN a.AvailabilityState IS NULL THEN N&amp;#39;Disabled&amp;#39; END AS State , o.Owner , n.Name , d.</description>
+      <description>First of all: Don&amp;rsquo;t change states of Features. Especially if you don&amp;rsquo;t have backups. Especially on Productive Server. You can loss all your data. I warned you. so, if you&amp;rsquo;re curious enough, run this select in your configuration database:</description>
     </item>
     
     <item>
@@ -57,7 +68,7 @@ USE &amp;#34;Tfs_Configuration&amp;#34;; SELECT ISNULL(d.[ KEY],a.[ KEY]) AS Fea
       
       <guid>https://blog.zverev-iv.me/posts/2019-12-02-change-azure-devops-server-max-extension-size/</guid>
       <description>First check that there are no junk files in your vsix (like .git folder). If Found - delete it. If this didn&amp;rsquo;t help, Run this sql in your Configuration DB:
-USE &amp;#34;Tfs_Configuration&amp;#34;; EXEC dbo.prc_SetRegistryValue @partitionId = 1, @key = &amp;#39;#\Configuration\Service\Gallery\LargeExtensionUpload\MaxPackageSizeMB\&amp;#39;, @value = 128, @identityName = null; But change this value carefully, it can affect performance.</description>
+USE&amp;#34;Tfs_Configuration&amp;#34;;EXECdbo.prc_SetRegistryValue@partitionId=1,@key=&amp;#39;#\Configuration\Service\Gallery\LargeExtensionUpload\MaxPackageSizeMB\&amp;#39;,@value=128,@identityName=null;But change this value carefully, it can affect performance.</description>
     </item>
     
     <item>
@@ -97,16 +108,6 @@ class Script { process_incoming_request({ request }) { // console is a global he
       <guid>https://blog.zverev-iv.me/posts/2019-08-26-travis-ci-for-chocolatey-package/</guid>
       <description>You can use this code for your .travis.yml:
 os:windowslanguage:shellbranches:only:- masterscript:- choco pack path_to\\package.nuspecafter_script:- choco apikey --key $CHOCOAPIKEY --source https://push.chocolatey.org/- choco pushHide your private api key in CHOCOAPIKEY secret variable. Enjoy!</description>
-    </item>
-    
-    <item>
-      <title>powershell: json -&gt; csv</title>
-      <link>https://blog.zverev-iv.me/posts/2019-08-23-quick-json-2-table/</link>
-      <pubDate>Fri, 23 Aug 2019 07:29:00 +0300</pubDate>
-      
-      <guid>https://blog.zverev-iv.me/posts/2019-08-23-quick-json-2-table/</guid>
-      <description>Иногда бывает необходимость найти что-то в длинном JSON, например вот такого вида:
-{ &amp;#34;relations&amp;#34;: [{ &amp;#34;ID&amp;#34;: 8449, &amp;#34;LinkType&amp;#34;: 2, &amp;#34;Changed Date&amp;#34;: &amp;#34;2019-08-23T08:36:52.627Z&amp;#34;, &amp;#34;Revised Date&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;AuthorizedAddedDate&amp;#34;: &amp;#34;2019-08-23T08:36:52.627Z&amp;#34;, &amp;#34;AuthorizedRemovedDate&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;Changed By&amp;#34;: 23953, &amp;#34;Revised By&amp;#34;: -1, &amp;#34;Lock&amp;#34;: false, &amp;#34;Comment&amp;#34;: &amp;#34;&amp;#34; }, { &amp;#34;ID&amp;#34;: 8452, &amp;#34;LinkType&amp;#34;: 2, &amp;#34;Changed Date&amp;#34;: &amp;#34;2019-08-23T08:55:54.503Z&amp;#34;, &amp;#34;Revised Date&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;AuthorizedAddedDate&amp;#34;: &amp;#34;2019-08-23T08:55:54.503Z&amp;#34;, &amp;#34;AuthorizedRemovedDate&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;Changed By&amp;#34;: 23953, &amp;#34;Revised By&amp;#34;: -1, &amp;#34;Lock&amp;#34;: false, &amp;#34;Comment&amp;#34;: &amp;#34;&amp;#34; }, { &amp;#34;ID&amp;#34;: 8451, &amp;#34;LinkType&amp;#34;: 2, &amp;#34;Changed Date&amp;#34;: &amp;#34;2019-08-23T08:55:54.</description>
     </item>
     
   </channel>

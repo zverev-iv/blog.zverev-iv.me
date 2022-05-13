@@ -10,22 +10,18 @@
 <meta itemprop="name" content="Переносим нагрузку от Docker Desktop с системного диска">
 <meta itemprop="description" content="Столкнулся с тем что docker-desktop съедает место на системном диске? Речь конечно про Windows 10 и WSL2. Если docker-desktop используем именно его, то нужно понимать что перенос инсталляции ничего не даст. Нужно переносить именно WSL2 подсистемы (их виртуальные диски)
 Делюсь на мой взгляд самым коротким и удобным способом:
- устанавливаем LxRunOffline (удобная CLI утилита для работы с wsl). В моем случае это было просто:  choco install lxrunoffline теперь в терминале на всякий запустим refreshenv если устанавливали из chocolatey Посмотрим какие подсистемы видит lxrunoffline:  &gt;LxRunOffline.">
-<meta itemprop="datePublished" content="2020-11-17T08:03:18+03:00" />
+ устанавливаем LxRunOffline (удобная CLI утилита для работы с wsl). В моем случае это было просто:  choco install lxrunoffline теперь в терминале на всякий запустим refreshenv если устанавливали из chocolatey Посмотрим какие подсистемы видит lxrunoffline:  &gt;LxRunOffline."><meta itemprop="datePublished" content="2020-11-17T08:03:18+03:00" />
 <meta itemprop="dateModified" content="2020-11-17T08:03:18+03:00" />
 <meta itemprop="wordCount" content="251">
-
-
-
-<meta itemprop="keywords" content="" />
-<meta property="og:title" content="Переносим нагрузку от Docker Desktop с системного диска" />
+<meta itemprop="keywords" content="" /><meta property="og:title" content="Переносим нагрузку от Docker Desktop с системного диска" />
 <meta property="og:description" content="Столкнулся с тем что docker-desktop съедает место на системном диске? Речь конечно про Windows 10 и WSL2. Если docker-desktop используем именно его, то нужно понимать что перенос инсталляции ничего не даст. Нужно переносить именно WSL2 подсистемы (их виртуальные диски)
 Делюсь на мой взгляд самым коротким и удобным способом:
  устанавливаем LxRunOffline (удобная CLI утилита для работы с wsl). В моем случае это было просто:  choco install lxrunoffline теперь в терминале на всякий запустим refreshenv если устанавливали из chocolatey Посмотрим какие подсистемы видит lxrunoffline:  &gt;LxRunOffline." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.zverev-iv.me/posts/2020-11-17-docker-desktop-to-another-drive/" />
+<meta property="og:url" content="https://blog.zverev-iv.me/posts/2020-11-17-docker-desktop-to-another-drive/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2020-11-17T08:03:18+03:00" />
 <meta property="article:modified_time" content="2020-11-17T08:03:18+03:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Переносим нагрузку от Docker Desktop с системного диска"/>
 <meta name="twitter:description" content="Столкнулся с тем что docker-desktop съедает место на системном диске? Речь конечно про Windows 10 и WSL2. Если docker-desktop используем именно его, то нужно понимать что перенос инсталляции ничего не даст. Нужно переносить именно WSL2 подсистемы (их виртуальные диски)
@@ -84,33 +80,33 @@
 <ol>
 <li>устанавливаем LxRunOffline (удобная CLI утилита для работы с wsl). В моем случае это было просто:</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">choco install lxrunoffline
-</code></pre></div><ol start="2">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">choco install lxrunoffline
+</span></span></code></pre></div><ol start="2">
 <li>теперь в терминале на всякий запустим <code>refreshenv</code> если устанавливали из chocolatey</li>
 <li>Посмотрим какие подсистемы видит <code>lxrunoffline</code>:</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd"><span class="p">&gt;</span>LxRunOffline.exe  l
-docker-desktop
-docker-desktop-data
-</code></pre></div><ol start="4">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"><span class="p">&gt;</span>LxRunOffline.exe  l
+</span></span><span class="line"><span class="cl">docker-desktop
+</span></span><span class="line"><span class="cl">docker-desktop-data
+</span></span></code></pre></div><ol start="4">
 <li>Отлично. <code>docker-desktop</code> это базовый образ с docker.  <code>docker-desktop-data</code> - здесь докер хранит свой граф - все образы, контейнеры, вольюмы и прочее.</li>
 <li>посмотрим где они располагаются по-умолчанию:</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd"><span class="p">&gt;</span>LxRunOffline.exe di -n docker-desktop
-\\?\C:\Users\{username}\AppData\Local\Docker\wsl\distro
-
-<span class="p">&gt;</span>LxRunOffline.exe di -n docker-desktop-data
-\\?\C:\Users\{username}\AppData\Local\Docker\wsl\data
-</code></pre></div><p>Теперь понятно - если папка профиля пользователя оставлена на системном диске (С: в нашем случае), То все наши опыты с Docker и Kubernetes будут съедать драгоценное место на системном диске. Их нужно перенести. Но переносить основной образ Docker не обязательно: Он меньше 200 MiB и не будет расти в процессе эксплуатации (изменение его размера обусловлено только дистрибутивом docker). Если системный диск быстрее - рекомендую ```docker-desktop оставить на нём. Однако если решите его перенести - список команд будет аналогичный</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"><span class="p">&gt;</span>LxRunOffline.exe di -n docker-desktop
+</span></span><span class="line"><span class="cl">\\?\C:\Users\{username}\AppData\Local\Docker\wsl\distro
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&gt;</span>LxRunOffline.exe di -n docker-desktop-data
+</span></span><span class="line"><span class="cl">\\?\C:\Users\{username}\AppData\Local\Docker\wsl\data
+</span></span></code></pre></div><p>Теперь понятно - если папка профиля пользователя оставлена на системном диске (С: в нашем случае), То все наши опыты с Docker и Kubernetes будут съедать драгоценное место на системном диске. Их нужно перенести. Но переносить основной образ Docker не обязательно: Он меньше 200 MiB и не будет расти в процессе эксплуатации (изменение его размера обусловлено только дистрибутивом docker). Если системный диск быстрее - рекомендую ```docker-desktop оставить на нём. Однако если решите его перенести - список команд будет аналогичный</p>
 <ol start="6">
 <li>подготавливаем папку на другом диске, например так:</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd"><span class="k">mkdir</span> D:\wsl2\docker\data\
-</code></pre></div><ol start="7">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"><span class="k">mkdir</span> D:\wsl2\docker\data\
+</span></span></code></pre></div><ol start="7">
 <li>С помощью <code>lxrunoffline</code> переносим образ (docker-desktop должен быть выключен!)</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">LxRunOffline.exe m -n docker-desktop-data -d \\?\D:\wsl2\docker\data\
-</code></pre></div><p>После окончания переноса, запускаем docker-desktop как обычно - всё будет работать, и теперь место на системном диске не будет зависеть от опытов с Docker и Kubernetes :)</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">LxRunOffline.exe m -n docker-desktop-data -d \\?\D:\wsl2\docker\data\
+</span></span></code></pre></div><p>После окончания переноса, запускаем docker-desktop как обычно - всё будет работать, и теперь место на системном диске не будет зависеть от опытов с Docker и Kubernetes :)</p>
 
 			</div>
 			<hr class="post-end">
@@ -120,6 +116,9 @@ docker-desktop-data
 			</footer>
 		</article>
 		<div class="post-nav thin">
+			<a class="next-post" href="https://blog.zverev-iv.me/posts/2022-05-12-azure-devops-git-with-pat/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Как настроить авторизацию в git с помощью PAT для Azure Devops</span>
+			</a>
 			<a class="prev-post" href="https://blog.zverev-iv.me/posts/2020-01-27-conemu-boxstarter-task/">
 				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Boxstarter Task for ConEmu</span>
 			</a>
@@ -129,7 +128,7 @@ docker-desktop-data
 	</main>
 
 	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-		<p>&copy; 2020 <a href="https://blog.zverev-iv.me/">Zverev Ilya</a></p>
+		<p>&copy; 2022 <a href="https://blog.zverev-iv.me/">Zverev Ilya</a></p>
 		<p>
 			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://blog.zverev-iv.me/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
 		</p>
@@ -137,7 +136,7 @@ docker-desktop-data
 
 
 
-	<script src="https://blog.zverev-iv.me/js/bundle.min.4a9a0ac3d2217822c7865b4161e6c2a71de1d70492264337755427898dd718f6.js" integrity="sha256-SpoKw9IheCLHhltBYebCpx3h1wSSJkM3dVQniY3XGPY=" crossorigin="anonymous"></script>
+	<script src="https://blog.zverev-iv.me/js/bundle.min.5a42c67b729ee2fa1059251688235399704707e04edb4e28c42c6f6dfa49d1d9.js" integrity="sha256-WkLGe3Ke4voQWSUWiCNTmXBHB+BO204oxCxvbfpJ0dk=" crossorigin="anonymous"></script>
 	
 <script type="application/javascript">
 var doNotTrack = false;

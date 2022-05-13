@@ -5,8 +5,91 @@
 		<description>Recent content in Posts on Zverev IV</description>
 		<generator>Hugo -- gohugo.io</generator>
 		<language>ru-ru</language>
-		<lastBuildDate>Tue, 17 Nov 2020 08:03:18 +0300</lastBuildDate>
+		<lastBuildDate>Thu, 12 May 2022 07:49:14 +0300</lastBuildDate>
 		<atom:link href="https://blog.zverev-iv.me/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Как настроить авторизацию в git с помощью PAT для Azure Devops</title>
+			<link>https://blog.zverev-iv.me/posts/2022-05-12-azure-devops-git-with-pat/</link>
+			<pubDate>Thu, 12 May 2022 07:49:14 +0300</pubDate>
+			
+			<guid>https://blog.zverev-iv.me/posts/2022-05-12-azure-devops-git-with-pat/</guid>
+			<description>Особенность PAT авторизации через PAT в том, что она работает поверх Basic аутентификации, используя пустое имя пользователя. Git не воспринимает авторизацию через Basic с пустым логином, потому нам нужно обходное решение.
+Технически git позволяет специальной настройкой передавать дополнительные http заголовки, в случае если используется протокол http. Эту настройку можно:
+  Добавить на любой уровень настроек системные, глобальные настройки репозитория, я предпочитаю хранить такие настройки в каждом репозитории индивидуально
+  Передать в команду двумя способами (только для одноразового применения или для постоянного сохранения настройки).</description>
+			<content type="html"><![CDATA[<p>Особенность PAT авторизации через PAT в том, что она работает поверх Basic
+аутентификации, используя пустое имя пользователя. Git не воспринимает
+авторизацию через Basic с пустым логином, потому нам нужно обходное решение.</p>
+<p>Технически git позволяет специальной настройкой передавать дополнительные http
+заголовки, в случае если используется протокол http. Эту настройку можно:</p>
+<ol>
+<li>
+<p>Добавить на любой уровень настроек системные, глобальные настройки
+репозитория, я предпочитаю хранить такие настройки в каждом репозитории
+индивидуально</p>
+</li>
+<li>
+<p>Передать в команду двумя способами (только для одноразового применения или
+для постоянного сохранения настройки). это работает с командой <code>clone</code></p>
+</li>
+</ol>
+<p>Потому готовим заголовок авторизации для http:</p>
+<ol>
+<li>
+<p>Генерирует PAT стандартным способом у меня, например, это будет
+<code>kdki7svwyzw25av6hnskkq77bow3vx7ed7l3xsobzr56giujayoq</code></p>
+</li>
+<li>
+<p>Теперь добавляем в начало строки двоеточие и кодируем от получившейся строки
+base64 (можно воспользоваться публичным сервисом), если требуется выбрать
+кодировку, выберите utf-8. что получилось у меня:
+<code>Omtka2k3c3Z3eXp3MjVhdjZobnNra3E3N2JvdzN2eDdlZDdsM3hzb2J6cjU2Z2l1amF5b3E=</code></p>
+</li>
+<li>
+<p>В начало строки добавляем (с пробелом на конце)
+<code>Authorization: Basic </code></p>
+</li>
+<li>
+<p>Готово!</p>
+</li>
+</ol>
+<p>В результате у нас должна получиться такая строка:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="line"><span class="cl"><span class="err">Authorization: Basic Omtka2k3c3Z3eXp3MjVhdjZobnNra3E3N2JvdzN2eDdlZDdsM3hzb2J6cjU2Z2l1amF5b3E=
+</span></span></span></code></pre></div><p>Теперь мы можем использовать эту строку в командах git:</p>
+<table>
+<thead>
+<tr>
+<th>действие</th>
+<th>команда</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>клонируем без сохранения настройки</td>
+<td><code>git -c http.extraHeader=&quot;Authorization: Basic Omtka2k3c3Z3eXp3MjVhdjZobnNra3E3N2JvdzN2eDdlZDdsM3hzb2J6cjU2Z2l1amF5b3E=&quot; clone https://ado.uri/repo</code></td>
+</tr>
+<tr>
+<td>клонируем, сохраняя настройку</td>
+<td><code>git  clone https://ado.uri/repo -c http.extraHeader=&quot;Authorization: Basic Omtka2k3c3Z3eXp3MjVhdjZobnNra3E3N2JvdzN2eDdlZDdsM3hzb2J6cjU2Z2l1amF5b3E=&quot;</code></td>
+</tr>
+<tr>
+<td>вытягиваем изменения без сохранения настройки</td>
+<td><code>git -c http.extraHeader=&quot;Authorization: Basic Omtka2k3c3Z3eXp3MjVhdjZobnNra3E3N2JvdzN2eDdlZDdsM3hzb2J6cjU2Z2l1amF5b3E=&quot; pull</code></td>
+</tr>
+<tr>
+<td>вытягиваем изменения, сохраняя настройку</td>
+<td><code>git pull -c http.extraHeader=&quot;Authorization: Basic Omtka2k3c3Z3eXp3MjVhdjZobnNra3E3N2JvdzN2eDdlZDdsM3hzb2J6cjU2Z2l1amF5b3E=&quot;</code></td>
+</tr>
+</tbody>
+</table>
+<p>Альтернативно, если репозиторий уже скачан можно добавить эту опцию руками в
+файл <code>.git/config</code> текст настройки в таком случае будет выглядеть так:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="k">[http]</span>
+</span></span><span class="line"><span class="cl">	<span class="na">extraheader</span> <span class="o">=</span> <span class="s">Authorization: Basic Omtka2k3c3Z3eXp3MjVhdjZobnNra3E3N2JvdzN2eDdlZDdsM3hzb2J6cjU2Z2l1amF5b3E=</span>
+</span></span></code></pre></div><p>Будьте аккуратны - не задублируйте секцию http если она уже существует</p>
+]]></content>
+		</item>
 		
 		<item>
 			<title>Переносим нагрузку от Docker Desktop с системного диска</title>
@@ -24,33 +107,33 @@
 <ol>
 <li>устанавливаем LxRunOffline (удобная CLI утилита для работы с wsl). В моем случае это было просто:</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">choco install lxrunoffline
-</code></pre></div><ol start="2">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">choco install lxrunoffline
+</span></span></code></pre></div><ol start="2">
 <li>теперь в терминале на всякий запустим <code>refreshenv</code> если устанавливали из chocolatey</li>
 <li>Посмотрим какие подсистемы видит <code>lxrunoffline</code>:</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd"><span class="p">&gt;</span>LxRunOffline.exe  l
-docker-desktop
-docker-desktop-data
-</code></pre></div><ol start="4">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"><span class="p">&gt;</span>LxRunOffline.exe  l
+</span></span><span class="line"><span class="cl">docker-desktop
+</span></span><span class="line"><span class="cl">docker-desktop-data
+</span></span></code></pre></div><ol start="4">
 <li>Отлично. <code>docker-desktop</code> это базовый образ с docker.  <code>docker-desktop-data</code> - здесь докер хранит свой граф - все образы, контейнеры, вольюмы и прочее.</li>
 <li>посмотрим где они располагаются по-умолчанию:</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd"><span class="p">&gt;</span>LxRunOffline.exe di -n docker-desktop
-\\?\C:\Users\{username}\AppData\Local\Docker\wsl\distro
-
-<span class="p">&gt;</span>LxRunOffline.exe di -n docker-desktop-data
-\\?\C:\Users\{username}\AppData\Local\Docker\wsl\data
-</code></pre></div><p>Теперь понятно - если папка профиля пользователя оставлена на системном диске (С: в нашем случае), То все наши опыты с Docker и Kubernetes будут съедать драгоценное место на системном диске. Их нужно перенести. Но переносить основной образ Docker не обязательно: Он меньше 200 MiB и не будет расти в процессе эксплуатации (изменение его размера обусловлено только дистрибутивом docker). Если системный диск быстрее - рекомендую ```docker-desktop оставить на нём. Однако если решите его перенести - список команд будет аналогичный</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"><span class="p">&gt;</span>LxRunOffline.exe di -n docker-desktop
+</span></span><span class="line"><span class="cl">\\?\C:\Users\{username}\AppData\Local\Docker\wsl\distro
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&gt;</span>LxRunOffline.exe di -n docker-desktop-data
+</span></span><span class="line"><span class="cl">\\?\C:\Users\{username}\AppData\Local\Docker\wsl\data
+</span></span></code></pre></div><p>Теперь понятно - если папка профиля пользователя оставлена на системном диске (С: в нашем случае), То все наши опыты с Docker и Kubernetes будут съедать драгоценное место на системном диске. Их нужно перенести. Но переносить основной образ Docker не обязательно: Он меньше 200 MiB и не будет расти в процессе эксплуатации (изменение его размера обусловлено только дистрибутивом docker). Если системный диск быстрее - рекомендую ```docker-desktop оставить на нём. Однако если решите его перенести - список команд будет аналогичный</p>
 <ol start="6">
 <li>подготавливаем папку на другом диске, например так:</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd"><span class="k">mkdir</span> D:\wsl2\docker\data\
-</code></pre></div><ol start="7">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"><span class="k">mkdir</span> D:\wsl2\docker\data\
+</span></span></code></pre></div><ol start="7">
 <li>С помощью <code>lxrunoffline</code> переносим образ (docker-desktop должен быть выключен!)</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">LxRunOffline.exe m -n docker-desktop-data -d \\?\D:\wsl2\docker\data\
-</code></pre></div><p>После окончания переноса, запускаем docker-desktop как обычно - всё будет работать, и теперь место на системном диске не будет зависеть от опытов с Docker и Kubernetes :)</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">LxRunOffline.exe m -n docker-desktop-data -d \\?\D:\wsl2\docker\data\
+</span></span></code></pre></div><p>После окончания переноса, запускаем docker-desktop как обычно - всё будет работать, и теперь место на системном диске не будет зависеть от опытов с Docker и Kubernetes :)</p>
 ]]></content>
 		</item>
 		
@@ -73,8 +156,8 @@ docker-desktop-data
 <p>Set commands:</p>
 </li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">powershell</span><span class="p">.</span><span class="n">exe</span> <span class="n">-ExecutionPolicy</span> <span class="n">bypass</span> <span class="n">-NoExit</span> <span class="n">-Command</span> <span class="s2">&#34;&amp;&#39;C:\ProgramData\Boxstarter\BoxstarterShell.ps1&#39;&#34;</span> <span class="n">-new_console</span><span class="err">:</span><span class="n">a</span>
-</code></pre></div>]]></content>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">powershell</span><span class="p">.</span><span class="n">exe</span> <span class="n">-ExecutionPolicy</span> <span class="n">bypass</span> <span class="n">-NoExit</span> <span class="n">-Command</span> <span class="s2">&#34;&amp;&#39;C:\ProgramData\Boxstarter\BoxstarterShell.ps1&#39;&#34;</span> <span class="n">-new_console</span><span class="err">:</span><span class="n">a</span>
+</span></span></code></pre></div>]]></content>
 		</item>
 		
 		<item>
@@ -100,16 +183,16 @@ docker-desktop-data
 <ol>
 <li>
 <p>проверяем командами стартовые значения динамических диапазонов портов в Windows (нужен CMD c правами администратора):</p>
-<div class="highlight"><pre class="chroma"><code class="language-bat" data-lang="bat">netsh int ipv4 show dynamicport tcp
-netsh int ipv6 show dynamicport tcp
-netsh int ipv4 show dynamicport udp
-netsh int ipv6 show dynamicport udp
-</code></pre></div><p>Скорее всего во всех случаях кроме 1-го вы получите значение 49152. Оно верное. В моём случае оно было равно 1025. Детали проблемы можно найти здесь: <a href="https://support.microsoft.com/en-ca/help/929851/the-default-dynamic-port-range-for-tcp-ip-has-changed-in-windows-vista">https://support.microsoft.com/en-ca/help/929851/the-default-dynamic-port-range-for-tcp-ip-has-changed-in-windows-vista</a> .</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bat" data-lang="bat"><span class="line"><span class="cl">netsh int ipv4 show dynamicport tcp
+</span></span><span class="line"><span class="cl">netsh int ipv6 show dynamicport tcp
+</span></span><span class="line"><span class="cl">netsh int ipv4 show dynamicport udp
+</span></span><span class="line"><span class="cl">netsh int ipv6 show dynamicport udp
+</span></span></code></pre></div><p>Скорее всего во всех случаях кроме 1-го вы получите значение 49152. Оно верное. В моём случае оно было равно 1025. Детали проблемы можно найти здесь: <a href="https://support.microsoft.com/en-ca/help/929851/the-default-dynamic-port-range-for-tcp-ip-has-changed-in-windows-vista">https://support.microsoft.com/en-ca/help/929851/the-default-dynamic-port-range-for-tcp-ip-has-changed-in-windows-vista</a> .</p>
 </li>
 <li>
 <p>Меняем для ipv4/tcp значение на корректное</p>
-<div class="highlight"><pre class="chroma"><code class="language-bat" data-lang="bat">netsh int ipv4 set dynamic tcp start=49152 num=16384
-</code></pre></div><p>если с ipv6/tcp диапазон так же начинается с 1025 (у меня такого не было)  - решение аналогичное</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bat" data-lang="bat"><span class="line"><span class="cl">netsh int ipv4 set dynamic tcp start=49152 num=16384
+</span></span></code></pre></div><p>если с ipv6/tcp диапазон так же начинается с 1025 (у меня такого не было)  - решение аналогичное</p>
 </li>
 <li>
 <p>Перезагружаемся</p>
@@ -122,33 +205,33 @@ netsh int ipv6 show dynamicport udp
 <ol>
 <li>
 <p>docker потребуется только клиент. Есть ли версия свежее можно проверить по первой ссылке в скрипте. в bash WSL последовательно выполняем:</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">export</span> <span class="nv">docker_url</span><span class="o">=</span>https://download.docker.com/linux/static/stable/x86_64
-<span class="nb">export</span> <span class="nv">docker_version</span><span class="o">=</span>19.03.5
-curl -Lo docker-<span class="nv">$docker_version</span>.tgz <span class="nv">$docker_url</span>/docker-<span class="nv">$docker_version</span>.tgz
-tar -xzvf docker-<span class="nv">$docker_version</span>.tgz docker/docker
-mkdir -p ~/bin
-mv docker/docker ~/bin
-rmdir docker
-rm docker-<span class="nv">$docker_version</span>.tgz
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">docker_url</span><span class="o">=</span>https://download.docker.com/linux/static/stable/x86_64
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">docker_version</span><span class="o">=</span>19.03.5
+</span></span><span class="line"><span class="cl">curl -Lo docker-<span class="nv">$docker_version</span>.tgz <span class="nv">$docker_url</span>/docker-<span class="nv">$docker_version</span>.tgz
+</span></span><span class="line"><span class="cl">tar -xzvf docker-<span class="nv">$docker_version</span>.tgz docker/docker
+</span></span><span class="line"><span class="cl">mkdir -p ~/bin
+</span></span><span class="line"><span class="cl">mv docker/docker ~/bin
+</span></span><span class="line"><span class="cl">rmdir docker
+</span></span><span class="line"><span class="cl">rm docker-<span class="nv">$docker_version</span>.tgz
+</span></span></code></pre></div></li>
 <li>
 <p>Теперь у нас есть docker. полная установка не имеет смысла потому что daemon не работоспособен в WSL</p>
 </li>
 <li>
 <p>Устанавливаем docker-compose:</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -L https://github.com/docker/compose/releases/download/1.25.1/docker-compose-<span class="sb">`</span>uname -s<span class="sb">`</span>-<span class="sb">`</span>uname -m<span class="sb">`</span> -o ~/bin/docker-compose
-chmod +x ~/bin/docker-compose
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -L https://github.com/docker/compose/releases/download/1.25.1/docker-compose-<span class="sb">`</span>uname -s<span class="sb">`</span>-<span class="sb">`</span>uname -m<span class="sb">`</span> -o ~/bin/docker-compose
+</span></span><span class="line"><span class="cl">chmod +x ~/bin/docker-compose
+</span></span></code></pre></div></li>
 <li>
 <p>ставим lazydocker (это не обязательно, но мне нравится этот клиент):</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl https://raw.githubusercontent.com/zverev-iv/lazydocker-home-bin-installer/master/install_update_linux.sh <span class="p">|</span> bash
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl https://raw.githubusercontent.com/zverev-iv/lazydocker-home-bin-installer/master/install_update_linux.sh <span class="p">|</span> bash
+</span></span></code></pre></div></li>
 <li>
 <p>так же можем добавить docker-machine если есть необходимость:</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -L https://github.com/docker/machine/releases/download/v0.16.2/docker-machine-<span class="sb">`</span>uname -s<span class="sb">`</span>-<span class="sb">`</span>uname -m<span class="sb">`</span> &gt;/tmp/docker-machine <span class="o">&amp;&amp;</span>
-    chmod +x /tmp/docker-machine <span class="o">&amp;&amp;</span>
-    mv /tmp/docker-machine ~/bin/
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -L https://github.com/docker/machine/releases/download/v0.16.2/docker-machine-<span class="sb">`</span>uname -s<span class="sb">`</span>-<span class="sb">`</span>uname -m<span class="sb">`</span> &gt;/tmp/docker-machine <span class="o">&amp;&amp;</span>
+</span></span><span class="line"><span class="cl">    chmod +x /tmp/docker-machine <span class="o">&amp;&amp;</span>
+</span></span><span class="line"><span class="cl">    mv /tmp/docker-machine ~/bin/
+</span></span></code></pre></div></li>
 <li>
 <p>Клиенты есть, но им еще не к чему присоединиться</p>
 </li>
@@ -157,15 +240,15 @@ chmod +x ~/bin/docker-compose
 <ol>
 <li>
 <p>выполняем, что бы  переменная прописывалась во всех последующих сессиях</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s2">&#34;export DOCKER_HOST=tcp://localhost:2375&#34;</span> &gt;&gt; ~/.bashrc <span class="o">&amp;&amp;</span> <span class="nb">source</span> ~/.bashrc
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;export DOCKER_HOST=tcp://localhost:2375&#34;</span> &gt;&gt; ~/.bashrc <span class="o">&amp;&amp;</span> <span class="nb">source</span> ~/.bashrc
+</span></span></code></pre></div></li>
 <li>
 <p>Закрываем текущую сессию WSL и открываем новую.</p>
 </li>
 <li>
 <p><strong>PROFIT!</strong> теперь у нас и из windows и из WSL - одинаковая доступность к службе Docker for Windows. Проверим ( и в windows и в WSL команда одинаковая):</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">docker system info
-</code></pre></div><p>Информация о системе должна быть одинаковой.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker system info
+</span></span></code></pre></div><p>Информация о системе должна быть одинаковой.</p>
 </li>
 </ol>
 <p><strong>P.S.&gt;</strong> Скрипты написаны в разных стилях, каюсь. Красивый вариант финального скрипта выложу позже.</p>
@@ -178,83 +261,82 @@ chmod +x ~/bin/docker-compose
 			<pubDate>Tue, 17 Dec 2019 22:25:00 +0300</pubDate>
 			
 			<guid>https://blog.zverev-iv.me/posts/2019-12-17-list-features-of-azure-devops-server/</guid>
-			<description>First of all: Don&amp;rsquo;t change states of Features. Especially if you don&amp;rsquo;t have backups. Especially on Productive Server. You can loss all your data. I warned you. so, if you&amp;rsquo;re curious enough, run this select in your configuration database:
-USE &amp;#34;Tfs_Configuration&amp;#34;; SELECT ISNULL(d.[ KEY],a.[ KEY]) AS FeatureKey , CASE WHEN a.AvailabilityState=1 THEN N&amp;#39;Enabled&amp;#39; WHEN a.AvailabilityState=0 THEN N&amp;#39;Disabled&amp;#39; WHEN a.AvailabilityState IS NULL THEN N&amp;#39;Disabled&amp;#39; END AS State , o.Owner , n.Name , d.</description>
+			<description>First of all: Don&amp;rsquo;t change states of Features. Especially if you don&amp;rsquo;t have backups. Especially on Productive Server. You can loss all your data. I warned you. so, if you&amp;rsquo;re curious enough, run this select in your configuration database:</description>
 			<content type="html"><![CDATA[<p>First of all: Don&rsquo;t change states of Features. Especially if you don&rsquo;t have backups. Especially on Productive Server. You can loss all your data. I warned you. 
 so, if you&rsquo;re curious enough, run this select in your configuration database:</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">USE</span> <span class="s2">&#34;Tfs_Configuration&#34;</span><span class="p">;</span>
-<span class="k">SELECT</span>
-  <span class="k">ISNULL</span><span class="p">(</span><span class="n">d</span><span class="p">.[</span> <span class="k">KEY</span><span class="p">],</span><span class="n">a</span><span class="p">.[</span> <span class="k">KEY</span><span class="p">])</span> <span class="k">AS</span> <span class="n">FeatureKey</span>
-<span class="p">,</span> <span class="k">CASE</span>
-    <span class="k">WHEN</span> <span class="n">a</span><span class="p">.</span><span class="n">AvailabilityState</span><span class="o">=</span><span class="mi">1</span>
-      <span class="k">THEN</span> <span class="n">N</span><span class="s1">&#39;Enabled&#39;</span>
-    <span class="k">WHEN</span> <span class="n">a</span><span class="p">.</span><span class="n">AvailabilityState</span><span class="o">=</span><span class="mi">0</span>
-      <span class="k">THEN</span> <span class="n">N</span><span class="s1">&#39;Disabled&#39;</span>
-    <span class="k">WHEN</span> <span class="n">a</span><span class="p">.</span><span class="n">AvailabilityState</span> <span class="k">IS</span> <span class="k">NULL</span>
-      <span class="k">THEN</span> <span class="n">N</span><span class="s1">&#39;Disabled&#39;</span>
-  <span class="k">END</span> <span class="k">AS</span> <span class="k">State</span>
-<span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="k">Owner</span>
-<span class="p">,</span> <span class="n">n</span><span class="p">.</span><span class="n">Name</span>
-<span class="p">,</span> <span class="n">d</span><span class="p">.</span><span class="n">Description</span>
-<span class="k">FROM</span>
-  <span class="p">(</span>
-    <span class="k">SELECT</span>
-      <span class="k">SUBSTRING</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">,</span> <span class="n">LEN</span><span class="p">(</span><span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Definitions\&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">LEN</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">))</span> <span class="k">AS</span> <span class="p">[</span><span class="k">key</span><span class="p">]</span>
-    <span class="p">,</span> <span class="n">regvalue</span>                                                                             <span class="k">AS</span> <span class="n">Description</span>
-    <span class="k">FROM</span>
-      <span class="n">tbl_registryitems</span>
-    <span class="k">WHERE</span>
-      <span class="n">ParentPath</span> <span class="k">LIKE</span> <span class="s1">&#39;#\FeatureAvailability\Definitions\%&#39;</span>
-      <span class="k">AND</span> <span class="n">ChildItem</span> <span class="o">=</span> <span class="n">N</span><span class="s1">&#39;Description\&#39;</span>
-  <span class="p">)</span>
-  <span class="k">AS</span> <span class="n">d</span>
-  <span class="k">JOIN</span>
-    <span class="p">(</span>
-      <span class="k">SELECT</span>
-        <span class="k">SUBSTRING</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">,</span> <span class="n">LEN</span><span class="p">(</span><span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Definitions\&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">LEN</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">))</span> <span class="k">AS</span> <span class="p">[</span><span class="k">key</span><span class="p">]</span>
-      <span class="p">,</span> <span class="n">regvalue</span>                                                                             <span class="k">AS</span> <span class="n">Name</span>
-      <span class="k">FROM</span>
-        <span class="n">tbl_registryitems</span>
-      <span class="k">WHERE</span>
-        <span class="n">ParentPath</span> <span class="k">LIKE</span> <span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Definitions\%&#39;</span>
-        <span class="k">AND</span> <span class="n">ChildItem</span> <span class="o">=</span> <span class="n">N</span><span class="s1">&#39;Name\&#39;</span>
-    <span class="p">)</span>
-    <span class="k">AS</span> <span class="n">n</span>
-    <span class="k">ON</span>
-      <span class="n">n</span><span class="p">.[</span> <span class="k">KEY</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">.[</span> <span class="k">KEY</span><span class="p">]</span>
-  <span class="k">JOIN</span>
-    <span class="p">(</span>
-      <span class="k">SELECT</span>
-        <span class="k">SUBSTRING</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">,</span> <span class="n">LEN</span><span class="p">(</span><span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Definitions\&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">LEN</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">))</span> <span class="k">AS</span> <span class="p">[</span><span class="k">key</span><span class="p">]</span>
-      <span class="p">,</span> <span class="n">regvalue</span>                                                                             <span class="k">AS</span> <span class="k">Owner</span>
-      <span class="k">FROM</span>
-        <span class="n">tbl_registryitems</span>
-      <span class="k">WHERE</span>
-        <span class="n">ParentPath</span> <span class="k">LIKE</span> <span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Definitions\%&#39;</span>
-        <span class="k">AND</span> <span class="n">ChildItem</span> <span class="o">=</span> <span class="n">N</span><span class="s1">&#39;Owner\&#39;</span>
-    <span class="p">)</span>
-    <span class="k">AS</span> <span class="n">o</span>
-    <span class="k">ON</span>
-      <span class="n">o</span><span class="p">.[</span> <span class="k">KEY</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">.[</span> <span class="k">KEY</span><span class="p">]</span>
-  <span class="k">FULL</span> <span class="k">OUTER</span> <span class="k">JOIN</span>
-    <span class="p">(</span>
-      <span class="k">SELECT</span>
-        <span class="k">SUBSTRING</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">,</span> <span class="n">LEN</span><span class="p">(</span><span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Entries\&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">LEN</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">))</span> <span class="k">AS</span> <span class="p">[</span><span class="k">key</span><span class="p">]</span>
-      <span class="p">,</span> <span class="k">isnull</span><span class="p">(</span><span class="n">regvalue</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                                                              <span class="k">AS</span> <span class="n">AvailabilityState</span>
-      <span class="k">FROM</span>
-        <span class="n">tbl_registryitems</span>
-      <span class="k">WHERE</span>
-        <span class="n">ParentPath</span> <span class="k">LIKE</span> <span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Entries\%&#39;</span>
-        <span class="k">AND</span> <span class="n">ChildItem</span> <span class="o">=</span> <span class="n">N</span><span class="s1">&#39;AvailabilityState\&#39;</span>
-    <span class="p">)</span>
-    <span class="k">AS</span> <span class="n">a</span>
-    <span class="k">ON</span>
-      <span class="n">a</span><span class="p">.[</span><span class="k">KEY</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">.[</span><span class="k">KEY</span><span class="p">]</span>
-<span class="k">ORDER</span> <span class="k">BY</span>
-  <span class="mi">3</span>
-<span class="p">,</span> <span class="mi">4</span>
-<span class="p">,</span> <span class="mi">5</span>
-</code></pre></div>]]></content>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">USE</span><span class="w"> </span><span class="s2">&#34;Tfs_Configuration&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SELECT</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">ISNULL</span><span class="p">(</span><span class="n">d</span><span class="p">.[</span><span class="w"> </span><span class="k">KEY</span><span class="p">],</span><span class="n">a</span><span class="p">.[</span><span class="w"> </span><span class="k">KEY</span><span class="p">])</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">FeatureKey</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">,</span><span class="w"> </span><span class="k">CASE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">AvailabilityState</span><span class="o">=</span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">THEN</span><span class="w"> </span><span class="n">N</span><span class="s1">&#39;Enabled&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">AvailabilityState</span><span class="o">=</span><span class="mi">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">THEN</span><span class="w"> </span><span class="n">N</span><span class="s1">&#39;Disabled&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">AvailabilityState</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">THEN</span><span class="w"> </span><span class="n">N</span><span class="s1">&#39;Disabled&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">State</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="k">Owner</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">Name</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">Description</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">FROM</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">SELECT</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">SUBSTRING</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">,</span><span class="w"> </span><span class="n">LEN</span><span class="p">(</span><span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Definitions\&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">LEN</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">[</span><span class="k">key</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="n">regvalue</span><span class="w">                                                                             </span><span class="k">AS</span><span class="w"> </span><span class="n">Description</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">FROM</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">tbl_registryitems</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">WHERE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">ParentPath</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;#\FeatureAvailability\Definitions\%&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">AND</span><span class="w"> </span><span class="n">ChildItem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N</span><span class="s1">&#39;Description\&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">AS</span><span class="w"> </span><span class="n">d</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">JOIN</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">SELECT</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">SUBSTRING</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">,</span><span class="w"> </span><span class="n">LEN</span><span class="p">(</span><span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Definitions\&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">LEN</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">[</span><span class="k">key</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">regvalue</span><span class="w">                                                                             </span><span class="k">AS</span><span class="w"> </span><span class="n">Name</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">FROM</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">tbl_registryitems</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">WHERE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ParentPath</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Definitions\%&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">AND</span><span class="w"> </span><span class="n">ChildItem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N</span><span class="s1">&#39;Name\&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">AS</span><span class="w"> </span><span class="n">n</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">ON</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">n</span><span class="p">.[</span><span class="w"> </span><span class="k">KEY</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="p">.[</span><span class="w"> </span><span class="k">KEY</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">JOIN</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">SELECT</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">SUBSTRING</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">,</span><span class="w"> </span><span class="n">LEN</span><span class="p">(</span><span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Definitions\&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">LEN</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">[</span><span class="k">key</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">regvalue</span><span class="w">                                                                             </span><span class="k">AS</span><span class="w"> </span><span class="k">Owner</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">FROM</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">tbl_registryitems</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">WHERE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ParentPath</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Definitions\%&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">AND</span><span class="w"> </span><span class="n">ChildItem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N</span><span class="s1">&#39;Owner\&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">AS</span><span class="w"> </span><span class="n">o</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">ON</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">o</span><span class="p">.[</span><span class="w"> </span><span class="k">KEY</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="p">.[</span><span class="w"> </span><span class="k">KEY</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">FULL</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">SELECT</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">SUBSTRING</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">,</span><span class="w"> </span><span class="n">LEN</span><span class="p">(</span><span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Entries\&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">LEN</span><span class="p">(</span><span class="n">ParentPath</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">[</span><span class="k">key</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="k">isnull</span><span class="p">(</span><span class="n">regvalue</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w">                                                              </span><span class="k">AS</span><span class="w"> </span><span class="n">AvailabilityState</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">FROM</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">tbl_registryitems</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">WHERE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ParentPath</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="n">N</span><span class="s1">&#39;#\FeatureAvailability\Entries\%&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">AND</span><span class="w"> </span><span class="n">ChildItem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N</span><span class="s1">&#39;AvailabilityState\&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">AS</span><span class="w"> </span><span class="n">a</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">ON</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">a</span><span class="p">.[</span><span class="k">KEY</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="p">.[</span><span class="k">KEY</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="mi">3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="w">
+</span></span></span></code></pre></div>]]></content>
 		</item>
 		
 		<item>
@@ -264,12 +346,12 @@ so, if you&rsquo;re curious enough, run this select in your configuration databa
 			
 			<guid>https://blog.zverev-iv.me/posts/2019-12-02-change-azure-devops-server-max-extension-size/</guid>
 			<description>First check that there are no junk files in your vsix (like .git folder). If Found - delete it. If this didn&amp;rsquo;t help, Run this sql in your Configuration DB:
-USE &amp;#34;Tfs_Configuration&amp;#34;; EXEC dbo.prc_SetRegistryValue @partitionId = 1, @key = &amp;#39;#\Configuration\Service\Gallery\LargeExtensionUpload\MaxPackageSizeMB\&amp;#39;, @value = 128, @identityName = null; But change this value carefully, it can affect performance.</description>
+USE&amp;#34;Tfs_Configuration&amp;#34;;EXECdbo.prc_SetRegistryValue@partitionId=1,@key=&amp;#39;#\Configuration\Service\Gallery\LargeExtensionUpload\MaxPackageSizeMB\&amp;#39;,@value=128,@identityName=null;But change this value carefully, it can affect performance.</description>
 			<content type="html"><![CDATA[<p>First check that there are no junk files in your vsix (like .git folder). If Found - delete it.
 If this didn&rsquo;t help, Run this sql in your Configuration DB:</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">USE</span> <span class="s2">&#34;Tfs_Configuration&#34;</span><span class="p">;</span>
-<span class="k">EXEC</span> <span class="n">dbo</span><span class="p">.</span><span class="n">prc_SetRegistryValue</span> <span class="o">@</span><span class="n">partitionId</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">@</span><span class="k">key</span> <span class="o">=</span> <span class="s1">&#39;#\Configuration\Service\Gallery\LargeExtensionUpload\MaxPackageSizeMB\&#39;</span><span class="p">,</span> <span class="o">@</span><span class="n">value</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span> <span class="o">@</span><span class="n">identityName</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
-</code></pre></div><p>But change this value carefully, it can affect performance.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">USE</span><span class="w"> </span><span class="s2">&#34;Tfs_Configuration&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">EXEC</span><span class="w"> </span><span class="n">dbo</span><span class="p">.</span><span class="n">prc_SetRegistryValue</span><span class="w"> </span><span class="o">@</span><span class="n">partitionId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;#\Configuration\Service\Gallery\LargeExtensionUpload\MaxPackageSizeMB\&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">identityName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">null</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>But change this value carefully, it can affect performance.</p>
 ]]></content>
 		</item>
 		
@@ -283,10 +365,10 @@ If this didn&rsquo;t help, Run this sql in your Configuration DB:</p>
 Собственно как выглядит ошибка C:\Git&amp;gt;git clone https://domain/gitrep/ Cloning into &amp;#39;gitrep&amp;#39;... fatal: unable to access &amp;#39;https://domain/gitrep/&amp;#39;: SSL certificate problem: unable to get local issuer certificate Что нам может потребоваться из софта  собственно git браузер - в статье я буду описывать вариант для chromium notepad++ или любой другой редактор который аккуратно относится кодировкам и символам переноса строк openssl - опционально.</description>
 			<content type="html"><![CDATA[<p>Мануал сделан под windows но работать должен работать и с *nix, использовать мы будем openssl, который есть везде и менее глючный чем schannel.</p>
 <h2 id="собственно-как-выглядит-ошибка">Собственно как выглядит ошибка</h2>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;git clone https://domain/gitrep/</span>
-Cloning into &#39;gitrep&#39;...
-fatal: unable to access &#39;https://domain/gitrep/&#39;: SSL certificate problem: unable to get local issuer certificate
-</code></pre></div><h2 id="что-нам-может-потребоваться-из-софта">Что нам может потребоваться из софта</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;git clone https://domain/gitrep/</span>
+</span></span><span class="line"><span class="cl">Cloning into &#39;gitrep&#39;...
+</span></span><span class="line"><span class="cl">fatal: unable to access &#39;https://domain/gitrep/&#39;: SSL certificate problem: unable to get local issuer certificate
+</span></span></code></pre></div><h2 id="что-нам-может-потребоваться-из-софта">Что нам может потребоваться из софта</h2>
 <ol>
 <li>собственно git</li>
 <li>браузер - в статье я буду описывать вариант для chromium</li>
@@ -295,56 +377,56 @@ fatal: unable to access &#39;https://domain/gitrep/&#39;: SSL certificate proble
 <li>keytool из jdk или jre, что бы прочитать файл со связкой сертификатов</li>
 </ol>
 <h2 id="как-подтвердить-ошибку">Как подтвердить ошибку</h2>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;openssl s_client -connect domain:443</span>
-CONNECTED(00000194)
-depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
-<span class="k">verify</span> error:num=20:unable to get local issuer certificate
-<span class="k">verify</span> return:1
-depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
-<span class="k">verify</span> error:num=21:unable to verify the first certificate
-<span class="k">verify</span> return:1
-</code></pre></div><p>как видим openssl тоже ничего не знает о сертификатах, правда openssl и git могут смотреть на разные хранилища известных корневых сертификатов (git сам отдаст ему нужное), ошибка не обязательно воспроизведется. Поэтому нужно отдать openssl тоже самое что отдаст ему git</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;openssl s_client -connect domain:443</span>
+</span></span><span class="line"><span class="cl">CONNECTED(00000194)
+</span></span><span class="line"><span class="cl">depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> error:num=20:unable to get local issuer certificate
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> return:1
+</span></span><span class="line"><span class="cl">depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> error:num=21:unable to verify the first certificate
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> return:1
+</span></span></code></pre></div><p>как видим openssl тоже ничего не знает о сертификатах, правда openssl и git могут смотреть на разные хранилища известных корневых сертификатов (git сам отдаст ему нужное), ошибка не обязательно воспроизведется. Поэтому нужно отдать openssl тоже самое что отдаст ему git</p>
 <p>выполняем команду в git и находим расположение хранилища доверенных сертификатов:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git\</span><span class="c1">&gt;git config --system --list</span>
-http.sslcainfo=C:/Program Files/Git/mingw64/ssl/certs/ca-bundle.crt
-http.sslbackend=openssl
-diff.astextplain.textconv=astextplain
-filter.lfs.clean=git-lfs clean -- %f
-filter.lfs.smudge=git-lfs smudge --skip -- %f
-filter.lfs.process=git-lfs filter-process --skip
-filter.lfs.required=true
-credential.helper=manager
-</code></pre></div><p>Мы видим что git хранит цепочку сертификатов в файле <code>C:\Program Files\Git\mingw64\ssl\certs</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">C<span class="p">:</span><span class="nl">\Git\</span><span class="c1">&gt;git config --system --list</span>
+</span></span><span class="line"><span class="cl">http.sslcainfo=C:/Program Files/Git/mingw64/ssl/certs/ca-bundle.crt
+</span></span><span class="line"><span class="cl">http.sslbackend=openssl
+</span></span><span class="line"><span class="cl">diff.astextplain.textconv=astextplain
+</span></span><span class="line"><span class="cl">filter.lfs.clean=git-lfs clean -- %f
+</span></span><span class="line"><span class="cl">filter.lfs.smudge=git-lfs smudge --skip -- %f
+</span></span><span class="line"><span class="cl">filter.lfs.process=git-lfs filter-process --skip
+</span></span><span class="line"><span class="cl">filter.lfs.required=true
+</span></span><span class="line"><span class="cl">credential.helper=manager
+</span></span></code></pre></div><p>Мы видим что git хранит цепочку сертификатов в файле <code>C:\Program Files\Git\mingw64\ssl\certs</code></p>
 <p><code>ca-bundle.crt</code></p>
 <p>проверим что выдаст openssl:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;openssl s_client -connect domain:443 -CAfile C:\Program Files\Git\mingw64\ssl\certs\ca-bundle.crt</span>
-CONNECTED(00000194)
-depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
-<span class="k">verify</span> error:num=20:unable to get local issuer certificate
-<span class="k">verify</span> return:1
-depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
-<span class="k">verify</span> error:num=21:unable to verify the first certificate
-<span class="k">verify</span> return:1
-</code></pre></div><p>мы подтвердили - openssl не может подтвердить git корректность сертификатов, т.к. не знает корневого издателя сертификата.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;openssl s_client -connect domain:443 -CAfile C:\Program Files\Git\mingw64\ssl\certs\ca-bundle.crt</span>
+</span></span><span class="line"><span class="cl">CONNECTED(00000194)
+</span></span><span class="line"><span class="cl">depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> error:num=20:unable to get local issuer certificate
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> return:1
+</span></span><span class="line"><span class="cl">depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> error:num=21:unable to verify the first certificate
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> return:1
+</span></span></code></pre></div><p>мы подтвердили - openssl не может подтвердить git корректность сертификатов, т.к. не знает корневого издателя сертификата.</p>
 <p>При желании мы можем сами прочитать что лежит в ca-bundle.crt используя <code>keytool</code>, т.к. выдача будет длинная сразу стоит отправить её в текстовый файл:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;keytool -printcert -v -file C:\Program Files\Git\mingw64\ssl\certs\ca-bundle.crt &gt; certs_info.txt</span>
-</code></pre></div><p>Начало файла будет выглядеть приблизительно так:</p>
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">Certificate[1]</span><span class="p">:</span><span class="w">
-</span><span class="w"></span><span class="nt">Owner</span><span class="p">:</span><span class="w"> </span><span class="l">C=ES, O=ACCV, OU=PKIACCV, CN=ACCVRAIZ1</span><span class="w">
-</span><span class="w"></span><span class="nt">Issuer</span><span class="p">:</span><span class="w"> </span><span class="l">C=ES, O=ACCV, OU=PKIACCV, CN=ACCVRAIZ1</span><span class="w">
-</span><span class="w"></span><span class="nt">Serial number</span><span class="p">:</span><span class="w"> </span><span class="l">5ec3b7a6437fa4e0</span><span class="w">
-</span><span class="w"></span><span class="nt">Valid from: Thu May 05 13:37:37 MSK 2011 until</span><span class="p">:</span><span class="w"> </span><span class="l">Tue Dec 31 12:37:37 MSK 2030</span><span class="w">
-</span><span class="w"></span><span class="nt">Certificate fingerprints</span><span class="p">:</span><span class="w">
-</span><span class="w">         </span><span class="nt">MD5</span><span class="p">:</span><span class="w">  </span><span class="l">D0:A0:5A:EE:05:B6:09:94:21:A1:7D:F1:B2:29:82:02</span><span class="w">
-</span><span class="w">         </span><span class="nt">SHA1</span><span class="p">:</span><span class="w"> </span><span class="m">93</span><span class="p">:</span><span class="m">05</span><span class="p">:</span><span class="l">7A:88:15:C6:4F:CE:88:2F:FA:91:16:52:28:78:BC:53:64:17</span><span class="w">
-</span><span class="w">         </span><span class="nt">SHA256</span><span class="p">:</span><span class="w"> </span><span class="l">9A:6E:C0:12:E1:A7:DA:9D:BE:34:19:4D:47:8A:D7:C0:DB:18:22:FB:07:1D:F1:29:81:49:6E:D1:04:38:41:13</span><span class="w">
-</span><span class="w"></span><span class="nt">Signature algorithm name</span><span class="p">:</span><span class="w"> </span><span class="l">SHA1withRSA</span><span class="w">
-</span><span class="w"></span><span class="nt">Subject Public Key Algorithm</span><span class="p">:</span><span class="w"> </span><span class="m">4096</span>-<span class="l">bit RSA key</span><span class="w">
-</span><span class="w"></span><span class="nt">Version</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
-</span><span class="w">
-</span><span class="w"></span><span class="nt">Extensions</span><span class="p">:</span><span class="w">
-</span><span class="w"></span><span class="nn">...</span><span class="w">
-</span></code></pre></div><p>в файле будет весь список CA сертификатов которым Git доверяет.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;keytool -printcert -v -file C:\Program Files\Git\mingw64\ssl\certs\ca-bundle.crt &gt; certs_info.txt</span>
+</span></span></code></pre></div><p>Начало файла будет выглядеть приблизительно так:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">Certificate[1]</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Owner</span><span class="p">:</span><span class="w"> </span><span class="l">C=ES, O=ACCV, OU=PKIACCV, CN=ACCVRAIZ1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Issuer</span><span class="p">:</span><span class="w"> </span><span class="l">C=ES, O=ACCV, OU=PKIACCV, CN=ACCVRAIZ1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Serial number</span><span class="p">:</span><span class="w"> </span><span class="l">5ec3b7a6437fa4e0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Valid from: Thu May 05 13:37:37 MSK 2011 until</span><span class="p">:</span><span class="w"> </span><span class="l">Tue Dec 31 12:37:37 MSK 2030</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Certificate fingerprints</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="nt">MD5</span><span class="p">:</span><span class="w">  </span><span class="l">D0:A0:5A:EE:05:B6:09:94:21:A1:7D:F1:B2:29:82:02</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="nt">SHA1</span><span class="p">:</span><span class="w"> </span><span class="m">93</span><span class="p">:</span><span class="m">05</span><span class="p">:</span><span class="l">7A:88:15:C6:4F:CE:88:2F:FA:91:16:52:28:78:BC:53:64:17</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="nt">SHA256</span><span class="p">:</span><span class="w"> </span><span class="l">9A:6E:C0:12:E1:A7:DA:9D:BE:34:19:4D:47:8A:D7:C0:DB:18:22:FB:07:1D:F1:29:81:49:6E:D1:04:38:41:13</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Signature algorithm name</span><span class="p">:</span><span class="w"> </span><span class="l">SHA1withRSA</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Subject Public Key Algorithm</span><span class="p">:</span><span class="w"> </span><span class="m">4096</span>-<span class="l">bit RSA key</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Version</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Extensions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">...</span><span class="w">
+</span></span></span></code></pre></div><p>в файле будет весь список CA сертификатов которым Git доверяет.</p>
 <h2 id="как-сделать-что-бы-git-начал-доверять-ca-сертификату-сервера">Как сделать что бы Git начал доверять CA сертификату сервера</h2>
 <h3 id="подготовим-ca-сертификат-нашего-https-репозитория-к-дальнейшему-использованию">Подготовим CA сертификат нашего https репозитория к дальнейшему использованию</h3>
 <ol>
@@ -357,31 +439,31 @@ depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
 <p>выполняем команду в git и находим расположение хранилища доверенных сертификатов:</p>
 <p>Ранее мы уже нашли где git хранит свою цепочку доверенных ssl CA сертификатов:  <code>C:\Program Files\Git\mingw64\ssl\certs</code></p>
 <p>Мне не понравилась папка в которой расположен текущий поэтому я переместил файл и затем указал новый путь командой:</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">git config --system http.sslcainfo C:/Git/_certs/ca-bundle.crt
-</code></pre></div><p>Если вы не являетесь администратором машины, или хотите сохранить изменения только для себя, команда немного изменится:</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">git config --global http.sslcainfo C:/Git/_certs/ca-bundle.crt
-</code></pre></div><p>Важно! по хорошему папка в которой должна храниться цепочка должна быть недоступна для редактирования никому кроме администратора машины, в целях безопасности, поэтому перемещение - опционально, и только если вы понимаете что делаете.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git config --system http.sslcainfo C:/Git/_certs/ca-bundle.crt
+</span></span></code></pre></div><p>Если вы не являетесь администратором машины, или хотите сохранить изменения только для себя, команда немного изменится:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git config --global http.sslcainfo C:/Git/_certs/ca-bundle.crt
+</span></span></code></pre></div><p>Важно! по хорошему папка в которой должна храниться цепочка должна быть недоступна для редактирования никому кроме администратора машины, в целях безопасности, поэтому перемещение - опционально, и только если вы понимаете что делаете.</p>
 <p>теперь открываем текстовым редактором (крайне желательно - не notepad! и желательно - делайте резервные копии!) наш <code>ca-bundle.crt</code> видим сертификаты</p>
-<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">-----BEGIN CERTIFICATE-----</span>
-<span class="na">куча символов в Base64</span>
-<span class="na">-----END CERTIFICATE-----</span>
-<span class="na">-----BEGIN CERTIFICATE-----</span>
-<span class="na">еще одна куча</span>
-<span class="na">-----END CERTIFICATE-----</span>
-<span class="na">...</span>
-</code></pre></div><p>открываем файл <code>ca.crt</code> и извлекаем из него текст нашего CA сертификата</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="na">-----BEGIN CERTIFICATE-----</span>
+</span></span><span class="line"><span class="cl"><span class="na">куча символов в Base64</span>
+</span></span><span class="line"><span class="cl"><span class="na">-----END CERTIFICATE-----</span>
+</span></span><span class="line"><span class="cl"><span class="na">-----BEGIN CERTIFICATE-----</span>
+</span></span><span class="line"><span class="cl"><span class="na">еще одна куча</span>
+</span></span><span class="line"><span class="cl"><span class="na">-----END CERTIFICATE-----</span>
+</span></span><span class="line"><span class="cl"><span class="na">...</span>
+</span></span></code></pre></div><p>открываем файл <code>ca.crt</code> и извлекаем из него текст нашего CA сертификата</p>
 <p>аккуратно копируем сертификат из <code>ca.crt</code> в конец файла <code>ca-bundle.crt</code> так что бы не сломать структуру файла, и сохраняем.</p>
 <p>можем проверить что все ок последовательно теми же командами что ошибку помогли локализовать:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;keytool -printcert -v -file C:\Git\_certs\ca-bundle.crt &gt; certs_info.txt</span>
-</code></pre></div><p>В конце файла последним мы должны увидеть данные нашего добавленного сертификата</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;keytool -printcert -v -file C:\Git\_certs\ca-bundle.crt &gt; certs_info.txt</span>
+</span></span></code></pre></div><p>В конце файла последним мы должны увидеть данные нашего добавленного сертификата</p>
 <p>далее проверим что openssl не выдаст больше ошибку о том что не может подтвердить ssl сертификат сервера:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;openssl s_client -connect domain:443 -CAfile C:\Git\_certs\ca-bundle.crt</span>
-CONNECTED(00000194)
-depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
-<span class="k">verify</span> return:1
-depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
-<span class="k">verify</span> return:1
-</code></pre></div><p>ошибки исправлены - теперь нужно снова попробовать склонировать git-репозиторий.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;openssl s_client -connect domain:443 -CAfile C:\Git\_certs\ca-bundle.crt</span>
+</span></span><span class="line"><span class="cl">CONNECTED(00000194)
+</span></span><span class="line"><span class="cl">depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> return:1
+</span></span><span class="line"><span class="cl">depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> return:1
+</span></span></code></pre></div><p>ошибки исправлены - теперь нужно снова попробовать склонировать git-репозиторий.</p>
 <p>PROFIT!</p>
 ]]></content>
 		</item>
@@ -454,123 +536,123 @@ class Script { process_incoming_request({ request }) { // console is a global he
 <li><a href="https://rocket.chat">Rocket.Chat</a> ca can receive and parse <a href="https://rocket.chat/docs/administrator-guides/integrations/">webhooks</a></li>
 </ol>
 <p>You can script it like that:</p>
-<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="kr">class</span> <span class="nx">Script</span> <span class="p">{</span>
-
-    <span class="nx">process_incoming_request</span><span class="p">({</span>
-        <span class="nx">request</span>
-    <span class="p">})</span> <span class="p">{</span>
-
-        <span class="c1">// console is a global helper to improve debug
-</span><span class="c1"></span>        <span class="c1">//console.log(request.content);
-</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">status</span> <span class="o">!=</span> <span class="s2">&#34;SUCCESS&#34;</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="nx">error</span><span class="o">:</span> <span class="p">{</span>
-                    <span class="nx">success</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-                    <span class="nx">message</span><span class="o">:</span> <span class="s2">&#34;analysis finished with error, task id: &#34;</span> <span class="o">+</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">taskId</span>
-                <span class="p">}</span>
-            <span class="p">};</span>
-        <span class="p">}</span>
-
-        <span class="kd">let</span> <span class="nx">msgText</span> <span class="o">=</span> <span class="s2">&#34;Analysis &#34;</span> <span class="o">+</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&#34; completed&#34;</span><span class="p">;</span>
-
-        <span class="kd">let</span> <span class="nx">attColor</span> <span class="o">=</span> <span class="s2">&#34;gray&#34;</span><span class="p">;</span>
-        <span class="k">switch</span> <span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">qualityGate</span><span class="p">.</span><span class="nx">status</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">case</span> <span class="s2">&#34;OK&#34;</span><span class="o">:</span>
-            <span class="nx">attColor</span> <span class="o">=</span> <span class="s2">&#34;#00FF00&#34;</span><span class="p">;</span>
-            <span class="k">break</span><span class="p">;</span>
-        <span class="k">case</span> <span class="s2">&#34;ERROR&#34;</span><span class="o">:</span>
-            <span class="nx">attColor</span> <span class="o">=</span> <span class="s2">&#34;#FF0000&#34;</span><span class="p">;</span>
-            <span class="k">break</span><span class="p">;</span>
-        <span class="k">default</span><span class="o">:</span>
-            <span class="k">break</span><span class="p">;</span>
-        <span class="p">}</span>
-
-        <span class="kd">let</span> <span class="nx">att2</span> <span class="o">=</span> <span class="p">[];</span>
-        <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">qualityGate</span><span class="p">.</span><span class="nx">conditions</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">condition</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">switch</span> <span class="p">(</span><span class="nx">condition</span><span class="p">.</span><span class="nx">metric</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">case</span> <span class="s2">&#34;new_reliability_rating&#34;</span><span class="o">:</span>
-                <span class="nx">att2</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
-                    <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Reliability&#34;</span><span class="p">,</span>
-                    <span class="nx">value</span><span class="o">:</span> <span class="nx">condition</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
-                    <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
-                <span class="p">});</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="k">case</span> <span class="s2">&#34;new_security_rating&#34;</span><span class="o">:</span>
-                <span class="nx">att2</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
-                    <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Security&#34;</span><span class="p">,</span>
-                    <span class="nx">value</span><span class="o">:</span> <span class="nx">condition</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
-                    <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
-                <span class="p">});</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="k">case</span> <span class="s2">&#34;new_maintainability_rating&#34;</span><span class="o">:</span>
-                <span class="nx">att2</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
-                    <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Maintainability&#34;</span><span class="p">,</span>
-                    <span class="nx">value</span><span class="o">:</span> <span class="nx">condition</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
-                    <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
-                <span class="p">});</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="k">case</span> <span class="s2">&#34;new_duplicated_lines_density&#34;</span><span class="o">:</span>
-                <span class="nx">att2</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
-                    <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Duplicated lines&#34;</span><span class="p">,</span>
-                    <span class="nx">value</span><span class="o">:</span> <span class="nx">condition</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
-                    <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
-                <span class="p">});</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="k">case</span> <span class="s2">&#34;new_coverage&#34;</span><span class="o">:</span>
-                <span class="nx">att2</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
-                    <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Code coverage&#34;</span><span class="p">,</span>
-                    <span class="nx">value</span><span class="o">:</span> <span class="nx">condition</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
-                    <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
-                <span class="p">});</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="k">default</span><span class="o">:</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">})</span>
-
-        <span class="kd">let</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="nx">content</span><span class="o">:</span> <span class="p">{</span>
-                <span class="nx">username</span><span class="o">:</span> <span class="s2">&#34;SonarQube&#34;</span><span class="p">,</span>
-                <span class="nx">icon_url</span><span class="o">:</span> <span class="s2">&#34;/avatar/SonarQube.jpg&#34;</span><span class="p">,</span>
-                <span class="nx">attachments</span><span class="o">:</span> <span class="p">[{</span>
-                        <span class="nx">color</span><span class="o">:</span> <span class="nx">attColor</span><span class="p">,</span>
-                        <span class="nx">title</span><span class="o">:</span> <span class="nx">msgText</span><span class="p">,</span>
-                        <span class="nx">title_link</span><span class="o">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">branch</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
-                        <span class="nx">fields</span><span class="o">:</span> <span class="p">[{</span>
-                                <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Quality Gate Status&#34;</span><span class="p">,</span>
-                                <span class="nx">value</span><span class="o">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">qualityGate</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
-                                <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
-                            <span class="p">},</span> <span class="p">{</span>
-                                <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Analysed At&#34;</span><span class="p">,</span>
-                                <span class="nx">value</span><span class="o">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">analysedAt</span><span class="p">,</span>
-                                <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
-                            <span class="p">},</span> <span class="p">{</span>
-                                <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Revision&#34;</span><span class="p">,</span>
-                                <span class="nx">value</span><span class="o">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">revision</span><span class="p">,</span>
-                                <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
-                            <span class="p">},</span> <span class="p">{</span>
-                                <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Branch&#34;</span><span class="p">,</span>
-                                <span class="nx">value</span><span class="o">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">branch</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
-                                <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
-                            <span class="p">}</span>
-                        <span class="p">]</span>
-                    <span class="p">}</span>
-                <span class="p">]</span>
-            <span class="p">}</span>
-        <span class="p">};</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="nx">att2</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">result</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">attachments</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
-                <span class="nx">color</span><span class="o">:</span> <span class="nx">attColor</span><span class="p">,</span>
-                <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Quality Indicators&#34;</span><span class="p">,</span>
-                <span class="nx">fields</span><span class="o">:</span> <span class="nx">att2</span>
-            <span class="p">});</span>
-        <span class="p">}</span>
-
-        <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div><p>Happy chatting with bots :)</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">class</span> <span class="nx">Script</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">process_incoming_request</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">request</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// console is a global helper to improve debug
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">//console.log(request.content);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">status</span> <span class="o">!=</span> <span class="s2">&#34;SUCCESS&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">error</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">success</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">message</span><span class="o">:</span> <span class="s2">&#34;analysis finished with error, task id: &#34;</span> <span class="o">+</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">taskId</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">};</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kd">let</span> <span class="nx">msgText</span> <span class="o">=</span> <span class="s2">&#34;Analysis &#34;</span> <span class="o">+</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&#34; completed&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kd">let</span> <span class="nx">attColor</span> <span class="o">=</span> <span class="s2">&#34;gray&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">switch</span> <span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">qualityGate</span><span class="p">.</span><span class="nx">status</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="s2">&#34;OK&#34;</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">attColor</span> <span class="o">=</span> <span class="s2">&#34;#00FF00&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="s2">&#34;ERROR&#34;</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">attColor</span> <span class="o">=</span> <span class="s2">&#34;#FF0000&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">default</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kd">let</span> <span class="nx">att2</span> <span class="o">=</span> <span class="p">[];</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">qualityGate</span><span class="p">.</span><span class="nx">conditions</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">condition</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">switch</span> <span class="p">(</span><span class="nx">condition</span><span class="p">.</span><span class="nx">metric</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">case</span> <span class="s2">&#34;new_reliability_rating&#34;</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">att2</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Reliability&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">value</span><span class="o">:</span> <span class="nx">condition</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                    <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">                <span class="p">});</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">case</span> <span class="s2">&#34;new_security_rating&#34;</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">att2</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Security&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">value</span><span class="o">:</span> <span class="nx">condition</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                    <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">                <span class="p">});</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">case</span> <span class="s2">&#34;new_maintainability_rating&#34;</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">att2</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Maintainability&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">value</span><span class="o">:</span> <span class="nx">condition</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                    <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">                <span class="p">});</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">case</span> <span class="s2">&#34;new_duplicated_lines_density&#34;</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">att2</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Duplicated lines&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">value</span><span class="o">:</span> <span class="nx">condition</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                    <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">                <span class="p">});</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">case</span> <span class="s2">&#34;new_coverage&#34;</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">att2</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Code coverage&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">value</span><span class="o">:</span> <span class="nx">condition</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                    <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">                <span class="p">});</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">default</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kd">let</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">content</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">username</span><span class="o">:</span> <span class="s2">&#34;SonarQube&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">icon_url</span><span class="o">:</span> <span class="s2">&#34;/avatar/SonarQube.jpg&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">attachments</span><span class="o">:</span> <span class="p">[{</span>
+</span></span><span class="line"><span class="cl">                        <span class="nx">color</span><span class="o">:</span> <span class="nx">attColor</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="nx">title</span><span class="o">:</span> <span class="nx">msgText</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="nx">title_link</span><span class="o">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">branch</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="nx">fields</span><span class="o">:</span> <span class="p">[{</span>
+</span></span><span class="line"><span class="cl">                                <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Quality Gate Status&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="nx">value</span><span class="o">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">qualityGate</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">                            <span class="p">},</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Analysed At&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="nx">value</span><span class="o">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">analysedAt</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">                            <span class="p">},</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Revision&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="nx">value</span><span class="o">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">revision</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">                            <span class="p">},</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Branch&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="nx">value</span><span class="o">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">branch</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="kr">short</span><span class="o">:</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">                            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">]</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">att2</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">result</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">attachments</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">color</span><span class="o">:</span> <span class="nx">attColor</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;Quality Indicators&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">fields</span><span class="o">:</span> <span class="nx">att2</span>
+</span></span><span class="line"><span class="cl">            <span class="p">});</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Happy chatting with bots :)</p>
 ]]></content>
 		</item>
 		
@@ -583,17 +665,17 @@ class Script { process_incoming_request({ request }) { // console is a global he
 			<description>You can use this code for your .travis.yml:
 os:windowslanguage:shellbranches:only:- masterscript:- choco pack path_to\\package.nuspecafter_script:- choco apikey --key $CHOCOAPIKEY --source https://push.chocolatey.org/- choco pushHide your private api key in CHOCOAPIKEY secret variable. Enjoy!</description>
 			<content type="html"><![CDATA[<p>You can use this code for your <code>.travis.yml</code>:</p>
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">os</span><span class="p">:</span><span class="w"> </span><span class="l">windows</span><span class="w">
-</span><span class="w"></span><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l">shell</span><span class="w">
-</span><span class="w"></span><span class="nt">branches</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="nt">only</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span>- <span class="l">master</span><span class="w">
-</span><span class="w"></span><span class="nt">script</span><span class="p">:</span><span class="w">
-</span><span class="w"></span>- <span class="l">choco pack path_to\\package.nuspec</span><span class="w">
-</span><span class="w"></span><span class="nt">after_script</span><span class="p">:</span><span class="w">
-</span><span class="w"></span>- <span class="l">choco apikey --key $CHOCOAPIKEY --source https://push.chocolatey.org/</span><span class="w">
-</span><span class="w"></span>- <span class="l">choco push</span><span class="w">
-</span></code></pre></div><p>Hide your private api key in CHOCOAPIKEY secret variable. Enjoy!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">os</span><span class="p">:</span><span class="w"> </span><span class="l">windows</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l">shell</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">branches</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">only</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">master</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">script</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="l">choco pack path_to\\package.nuspec</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">after_script</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="l">choco apikey --key $CHOCOAPIKEY --source https://push.chocolatey.org/</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="l">choco push</span><span class="w">
+</span></span></span></code></pre></div><p>Hide your private api key in CHOCOAPIKEY secret variable. Enjoy!</p>
 ]]></content>
 		</item>
 		
@@ -606,91 +688,91 @@ os:windowslanguage:shellbranches:only:- masterscript:- choco pack path_to\\packa
 			<description>Иногда бывает необходимость найти что-то в длинном JSON, например вот такого вида:
 { &amp;#34;relations&amp;#34;: [{ &amp;#34;ID&amp;#34;: 8449, &amp;#34;LinkType&amp;#34;: 2, &amp;#34;Changed Date&amp;#34;: &amp;#34;2019-08-23T08:36:52.627Z&amp;#34;, &amp;#34;Revised Date&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;AuthorizedAddedDate&amp;#34;: &amp;#34;2019-08-23T08:36:52.627Z&amp;#34;, &amp;#34;AuthorizedRemovedDate&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;Changed By&amp;#34;: 23953, &amp;#34;Revised By&amp;#34;: -1, &amp;#34;Lock&amp;#34;: false, &amp;#34;Comment&amp;#34;: &amp;#34;&amp;#34; }, { &amp;#34;ID&amp;#34;: 8452, &amp;#34;LinkType&amp;#34;: 2, &amp;#34;Changed Date&amp;#34;: &amp;#34;2019-08-23T08:55:54.503Z&amp;#34;, &amp;#34;Revised Date&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;AuthorizedAddedDate&amp;#34;: &amp;#34;2019-08-23T08:55:54.503Z&amp;#34;, &amp;#34;AuthorizedRemovedDate&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;Changed By&amp;#34;: 23953, &amp;#34;Revised By&amp;#34;: -1, &amp;#34;Lock&amp;#34;: false, &amp;#34;Comment&amp;#34;: &amp;#34;&amp;#34; }, { &amp;#34;ID&amp;#34;: 8451, &amp;#34;LinkType&amp;#34;: 2, &amp;#34;Changed Date&amp;#34;: &amp;#34;2019-08-23T08:55:54.</description>
 			<content type="html"><![CDATA[<p>Иногда бывает необходимость найти что-то в длинном JSON, например вот такого вида:</p>
-<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
-    <span class="nt">&#34;relations&#34;</span><span class="p">:</span> <span class="p">[{</span>
-            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8449</span><span class="p">,</span>
-            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:36:52.627Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:36:52.627Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">23953</span><span class="p">,</span>
-            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
-            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
-        <span class="p">},</span> <span class="p">{</span>
-            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8452</span><span class="p">,</span>
-            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:55:54.503Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:55:54.503Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">23953</span><span class="p">,</span>
-            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
-            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
-        <span class="p">},</span> <span class="p">{</span>
-            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8451</span><span class="p">,</span>
-            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:55:54.503Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:55:54.503Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">23953</span><span class="p">,</span>
-            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
-            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
-        <span class="p">},</span> <span class="p">{</span>
-            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8450</span><span class="p">,</span>
-            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:35:54.387Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:35:54.387Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">19418</span><span class="p">,</span>
-            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
-            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
-        <span class="p">},</span> <span class="p">{</span>
-            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8453</span><span class="p">,</span>
-            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:46:00.823Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:46:00.823Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">19418</span><span class="p">,</span>
-            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
-            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
-        <span class="p">},</span> <span class="p">{</span>
-            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8448</span><span class="p">,</span>
-            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:36:10.91Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:36:10.91Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">23953</span><span class="p">,</span>
-            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
-            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
-        <span class="p">},</span> <span class="p">{</span>
-            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8454</span><span class="p">,</span>
-            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:57:02.873Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:57:02.873Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
-            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">19418</span><span class="p">,</span>
-            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
-            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-</code></pre></div><p>Намного удобнее искать значения когда такие данные представлены в виде таблицы.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;relations&#34;</span><span class="p">:</span> <span class="p">[{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8449</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:36:52.627Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:36:52.627Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">23953</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8452</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:55:54.503Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:55:54.503Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">23953</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8451</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:55:54.503Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:55:54.503Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">23953</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8450</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:35:54.387Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:35:54.387Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">19418</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8453</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:46:00.823Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:46:00.823Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">19418</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8448</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:36:10.91Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:36:10.91Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">23953</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="mi">8454</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;LinkType&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Changed Date&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:57:02.873Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Revised Date&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;AuthorizedAddedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;2019-08-23T08:57:02.873Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;AuthorizedRemovedDate&#34;</span><span class="p">:</span> <span class="s2">&#34;9999-01-01T00:00:00Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Changed By&#34;</span><span class="p">:</span> <span class="mi">19418</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Revised By&#34;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Lock&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Comment&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Намного удобнее искать значения когда такие данные представлены в виде таблицы.
 решаем проблему такой командой:</p>
-<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">Get-Content</span> <span class="n">-Path</span> <span class="s1">&#39;.\relations.json&#39;</span> <span class="p">|</span> <span class="nb">ConvertFrom-Json</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">-ExpandProperty</span> <span class="n">relations</span> <span class="p">|</span> <span class="nb">ConvertTo-Csv</span> <span class="n">-NoTypeInformation</span> <span class="n">-Delimiter</span> <span class="s1">&#39;;&#39;</span> <span class="p">|</span> <span class="nb">Out-File</span> <span class="n">-FilePath</span> <span class="s1">&#39;relations.csv&#39;</span> <span class="n">-Encoding</span> <span class="n">utf8</span>
-</code></pre></div>]]></content>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">Get-Content</span> <span class="n">-Path</span> <span class="s1">&#39;.\relations.json&#39;</span> <span class="p">|</span> <span class="nb">ConvertFrom-Json</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">-ExpandProperty</span> <span class="n">relations</span> <span class="p">|</span> <span class="nb">ConvertTo-Csv</span> <span class="n">-NoTypeInformation</span> <span class="n">-Delimiter</span> <span class="s1">&#39;;&#39;</span> <span class="p">|</span> <span class="nb">Out-File</span> <span class="n">-FilePath</span> <span class="s1">&#39;relations.csv&#39;</span> <span class="n">-Encoding</span> <span class="n">utf8</span>
+</span></span></code></pre></div>]]></content>
 		</item>
 		
 		<item>
@@ -702,8 +784,8 @@ os:windowslanguage:shellbranches:only:- masterscript:- choco pack path_to\\packa
 			<description>Быстро проверить определения WIT на возможные проблемы (все в папке)
 ls *.xml | foreach -process { echo (&amp;#34;`r`n`r`n&amp;#34;+$_.name) ; start -file &amp;#39;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\witadmin.exe&amp;#39; -args (&amp;#39;importwitd /collection:http://localhost:8080/tfs/Colllection/ /p:Project /f:&amp;#34;&amp;#39;+ $_.name +&amp;#39;&amp;#34; /v&amp;#39;) -noNewWindow -wait } </description>
 			<content type="html"><![CDATA[<p>Быстро проверить определения WIT на возможные проблемы (все в папке)</p>
-<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">ls </span><span class="p">*.</span><span class="n">xml</span> <span class="p">|</span> <span class="k">foreach</span> <span class="n">-process</span> <span class="p">{</span> <span class="nb">echo </span><span class="p">(</span><span class="s2">&#34;</span><span class="se">`r`n`r`n</span><span class="s2">&#34;</span><span class="p">+</span><span class="nv">$_</span><span class="p">.</span><span class="n">name</span><span class="p">)</span> <span class="p">;</span> <span class="nb">start </span><span class="o">-file</span> <span class="s1">&#39;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\witadmin.exe&#39;</span> <span class="n">-args</span> <span class="p">(</span><span class="s1">&#39;importwitd /collection:http://localhost:8080/tfs/Colllection/ /p:Project /f:&#34;&#39;</span><span class="p">+</span> <span class="nv">$_</span><span class="p">.</span><span class="n">name</span> <span class="p">+</span><span class="s1">&#39;&#34; /v&#39;</span><span class="p">)</span> <span class="n">-noNewWindow</span> <span class="n">-wait</span> <span class="p">}</span>
-</code></pre></div>]]></content>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">ls </span><span class="p">*.</span><span class="n">xml</span> <span class="p">|</span> <span class="k">foreach</span> <span class="n">-process</span> <span class="p">{</span> <span class="nb">echo </span><span class="p">(</span><span class="s2">&#34;</span><span class="se">`r`n`r`n</span><span class="s2">&#34;</span><span class="p">+</span><span class="nv">$_</span><span class="p">.</span><span class="n">name</span><span class="p">)</span> <span class="p">;</span> <span class="nb">start </span><span class="o">-file</span> <span class="s1">&#39;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\witadmin.exe&#39;</span> <span class="n">-args</span> <span class="p">(</span><span class="s1">&#39;importwitd /collection:http://localhost:8080/tfs/Colllection/ /p:Project /f:&#34;&#39;</span><span class="p">+</span> <span class="nv">$_</span><span class="p">.</span><span class="n">name</span> <span class="p">+</span><span class="s1">&#39;&#34; /v&#39;</span><span class="p">)</span> <span class="n">-noNewWindow</span> <span class="n">-wait</span> <span class="p">}</span>
+</span></span></code></pre></div>]]></content>
 		</item>
 		
 		<item>

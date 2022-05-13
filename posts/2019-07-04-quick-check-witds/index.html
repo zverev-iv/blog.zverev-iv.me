@@ -9,21 +9,17 @@
 	<meta name="msapplication-TileColor" content="#494f5c">
 <meta itemprop="name" content="проверка всех элементов шаблона TFS">
 <meta itemprop="description" content="Быстро проверить определения WIT на возможные проблемы (все в папке)
-ls *.xml | foreach -process { echo (&#34;`r`n`r`n&#34;&#43;$_.name) ; start -file &#39;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\witadmin.exe&#39; -args (&#39;importwitd /collection:http://localhost:8080/tfs/Colllection/ /p:Project /f:&#34;&#39;&#43; $_.name &#43;&#39;&#34; /v&#39;) -noNewWindow -wait } ">
-<meta itemprop="datePublished" content="2019-07-04T08:42:00+03:00" />
+ls *.xml | foreach -process { echo (&#34;`r`n`r`n&#34;&#43;$_.name) ; start -file &#39;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\witadmin.exe&#39; -args (&#39;importwitd /collection:http://localhost:8080/tfs/Colllection/ /p:Project /f:&#34;&#39;&#43; $_.name &#43;&#39;&#34; /v&#39;) -noNewWindow -wait } "><meta itemprop="datePublished" content="2019-07-04T08:42:00+03:00" />
 <meta itemprop="dateModified" content="2019-07-04T08:42:00+03:00" />
 <meta itemprop="wordCount" content="38">
-
-
-
-<meta itemprop="keywords" content="" />
-<meta property="og:title" content="проверка всех элементов шаблона TFS" />
+<meta itemprop="keywords" content="" /><meta property="og:title" content="проверка всех элементов шаблона TFS" />
 <meta property="og:description" content="Быстро проверить определения WIT на возможные проблемы (все в папке)
 ls *.xml | foreach -process { echo (&#34;`r`n`r`n&#34;&#43;$_.name) ; start -file &#39;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\witadmin.exe&#39; -args (&#39;importwitd /collection:http://localhost:8080/tfs/Colllection/ /p:Project /f:&#34;&#39;&#43; $_.name &#43;&#39;&#34; /v&#39;) -noNewWindow -wait } " />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.zverev-iv.me/posts/2019-07-04-quick-check-witds/" />
+<meta property="og:url" content="https://blog.zverev-iv.me/posts/2019-07-04-quick-check-witds/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2019-07-04T08:42:00+03:00" />
 <meta property="article:modified_time" content="2019-07-04T08:42:00+03:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="проверка всех элементов шаблона TFS"/>
 <meta name="twitter:description" content="Быстро проверить определения WIT на возможные проблемы (все в папке)
@@ -75,8 +71,8 @@ ls *.xml | foreach -process { echo (&#34;`r`n`r`n&#34;&#43;$_.name) ; start -fil
 			</header>
 			<div class="content">
 				<p>Быстро проверить определения WIT на возможные проблемы (все в папке)</p>
-<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">ls </span><span class="p">*.</span><span class="n">xml</span> <span class="p">|</span> <span class="k">foreach</span> <span class="n">-process</span> <span class="p">{</span> <span class="nb">echo </span><span class="p">(</span><span class="s2">&#34;</span><span class="se">`r`n`r`n</span><span class="s2">&#34;</span><span class="p">+</span><span class="nv">$_</span><span class="p">.</span><span class="n">name</span><span class="p">)</span> <span class="p">;</span> <span class="nb">start </span><span class="o">-file</span> <span class="s1">&#39;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\witadmin.exe&#39;</span> <span class="n">-args</span> <span class="p">(</span><span class="s1">&#39;importwitd /collection:http://localhost:8080/tfs/Colllection/ /p:Project /f:&#34;&#39;</span><span class="p">+</span> <span class="nv">$_</span><span class="p">.</span><span class="n">name</span> <span class="p">+</span><span class="s1">&#39;&#34; /v&#39;</span><span class="p">)</span> <span class="n">-noNewWindow</span> <span class="n">-wait</span> <span class="p">}</span>
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">ls </span><span class="p">*.</span><span class="n">xml</span> <span class="p">|</span> <span class="k">foreach</span> <span class="n">-process</span> <span class="p">{</span> <span class="nb">echo </span><span class="p">(</span><span class="s2">&#34;</span><span class="se">`r`n`r`n</span><span class="s2">&#34;</span><span class="p">+</span><span class="nv">$_</span><span class="p">.</span><span class="n">name</span><span class="p">)</span> <span class="p">;</span> <span class="nb">start </span><span class="o">-file</span> <span class="s1">&#39;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\witadmin.exe&#39;</span> <span class="n">-args</span> <span class="p">(</span><span class="s1">&#39;importwitd /collection:http://localhost:8080/tfs/Colllection/ /p:Project /f:&#34;&#39;</span><span class="p">+</span> <span class="nv">$_</span><span class="p">.</span><span class="n">name</span> <span class="p">+</span><span class="s1">&#39;&#34; /v&#39;</span><span class="p">)</span> <span class="n">-noNewWindow</span> <span class="n">-wait</span> <span class="p">}</span>
+</span></span></code></pre></div>
 			</div>
 			<hr class="post-end">
 			<footer class="post-info">
@@ -97,7 +93,7 @@ ls *.xml | foreach -process { echo (&#34;`r`n`r`n&#34;&#43;$_.name) ; start -fil
 	</main>
 
 	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-		<p>&copy; 2020 <a href="https://blog.zverev-iv.me/">Zverev Ilya</a></p>
+		<p>&copy; 2022 <a href="https://blog.zverev-iv.me/">Zverev Ilya</a></p>
 		<p>
 			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://blog.zverev-iv.me/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
 		</p>
@@ -105,7 +101,7 @@ ls *.xml | foreach -process { echo (&#34;`r`n`r`n&#34;&#43;$_.name) ; start -fil
 
 
 
-	<script src="https://blog.zverev-iv.me/js/bundle.min.4a9a0ac3d2217822c7865b4161e6c2a71de1d70492264337755427898dd718f6.js" integrity="sha256-SpoKw9IheCLHhltBYebCpx3h1wSSJkM3dVQniY3XGPY=" crossorigin="anonymous"></script>
+	<script src="https://blog.zverev-iv.me/js/bundle.min.5a42c67b729ee2fa1059251688235399704707e04edb4e28c42c6f6dfa49d1d9.js" integrity="sha256-WkLGe3Ke4voQWSUWiCNTmXBHB+BO204oxCxvbfpJ0dk=" crossorigin="anonymous"></script>
 	
 <script type="application/javascript">
 var doNotTrack = false;

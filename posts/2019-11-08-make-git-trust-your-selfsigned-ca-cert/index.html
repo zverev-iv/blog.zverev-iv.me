@@ -9,21 +9,17 @@
 	<meta name="msapplication-TileColor" content="#494f5c">
 <meta itemprop="name" content="Как научить git доверять незнакомому CA сертификату а не выключать верификацию SSL">
 <meta itemprop="description" content="Мануал сделан под windows но работать должен работать и с *nix, использовать мы будем openssl, который есть везде и менее глючный чем schannel.
-Собственно как выглядит ошибка C:\Git&gt;git clone https://domain/gitrep/ Cloning into &#39;gitrep&#39;... fatal: unable to access &#39;https://domain/gitrep/&#39;: SSL certificate problem: unable to get local issuer certificate Что нам может потребоваться из софта  собственно git браузер - в статье я буду описывать вариант для chromium notepad&#43;&#43; или любой другой редактор который аккуратно относится кодировкам и символам переноса строк openssl - опционально.">
-<meta itemprop="datePublished" content="2019-11-08T07:22:00+03:00" />
+Собственно как выглядит ошибка C:\Git&gt;git clone https://domain/gitrep/ Cloning into &#39;gitrep&#39;... fatal: unable to access &#39;https://domain/gitrep/&#39;: SSL certificate problem: unable to get local issuer certificate Что нам может потребоваться из софта  собственно git браузер - в статье я буду описывать вариант для chromium notepad&#43;&#43; или любой другой редактор который аккуратно относится кодировкам и символам переноса строк openssl - опционально."><meta itemprop="datePublished" content="2019-11-08T07:22:00+03:00" />
 <meta itemprop="dateModified" content="2019-11-08T07:22:00+03:00" />
 <meta itemprop="wordCount" content="786">
-
-
-
-<meta itemprop="keywords" content="" />
-<meta property="og:title" content="Как научить git доверять незнакомому CA сертификату а не выключать верификацию SSL" />
+<meta itemprop="keywords" content="" /><meta property="og:title" content="Как научить git доверять незнакомому CA сертификату а не выключать верификацию SSL" />
 <meta property="og:description" content="Мануал сделан под windows но работать должен работать и с *nix, использовать мы будем openssl, который есть везде и менее глючный чем schannel.
 Собственно как выглядит ошибка C:\Git&gt;git clone https://domain/gitrep/ Cloning into &#39;gitrep&#39;... fatal: unable to access &#39;https://domain/gitrep/&#39;: SSL certificate problem: unable to get local issuer certificate Что нам может потребоваться из софта  собственно git браузер - в статье я буду описывать вариант для chromium notepad&#43;&#43; или любой другой редактор который аккуратно относится кодировкам и символам переноса строк openssl - опционально." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.zverev-iv.me/posts/2019-11-08-make-git-trust-your-selfsigned-ca-cert/" />
+<meta property="og:url" content="https://blog.zverev-iv.me/posts/2019-11-08-make-git-trust-your-selfsigned-ca-cert/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2019-11-08T07:22:00+03:00" />
 <meta property="article:modified_time" content="2019-11-08T07:22:00+03:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Как научить git доверять незнакомому CA сертификату а не выключать верификацию SSL"/>
 <meta name="twitter:description" content="Мануал сделан под windows но работать должен работать и с *nix, использовать мы будем openssl, который есть везде и менее глючный чем schannel.
@@ -76,10 +72,10 @@
 			<div class="content">
 				<p>Мануал сделан под windows но работать должен работать и с *nix, использовать мы будем openssl, который есть везде и менее глючный чем schannel.</p>
 <h2 id="собственно-как-выглядит-ошибка">Собственно как выглядит ошибка<a href="#собственно-как-выглядит-ошибка" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;git clone https://domain/gitrep/</span>
-Cloning into &#39;gitrep&#39;...
-fatal: unable to access &#39;https://domain/gitrep/&#39;: SSL certificate problem: unable to get local issuer certificate
-</code></pre></div><h2 id="что-нам-может-потребоваться-из-софта">Что нам может потребоваться из софта<a href="#что-нам-может-потребоваться-из-софта" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;git clone https://domain/gitrep/</span>
+</span></span><span class="line"><span class="cl">Cloning into &#39;gitrep&#39;...
+</span></span><span class="line"><span class="cl">fatal: unable to access &#39;https://domain/gitrep/&#39;: SSL certificate problem: unable to get local issuer certificate
+</span></span></code></pre></div><h2 id="что-нам-может-потребоваться-из-софта">Что нам может потребоваться из софта<a href="#что-нам-может-потребоваться-из-софта" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <ol>
 <li>собственно git</li>
 <li>браузер - в статье я буду описывать вариант для chromium</li>
@@ -88,56 +84,56 @@ fatal: unable to access &#39;https://domain/gitrep/&#39;: SSL certificate proble
 <li>keytool из jdk или jre, что бы прочитать файл со связкой сертификатов</li>
 </ol>
 <h2 id="как-подтвердить-ошибку">Как подтвердить ошибку<a href="#как-подтвердить-ошибку" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;openssl s_client -connect domain:443</span>
-CONNECTED(00000194)
-depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
-<span class="k">verify</span> error:num=20:unable to get local issuer certificate
-<span class="k">verify</span> return:1
-depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
-<span class="k">verify</span> error:num=21:unable to verify the first certificate
-<span class="k">verify</span> return:1
-</code></pre></div><p>как видим openssl тоже ничего не знает о сертификатах, правда openssl и git могут смотреть на разные хранилища известных корневых сертификатов (git сам отдаст ему нужное), ошибка не обязательно воспроизведется. Поэтому нужно отдать openssl тоже самое что отдаст ему git</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;openssl s_client -connect domain:443</span>
+</span></span><span class="line"><span class="cl">CONNECTED(00000194)
+</span></span><span class="line"><span class="cl">depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> error:num=20:unable to get local issuer certificate
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> return:1
+</span></span><span class="line"><span class="cl">depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> error:num=21:unable to verify the first certificate
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> return:1
+</span></span></code></pre></div><p>как видим openssl тоже ничего не знает о сертификатах, правда openssl и git могут смотреть на разные хранилища известных корневых сертификатов (git сам отдаст ему нужное), ошибка не обязательно воспроизведется. Поэтому нужно отдать openssl тоже самое что отдаст ему git</p>
 <p>выполняем команду в git и находим расположение хранилища доверенных сертификатов:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git\</span><span class="c1">&gt;git config --system --list</span>
-http.sslcainfo=C:/Program Files/Git/mingw64/ssl/certs/ca-bundle.crt
-http.sslbackend=openssl
-diff.astextplain.textconv=astextplain
-filter.lfs.clean=git-lfs clean -- %f
-filter.lfs.smudge=git-lfs smudge --skip -- %f
-filter.lfs.process=git-lfs filter-process --skip
-filter.lfs.required=true
-credential.helper=manager
-</code></pre></div><p>Мы видим что git хранит цепочку сертификатов в файле <code>C:\Program Files\Git\mingw64\ssl\certs</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">C<span class="p">:</span><span class="nl">\Git\</span><span class="c1">&gt;git config --system --list</span>
+</span></span><span class="line"><span class="cl">http.sslcainfo=C:/Program Files/Git/mingw64/ssl/certs/ca-bundle.crt
+</span></span><span class="line"><span class="cl">http.sslbackend=openssl
+</span></span><span class="line"><span class="cl">diff.astextplain.textconv=astextplain
+</span></span><span class="line"><span class="cl">filter.lfs.clean=git-lfs clean -- %f
+</span></span><span class="line"><span class="cl">filter.lfs.smudge=git-lfs smudge --skip -- %f
+</span></span><span class="line"><span class="cl">filter.lfs.process=git-lfs filter-process --skip
+</span></span><span class="line"><span class="cl">filter.lfs.required=true
+</span></span><span class="line"><span class="cl">credential.helper=manager
+</span></span></code></pre></div><p>Мы видим что git хранит цепочку сертификатов в файле <code>C:\Program Files\Git\mingw64\ssl\certs</code></p>
 <p><code>ca-bundle.crt</code></p>
 <p>проверим что выдаст openssl:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;openssl s_client -connect domain:443 -CAfile C:\Program Files\Git\mingw64\ssl\certs\ca-bundle.crt</span>
-CONNECTED(00000194)
-depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
-<span class="k">verify</span> error:num=20:unable to get local issuer certificate
-<span class="k">verify</span> return:1
-depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
-<span class="k">verify</span> error:num=21:unable to verify the first certificate
-<span class="k">verify</span> return:1
-</code></pre></div><p>мы подтвердили - openssl не может подтвердить git корректность сертификатов, т.к. не знает корневого издателя сертификата.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;openssl s_client -connect domain:443 -CAfile C:\Program Files\Git\mingw64\ssl\certs\ca-bundle.crt</span>
+</span></span><span class="line"><span class="cl">CONNECTED(00000194)
+</span></span><span class="line"><span class="cl">depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> error:num=20:unable to get local issuer certificate
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> return:1
+</span></span><span class="line"><span class="cl">depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> error:num=21:unable to verify the first certificate
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> return:1
+</span></span></code></pre></div><p>мы подтвердили - openssl не может подтвердить git корректность сертификатов, т.к. не знает корневого издателя сертификата.</p>
 <p>При желании мы можем сами прочитать что лежит в ca-bundle.crt используя <code>keytool</code>, т.к. выдача будет длинная сразу стоит отправить её в текстовый файл:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;keytool -printcert -v -file C:\Program Files\Git\mingw64\ssl\certs\ca-bundle.crt &gt; certs_info.txt</span>
-</code></pre></div><p>Начало файла будет выглядеть приблизительно так:</p>
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">Certificate[1]</span><span class="p">:</span><span class="w">
-</span><span class="w"></span><span class="nt">Owner</span><span class="p">:</span><span class="w"> </span><span class="l">C=ES, O=ACCV, OU=PKIACCV, CN=ACCVRAIZ1</span><span class="w">
-</span><span class="w"></span><span class="nt">Issuer</span><span class="p">:</span><span class="w"> </span><span class="l">C=ES, O=ACCV, OU=PKIACCV, CN=ACCVRAIZ1</span><span class="w">
-</span><span class="w"></span><span class="nt">Serial number</span><span class="p">:</span><span class="w"> </span><span class="l">5ec3b7a6437fa4e0</span><span class="w">
-</span><span class="w"></span><span class="nt">Valid from: Thu May 05 13:37:37 MSK 2011 until</span><span class="p">:</span><span class="w"> </span><span class="l">Tue Dec 31 12:37:37 MSK 2030</span><span class="w">
-</span><span class="w"></span><span class="nt">Certificate fingerprints</span><span class="p">:</span><span class="w">
-</span><span class="w">         </span><span class="nt">MD5</span><span class="p">:</span><span class="w">  </span><span class="l">D0:A0:5A:EE:05:B6:09:94:21:A1:7D:F1:B2:29:82:02</span><span class="w">
-</span><span class="w">         </span><span class="nt">SHA1</span><span class="p">:</span><span class="w"> </span><span class="m">93</span><span class="p">:</span><span class="m">05</span><span class="p">:</span><span class="l">7A:88:15:C6:4F:CE:88:2F:FA:91:16:52:28:78:BC:53:64:17</span><span class="w">
-</span><span class="w">         </span><span class="nt">SHA256</span><span class="p">:</span><span class="w"> </span><span class="l">9A:6E:C0:12:E1:A7:DA:9D:BE:34:19:4D:47:8A:D7:C0:DB:18:22:FB:07:1D:F1:29:81:49:6E:D1:04:38:41:13</span><span class="w">
-</span><span class="w"></span><span class="nt">Signature algorithm name</span><span class="p">:</span><span class="w"> </span><span class="l">SHA1withRSA</span><span class="w">
-</span><span class="w"></span><span class="nt">Subject Public Key Algorithm</span><span class="p">:</span><span class="w"> </span><span class="m">4096</span>-<span class="l">bit RSA key</span><span class="w">
-</span><span class="w"></span><span class="nt">Version</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
-</span><span class="w">
-</span><span class="w"></span><span class="nt">Extensions</span><span class="p">:</span><span class="w">
-</span><span class="w"></span><span class="nn">...</span><span class="w">
-</span></code></pre></div><p>в файле будет весь список CA сертификатов которым Git доверяет.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;keytool -printcert -v -file C:\Program Files\Git\mingw64\ssl\certs\ca-bundle.crt &gt; certs_info.txt</span>
+</span></span></code></pre></div><p>Начало файла будет выглядеть приблизительно так:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">Certificate[1]</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Owner</span><span class="p">:</span><span class="w"> </span><span class="l">C=ES, O=ACCV, OU=PKIACCV, CN=ACCVRAIZ1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Issuer</span><span class="p">:</span><span class="w"> </span><span class="l">C=ES, O=ACCV, OU=PKIACCV, CN=ACCVRAIZ1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Serial number</span><span class="p">:</span><span class="w"> </span><span class="l">5ec3b7a6437fa4e0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Valid from: Thu May 05 13:37:37 MSK 2011 until</span><span class="p">:</span><span class="w"> </span><span class="l">Tue Dec 31 12:37:37 MSK 2030</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Certificate fingerprints</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="nt">MD5</span><span class="p">:</span><span class="w">  </span><span class="l">D0:A0:5A:EE:05:B6:09:94:21:A1:7D:F1:B2:29:82:02</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="nt">SHA1</span><span class="p">:</span><span class="w"> </span><span class="m">93</span><span class="p">:</span><span class="m">05</span><span class="p">:</span><span class="l">7A:88:15:C6:4F:CE:88:2F:FA:91:16:52:28:78:BC:53:64:17</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="nt">SHA256</span><span class="p">:</span><span class="w"> </span><span class="l">9A:6E:C0:12:E1:A7:DA:9D:BE:34:19:4D:47:8A:D7:C0:DB:18:22:FB:07:1D:F1:29:81:49:6E:D1:04:38:41:13</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Signature algorithm name</span><span class="p">:</span><span class="w"> </span><span class="l">SHA1withRSA</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Subject Public Key Algorithm</span><span class="p">:</span><span class="w"> </span><span class="m">4096</span>-<span class="l">bit RSA key</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Version</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Extensions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">...</span><span class="w">
+</span></span></span></code></pre></div><p>в файле будет весь список CA сертификатов которым Git доверяет.</p>
 <h2 id="как-сделать-что-бы-git-начал-доверять-ca-сертификату-сервера">Как сделать что бы Git начал доверять CA сертификату сервера<a href="#как-сделать-что-бы-git-начал-доверять-ca-сертификату-сервера" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <h3 id="подготовим-ca-сертификат-нашего-https-репозитория-к-дальнейшему-использованию">Подготовим CA сертификат нашего https репозитория к дальнейшему использованию<a href="#подготовим-ca-сертификат-нашего-https-репозитория-к-дальнейшему-использованию" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <ol>
@@ -150,31 +146,31 @@ depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
 <p>выполняем команду в git и находим расположение хранилища доверенных сертификатов:</p>
 <p>Ранее мы уже нашли где git хранит свою цепочку доверенных ssl CA сертификатов:  <code>C:\Program Files\Git\mingw64\ssl\certs</code></p>
 <p>Мне не понравилась папка в которой расположен текущий поэтому я переместил файл и затем указал новый путь командой:</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">git config --system http.sslcainfo C:/Git/_certs/ca-bundle.crt
-</code></pre></div><p>Если вы не являетесь администратором машины, или хотите сохранить изменения только для себя, команда немного изменится:</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">git config --global http.sslcainfo C:/Git/_certs/ca-bundle.crt
-</code></pre></div><p>Важно! по хорошему папка в которой должна храниться цепочка должна быть недоступна для редактирования никому кроме администратора машины, в целях безопасности, поэтому перемещение - опционально, и только если вы понимаете что делаете.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git config --system http.sslcainfo C:/Git/_certs/ca-bundle.crt
+</span></span></code></pre></div><p>Если вы не являетесь администратором машины, или хотите сохранить изменения только для себя, команда немного изменится:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git config --global http.sslcainfo C:/Git/_certs/ca-bundle.crt
+</span></span></code></pre></div><p>Важно! по хорошему папка в которой должна храниться цепочка должна быть недоступна для редактирования никому кроме администратора машины, в целях безопасности, поэтому перемещение - опционально, и только если вы понимаете что делаете.</p>
 <p>теперь открываем текстовым редактором (крайне желательно - не notepad! и желательно - делайте резервные копии!) наш <code>ca-bundle.crt</code> видим сертификаты</p>
-<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">-----BEGIN CERTIFICATE-----</span>
-<span class="na">куча символов в Base64</span>
-<span class="na">-----END CERTIFICATE-----</span>
-<span class="na">-----BEGIN CERTIFICATE-----</span>
-<span class="na">еще одна куча</span>
-<span class="na">-----END CERTIFICATE-----</span>
-<span class="na">...</span>
-</code></pre></div><p>открываем файл <code>ca.crt</code> и извлекаем из него текст нашего CA сертификата</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="na">-----BEGIN CERTIFICATE-----</span>
+</span></span><span class="line"><span class="cl"><span class="na">куча символов в Base64</span>
+</span></span><span class="line"><span class="cl"><span class="na">-----END CERTIFICATE-----</span>
+</span></span><span class="line"><span class="cl"><span class="na">-----BEGIN CERTIFICATE-----</span>
+</span></span><span class="line"><span class="cl"><span class="na">еще одна куча</span>
+</span></span><span class="line"><span class="cl"><span class="na">-----END CERTIFICATE-----</span>
+</span></span><span class="line"><span class="cl"><span class="na">...</span>
+</span></span></code></pre></div><p>открываем файл <code>ca.crt</code> и извлекаем из него текст нашего CA сертификата</p>
 <p>аккуратно копируем сертификат из <code>ca.crt</code> в конец файла <code>ca-bundle.crt</code> так что бы не сломать структуру файла, и сохраняем.</p>
 <p>можем проверить что все ок последовательно теми же командами что ошибку помогли локализовать:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;keytool -printcert -v -file C:\Git\_certs\ca-bundle.crt &gt; certs_info.txt</span>
-</code></pre></div><p>В конце файла последним мы должны увидеть данные нашего добавленного сертификата</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;keytool -printcert -v -file C:\Git\_certs\ca-bundle.crt &gt; certs_info.txt</span>
+</span></span></code></pre></div><p>В конце файла последним мы должны увидеть данные нашего добавленного сертификата</p>
 <p>далее проверим что openssl не выдаст больше ошибку о том что не может подтвердить ssl сертификат сервера:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cmd" data-lang="cmd">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;openssl s_client -connect domain:443 -CAfile C:\Git\_certs\ca-bundle.crt</span>
-CONNECTED(00000194)
-depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
-<span class="k">verify</span> return:1
-depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
-<span class="k">verify</span> return:1
-</code></pre></div><p>ошибки исправлены - теперь нужно снова попробовать склонировать git-репозиторий.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">C<span class="p">:</span><span class="nl">\Git</span><span class="c1">&gt;openssl s_client -connect domain:443 -CAfile C:\Git\_certs\ca-bundle.crt</span>
+</span></span><span class="line"><span class="cl">CONNECTED(00000194)
+</span></span><span class="line"><span class="cl">depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> return:1
+</span></span><span class="line"><span class="cl">depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
+</span></span><span class="line"><span class="cl"><span class="k">verify</span> return:1
+</span></span></code></pre></div><p>ошибки исправлены - теперь нужно снова попробовать склонировать git-репозиторий.</p>
 <p>PROFIT!</p>
 
 			</div>
@@ -197,7 +193,7 @@ depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
 	</main>
 
 	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-		<p>&copy; 2020 <a href="https://blog.zverev-iv.me/">Zverev Ilya</a></p>
+		<p>&copy; 2022 <a href="https://blog.zverev-iv.me/">Zverev Ilya</a></p>
 		<p>
 			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://blog.zverev-iv.me/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
 		</p>
@@ -205,7 +201,7 @@ depth=0 C = XX, ST = Xxxxxx, O = Xxxxxxxxx, OU = Xxxxxxxxx, CN = xxxxxxxx
 
 
 
-	<script src="https://blog.zverev-iv.me/js/bundle.min.4a9a0ac3d2217822c7865b4161e6c2a71de1d70492264337755427898dd718f6.js" integrity="sha256-SpoKw9IheCLHhltBYebCpx3h1wSSJkM3dVQniY3XGPY=" crossorigin="anonymous"></script>
+	<script src="https://blog.zverev-iv.me/js/bundle.min.5a42c67b729ee2fa1059251688235399704707e04edb4e28c42c6f6dfa49d1d9.js" integrity="sha256-WkLGe3Ke4voQWSUWiCNTmXBHB+BO204oxCxvbfpJ0dk=" crossorigin="anonymous"></script>
 	
 <script type="application/javascript">
 var doNotTrack = false;
