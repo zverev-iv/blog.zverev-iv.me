@@ -2,90 +2,90 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://blog.zverev-iv.me/categories/</loc>
+    <loc>https://blog.zverev-iv.com/categories/</loc>
     <lastmod>2022-05-12T07:49:14+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/categories/git-hook-powershell/</loc>
+    <loc>https://blog.zverev-iv.com/categories/git-hook-powershell/</loc>
     <lastmod>2022-05-12T07:49:14+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/posts/</loc>
+    <loc>https://blog.zverev-iv.com/posts/</loc>
     <lastmod>2022-05-12T07:49:14+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/</loc>
+    <loc>https://blog.zverev-iv.com/</loc>
     <lastmod>2022-05-12T07:49:14+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/posts/2022-05-12-azure-devops-git-with-pat/</loc>
+    <loc>https://blog.zverev-iv.com/posts/2022-05-12-azure-devops-git-with-pat/</loc>
     <lastmod>2022-05-12T07:49:14+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/posts/2020-11-17-docker-desktop-to-another-drive/</loc>
+    <loc>https://blog.zverev-iv.com/posts/2020-11-17-docker-desktop-to-another-drive/</loc>
     <lastmod>2020-11-17T08:03:18+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/posts/2020-01-27-conemu-boxstarter-task/</loc>
+    <loc>https://blog.zverev-iv.com/posts/2020-01-27-conemu-boxstarter-task/</loc>
     <lastmod>2020-01-27T08:22:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/categories/conemu-cmd-term-terminal-console-chocolatey-boxstarter/</loc>
+    <loc>https://blog.zverev-iv.com/categories/conemu-cmd-term-terminal-console-chocolatey-boxstarter/</loc>
     <lastmod>2020-01-27T08:22:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/categories/docker-docker-compose-docker-machine-wsl-ubuntu-windows/</loc>
+    <loc>https://blog.zverev-iv.com/categories/docker-docker-compose-docker-machine-wsl-ubuntu-windows/</loc>
     <lastmod>2020-01-15T06:54:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/posts/2020-01-15-make-wsl1-great-again/</loc>
+    <loc>https://blog.zverev-iv.com/posts/2020-01-15-make-wsl1-great-again/</loc>
     <lastmod>2020-01-15T06:54:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/categories/azure-devops-server-configuration/</loc>
+    <loc>https://blog.zverev-iv.com/categories/azure-devops-server-configuration/</loc>
     <lastmod>2019-12-17T22:25:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/posts/2019-12-17-list-features-of-azure-devops-server/</loc>
+    <loc>https://blog.zverev-iv.com/posts/2019-12-17-list-features-of-azure-devops-server/</loc>
     <lastmod>2019-12-17T22:25:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/categories/azure-devops-extensions-coding/</loc>
+    <loc>https://blog.zverev-iv.com/categories/azure-devops-extensions-coding/</loc>
     <lastmod>2019-12-02T09:17:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/posts/2019-12-02-change-azure-devops-server-max-extension-size/</loc>
+    <loc>https://blog.zverev-iv.com/posts/2019-12-02-change-azure-devops-server-max-extension-size/</loc>
     <lastmod>2019-12-02T09:17:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/categories/git-openssl-certificates/</loc>
+    <loc>https://blog.zverev-iv.com/categories/git-openssl-certificates/</loc>
     <lastmod>2019-11-08T07:22:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/posts/2019-11-08-make-git-trust-your-selfsigned-ca-cert/</loc>
+    <loc>https://blog.zverev-iv.com/posts/2019-11-08-make-git-trust-your-selfsigned-ca-cert/</loc>
     <lastmod>2019-11-08T07:22:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/categories/vpn-cisco-anyconnect-openconnect/</loc>
+    <loc>https://blog.zverev-iv.com/categories/vpn-cisco-anyconnect-openconnect/</loc>
     <lastmod>2019-11-08T06:50:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/posts/2019-11-08-from-anyconnect-to-openconnect/</loc>
+    <loc>https://blog.zverev-iv.com/posts/2019-11-08-from-anyconnect-to-openconnect/</loc>
     <lastmod>2019-11-08T06:50:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/categories/chatops-rocket.chat-sonarqube/</loc>
+    <loc>https://blog.zverev-iv.com/categories/chatops-rocket.chat-sonarqube/</loc>
     <lastmod>2019-09-16T07:59:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/posts/2019-09-16-rocket-sonar-integration/</loc>
+    <loc>https://blog.zverev-iv.com/posts/2019-09-16-rocket-sonar-integration/</loc>
     <lastmod>2019-09-16T07:59:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/categories/ci-cd-choco-travis/</loc>
+    <loc>https://blog.zverev-iv.com/categories/ci-cd-choco-travis/</loc>
     <lastmod>2019-08-24T08:02:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/posts/2019-08-26-travis-ci-for-chocolatey-package/</loc>
+    <loc>https://blog.zverev-iv.com/posts/2019-08-26-travis-ci-for-chocolatey-package/</loc>
     <lastmod>2019-08-24T08:02:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/categories/code-ps1/</loc>
+    <loc>https://blog.zverev-iv.com/categories/code-ps1/</loc>
     <lastmod>2019-08-23T07:29:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/posts/2019-08-23-quick-json-2-table/</loc>
+    <loc>https://blog.zverev-iv.com/posts/2019-08-23-quick-json-2-table/</loc>
     <lastmod>2019-08-23T07:29:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/categories/alm-tfs/</loc>
+    <loc>https://blog.zverev-iv.com/categories/alm-tfs/</loc>
     <lastmod>2019-07-04T08:42:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/posts/2019-07-04-quick-check-witds/</loc>
+    <loc>https://blog.zverev-iv.com/posts/2019-07-04-quick-check-witds/</loc>
     <lastmod>2019-07-04T08:42:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/categories/ci-cd-sonar/</loc>
+    <loc>https://blog.zverev-iv.com/categories/ci-cd-sonar/</loc>
     <lastmod>2019-06-17T19:42:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/posts/2019-06-17-sonar-i-branchi/</loc>
+    <loc>https://blog.zverev-iv.com/posts/2019-06-17-sonar-i-branchi/</loc>
     <lastmod>2019-06-17T19:42:00+03:00</lastmod>
   </url><url>
-    <loc>https://blog.zverev-iv.me/tags/</loc>
+    <loc>https://blog.zverev-iv.com/tags/</loc>
   </url>
 </urlset>

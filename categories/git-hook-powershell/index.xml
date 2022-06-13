@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>git hook powershell on Zverev IV</title>
-    <link>https://blog.zverev-iv.me/categories/git-hook-powershell/</link>
+    <link>https://blog.zverev-iv.com/categories/git-hook-powershell/</link>
     <description>Recent content in git hook powershell on Zverev IV</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ru-ru</language>
-    <lastBuildDate>Thu, 12 May 2022 07:49:14 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.me/categories/git-hook-powershell/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 12 May 2022 07:49:14 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.com/categories/git-hook-powershell/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Как настроить авторизацию в git с помощью PAT для Azure Devops</title>
-      <link>https://blog.zverev-iv.me/posts/2022-05-12-azure-devops-git-with-pat/</link>
+      <link>https://blog.zverev-iv.com/posts/2022-05-12-azure-devops-git-with-pat/</link>
       <pubDate>Thu, 12 May 2022 07:49:14 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/posts/2022-05-12-azure-devops-git-with-pat/</guid>
+      <guid>https://blog.zverev-iv.com/posts/2022-05-12-azure-devops-git-with-pat/</guid>
       <description>Особенность PAT авторизации через PAT в том, что она работает поверх Basic аутентификации, используя пустое имя пользователя. Git не воспринимает авторизацию через Basic с пустым логином, потому нам нужно обходное решение.
 Технически git позволяет специальной настройкой передавать дополнительные http заголовки, в случае если используется протокол http. Эту настройку можно:
-  Добавить на любой уровень настроек системные, глобальные настройки репозитория, я предпочитаю хранить такие настройки в каждом репозитории индивидуально
-  Передать в команду двумя способами (только для одноразового применения или для постоянного сохранения настройки).</description>
+Добавить на любой уровень настроек системные, глобальные настройки репозитория, я предпочитаю хранить такие настройки в каждом репозитории индивидуально
+Передать в команду двумя способами (только для одноразового применения или для постоянного сохранения настройки).</description>
     </item>
     
   </channel>

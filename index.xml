@@ -2,112 +2,113 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Zverev IV</title>
-    <link>https://blog.zverev-iv.me/</link>
+    <link>https://blog.zverev-iv.com/</link>
     <description>Recent content on Zverev IV</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ru-ru</language>
-    <lastBuildDate>Thu, 12 May 2022 07:49:14 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.me/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 12 May 2022 07:49:14 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.com/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Как настроить авторизацию в git с помощью PAT для Azure Devops</title>
-      <link>https://blog.zverev-iv.me/posts/2022-05-12-azure-devops-git-with-pat/</link>
+      <link>https://blog.zverev-iv.com/posts/2022-05-12-azure-devops-git-with-pat/</link>
       <pubDate>Thu, 12 May 2022 07:49:14 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/posts/2022-05-12-azure-devops-git-with-pat/</guid>
+      <guid>https://blog.zverev-iv.com/posts/2022-05-12-azure-devops-git-with-pat/</guid>
       <description>Особенность PAT авторизации через PAT в том, что она работает поверх Basic аутентификации, используя пустое имя пользователя. Git не воспринимает авторизацию через Basic с пустым логином, потому нам нужно обходное решение.
 Технически git позволяет специальной настройкой передавать дополнительные http заголовки, в случае если используется протокол http. Эту настройку можно:
-  Добавить на любой уровень настроек системные, глобальные настройки репозитория, я предпочитаю хранить такие настройки в каждом репозитории индивидуально
-  Передать в команду двумя способами (только для одноразового применения или для постоянного сохранения настройки).</description>
+Добавить на любой уровень настроек системные, глобальные настройки репозитория, я предпочитаю хранить такие настройки в каждом репозитории индивидуально
+Передать в команду двумя способами (только для одноразового применения или для постоянного сохранения настройки).</description>
     </item>
     
     <item>
       <title>Переносим нагрузку от Docker Desktop с системного диска</title>
-      <link>https://blog.zverev-iv.me/posts/2020-11-17-docker-desktop-to-another-drive/</link>
+      <link>https://blog.zverev-iv.com/posts/2020-11-17-docker-desktop-to-another-drive/</link>
       <pubDate>Tue, 17 Nov 2020 08:03:18 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/posts/2020-11-17-docker-desktop-to-another-drive/</guid>
+      <guid>https://blog.zverev-iv.com/posts/2020-11-17-docker-desktop-to-another-drive/</guid>
       <description>Столкнулся с тем что docker-desktop съедает место на системном диске? Речь конечно про Windows 10 и WSL2. Если docker-desktop используем именно его, то нужно понимать что перенос инсталляции ничего не даст. Нужно переносить именно WSL2 подсистемы (их виртуальные диски)
 Делюсь на мой взгляд самым коротким и удобным способом:
- устанавливаем LxRunOffline (удобная CLI утилита для работы с wsl). В моем случае это было просто:  choco install lxrunoffline теперь в терминале на всякий запустим refreshenv если устанавливали из chocolatey Посмотрим какие подсистемы видит lxrunoffline:  &amp;gt;LxRunOffline.</description>
+устанавливаем LxRunOffline (удобная CLI утилита для работы с wsl). В моем случае это было просто: choco install lxrunoffline теперь в терминале на всякий запустим refreshenv если устанавливали из chocolatey Посмотрим какие подсистемы видит lxrunoffline: &amp;gt;LxRunOffline.</description>
     </item>
     
     <item>
       <title>Boxstarter Task for ConEmu</title>
-      <link>https://blog.zverev-iv.me/posts/2020-01-27-conemu-boxstarter-task/</link>
+      <link>https://blog.zverev-iv.com/posts/2020-01-27-conemu-boxstarter-task/</link>
       <pubDate>Mon, 27 Jan 2020 08:22:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/posts/2020-01-27-conemu-boxstarter-task/</guid>
+      <guid>https://blog.zverev-iv.com/posts/2020-01-27-conemu-boxstarter-task/</guid>
       <description>Sample task to run Boxstarter from ConEmu.
-  Set name Tools::Boxstarter (Admin)
-  Set commands:
-  powershell.exe -ExecutionPolicy bypass -NoExit -Command &amp;#34;&amp;amp;&amp;#39;C:\ProgramData\Boxstarter\BoxstarterShell.ps1&amp;#39;&amp;#34; -new_console:a </description>
+Set name Tools::Boxstarter (Admin)
+Set commands:
+powershell.exe -ExecutionPolicy bypass -NoExit -Command &amp;#34;&amp;amp;&amp;#39;C:\ProgramData\Boxstarter\BoxstarterShell.ps1&amp;#39;&amp;#34; -new_console:a </description>
     </item>
     
     <item>
       <title>Как сделать docker доступным в WSL 1</title>
-      <link>https://blog.zverev-iv.me/posts/2020-01-15-make-wsl1-great-again/</link>
+      <link>https://blog.zverev-iv.com/posts/2020-01-15-make-wsl1-great-again/</link>
       <pubDate>Wed, 15 Jan 2020 06:54:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/posts/2020-01-15-make-wsl1-great-again/</guid>
-      <description>У нас есть docker for windows. он работает из windows У нас есть WSL1 с ubuntu 18.4 (вообще версия не так важна) Как их подружить?  Цепочка непроста.
-Включаем порт 2375  В трее выбираем в Docker for Windows → Settings → General → Expose daemon on tcp://localhost:2375 without tls (включаем. Варианта с 2376 и tls я пока не нашел) После перезапуска проверяем что порт открыт telnet localhost 2375 если отобразилось черное окно - всё ок и можно пропустить следующий пункт.</description>
+      <guid>https://blog.zverev-iv.com/posts/2020-01-15-make-wsl1-great-again/</guid>
+      <description>У нас есть docker for windows. он работает из windows У нас есть WSL1 с ubuntu 18.4 (вообще версия не так важна) Как их подружить? Цепочка непроста.
+Включаем порт 2375 В трее выбираем в Docker for Windows → Settings → General → Expose daemon on tcp://localhost:2375 without tls (включаем. Варианта с 2376 и tls я пока не нашел) После перезапуска проверяем что порт открыт telnet localhost 2375 если отобразилось черное окно - всё ок и можно пропустить следующий пункт.</description>
     </item>
     
     <item>
       <title>List Azure DevOps Server Features</title>
-      <link>https://blog.zverev-iv.me/posts/2019-12-17-list-features-of-azure-devops-server/</link>
+      <link>https://blog.zverev-iv.com/posts/2019-12-17-list-features-of-azure-devops-server/</link>
       <pubDate>Tue, 17 Dec 2019 22:25:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/posts/2019-12-17-list-features-of-azure-devops-server/</guid>
-      <description>First of all: Don&amp;rsquo;t change states of Features. Especially if you don&amp;rsquo;t have backups. Especially on Productive Server. You can loss all your data. I warned you. so, if you&amp;rsquo;re curious enough, run this select in your configuration database:</description>
+      <guid>https://blog.zverev-iv.com/posts/2019-12-17-list-features-of-azure-devops-server/</guid>
+      <description>First of all: Don&amp;rsquo;t change states of Features. Especially if you don&amp;rsquo;t have backups. Especially on Productive Server. You can loss all your data. I warned you. so, if you&amp;rsquo;re curious enough, run this select in your configuration database:
+USE &amp;#34;Tfs_Configuration&amp;#34;; SELECT ISNULL(d.[ KEY],a.[ KEY]) AS FeatureKey , CASE WHEN a.AvailabilityState=1 THEN N&amp;#39;Enabled&amp;#39; WHEN a.AvailabilityState=0 THEN N&amp;#39;Disabled&amp;#39; WHEN a.AvailabilityState IS NULL THEN N&amp;#39;Disabled&amp;#39; END AS State , o.Owner , n.Name , d.</description>
     </item>
     
     <item>
       <title>How to fix &#39;The extension package size exceeds the maximum package size&#39; error in your Azure Devops Server</title>
-      <link>https://blog.zverev-iv.me/posts/2019-12-02-change-azure-devops-server-max-extension-size/</link>
+      <link>https://blog.zverev-iv.com/posts/2019-12-02-change-azure-devops-server-max-extension-size/</link>
       <pubDate>Mon, 02 Dec 2019 09:17:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/posts/2019-12-02-change-azure-devops-server-max-extension-size/</guid>
+      <guid>https://blog.zverev-iv.com/posts/2019-12-02-change-azure-devops-server-max-extension-size/</guid>
       <description>First check that there are no junk files in your vsix (like .git folder). If Found - delete it. If this didn&amp;rsquo;t help, Run this sql in your Configuration DB:
-USE&amp;#34;Tfs_Configuration&amp;#34;;EXECdbo.prc_SetRegistryValue@partitionId=1,@key=&amp;#39;#\Configuration\Service\Gallery\LargeExtensionUpload\MaxPackageSizeMB\&amp;#39;,@value=128,@identityName=null;But change this value carefully, it can affect performance.</description>
+USE &amp;#34;Tfs_Configuration&amp;#34;; EXEC dbo.prc_SetRegistryValue @partitionId = 1, @key = &amp;#39;#\Configuration\Service\Gallery\LargeExtensionUpload\MaxPackageSizeMB\&amp;#39;, @value = 128, @identityName = null; But change this value carefully, it can affect performance.</description>
     </item>
     
     <item>
       <title>Как научить git доверять незнакомому CA сертификату а не выключать верификацию SSL</title>
-      <link>https://blog.zverev-iv.me/posts/2019-11-08-make-git-trust-your-selfsigned-ca-cert/</link>
+      <link>https://blog.zverev-iv.com/posts/2019-11-08-make-git-trust-your-selfsigned-ca-cert/</link>
       <pubDate>Fri, 08 Nov 2019 07:22:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/posts/2019-11-08-make-git-trust-your-selfsigned-ca-cert/</guid>
+      <guid>https://blog.zverev-iv.com/posts/2019-11-08-make-git-trust-your-selfsigned-ca-cert/</guid>
       <description>Мануал сделан под windows но работать должен работать и с *nix, использовать мы будем openssl, который есть везде и менее глючный чем schannel.
-Собственно как выглядит ошибка C:\Git&amp;gt;git clone https://domain/gitrep/ Cloning into &amp;#39;gitrep&amp;#39;... fatal: unable to access &amp;#39;https://domain/gitrep/&amp;#39;: SSL certificate problem: unable to get local issuer certificate Что нам может потребоваться из софта  собственно git браузер - в статье я буду описывать вариант для chromium notepad++ или любой другой редактор который аккуратно относится кодировкам и символам переноса строк openssl - опционально.</description>
+Собственно как выглядит ошибка C:\Git&amp;gt;git clone https://domain/gitrep/ Cloning into &amp;#39;gitrep&amp;#39;... fatal: unable to access &amp;#39;https://domain/gitrep/&amp;#39;: SSL certificate problem: unable to get local issuer certificate Что нам может потребоваться из софта собственно git браузер - в статье я буду описывать вариант для chromium notepad++ или любой другой редактор который аккуратно относится кодировкам и символам переноса строк openssl - опционально.</description>
     </item>
     
     <item>
       <title>Как использовать OpenConnect вместо CiscoAnyConnect</title>
-      <link>https://blog.zverev-iv.me/posts/2019-11-08-from-anyconnect-to-openconnect/</link>
+      <link>https://blog.zverev-iv.com/posts/2019-11-08-from-anyconnect-to-openconnect/</link>
       <pubDate>Fri, 08 Nov 2019 06:50:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/posts/2019-11-08-from-anyconnect-to-openconnect/</guid>
-      <description>Устанавливаем нужный софт  Chocolatey (если ещё не установили) - https://chocolatey.org/ choco install openssl choco install openconnect-gui  Готовим сертификат для использования  Обычно на вход дают сертификат в формате pfx и пароль к нему. Наша цель - получить сертификат в формате crt и ключ key в формате pem открываем cmd в папке с pfx файлом выполняем команду openssl pkcs12 -in [yourfile.pfx] -clcerts -nokeys -out [certificate.crt] вводим пароль нужное количество раз (обычно 1).</description>
+      <guid>https://blog.zverev-iv.com/posts/2019-11-08-from-anyconnect-to-openconnect/</guid>
+      <description>Устанавливаем нужный софт Chocolatey (если ещё не установили) - https://chocolatey.org/ choco install openssl choco install openconnect-gui Готовим сертификат для использования Обычно на вход дают сертификат в формате pfx и пароль к нему. Наша цель - получить сертификат в формате crt и ключ key в формате pem открываем cmd в папке с pfx файлом выполняем команду openssl pkcs12 -in [yourfile.pfx] -clcerts -nokeys -out [certificate.crt] вводим пароль нужное количество раз (обычно 1). сертификат crt получен выполняем команду openssl pkcs12 -in [yourfile.</description>
     </item>
     
     <item>
       <title>How to integrate SonarQube with Rocket.Chat</title>
-      <link>https://blog.zverev-iv.me/posts/2019-09-16-rocket-sonar-integration/</link>
+      <link>https://blog.zverev-iv.com/posts/2019-09-16-rocket-sonar-integration/</link>
       <pubDate>Mon, 16 Sep 2019 07:59:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/posts/2019-09-16-rocket-sonar-integration/</guid>
-      <description>SonarQube can send webhooks. Rocket.Chat ca can receive and parse webhooks  You can script it like that:
-class Script { process_incoming_request({ request }) { // console is a global helper to improve debug  //console.log(request.content);  if (request.content.status != &amp;#34;SUCCESS&amp;#34;) { return { error: { success: false, message: &amp;#34;analysis finished with error, task id: &amp;#34; + request.content.taskId } }; } let msgText = &amp;#34;Analysis &amp;#34; + request.content.project.name + &amp;#34; completed&amp;#34;; let attColor = &amp;#34;gray&amp;#34;; switch (request.</description>
+      <guid>https://blog.zverev-iv.com/posts/2019-09-16-rocket-sonar-integration/</guid>
+      <description>SonarQube can send webhooks. Rocket.Chat ca can receive and parse webhooks You can script it like that:
+class Script { process_incoming_request({ request }) { // console is a global helper to improve debug //console.log(request.content); if (request.content.status != &amp;#34;SUCCESS&amp;#34;) { return { error: { success: false, message: &amp;#34;analysis finished with error, task id: &amp;#34; + request.content.taskId } }; } let msgText = &amp;#34;Analysis &amp;#34; + request.content.project.name + &amp;#34; completed&amp;#34;; let attColor = &amp;#34;gray&amp;#34;; switch (request.</description>
     </item>
     
     <item>
       <title>How to build and push chocolatey package with Travis CI </title>
-      <link>https://blog.zverev-iv.me/posts/2019-08-26-travis-ci-for-chocolatey-package/</link>
+      <link>https://blog.zverev-iv.com/posts/2019-08-26-travis-ci-for-chocolatey-package/</link>
       <pubDate>Sat, 24 Aug 2019 08:02:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/posts/2019-08-26-travis-ci-for-chocolatey-package/</guid>
+      <guid>https://blog.zverev-iv.com/posts/2019-08-26-travis-ci-for-chocolatey-package/</guid>
       <description>You can use this code for your .travis.yml:
-os:windowslanguage:shellbranches:only:- masterscript:- choco pack path_to\\package.nuspecafter_script:- choco apikey --key $CHOCOAPIKEY --source https://push.chocolatey.org/- choco pushHide your private api key in CHOCOAPIKEY secret variable. Enjoy!</description>
+os: windows language: shell branches: only: - master script: - choco pack path_to\\package.nuspec after_script: - choco apikey --key $CHOCOAPIKEY --source https://push.chocolatey.org/ - choco push Hide your private api key in CHOCOAPIKEY secret variable. Enjoy!</description>
     </item>
     
   </channel>

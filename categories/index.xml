@@ -2,98 +2,98 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Zverev IV</title>
-    <link>https://blog.zverev-iv.me/categories/</link>
+    <link>https://blog.zverev-iv.com/categories/</link>
     <description>Recent content in Categories on Zverev IV</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ru-ru</language>
-    <lastBuildDate>Thu, 12 May 2022 07:49:14 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.me/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 12 May 2022 07:49:14 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.com/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>git hook powershell</title>
-      <link>https://blog.zverev-iv.me/categories/git-hook-powershell/</link>
+      <link>https://blog.zverev-iv.com/categories/git-hook-powershell/</link>
       <pubDate>Thu, 12 May 2022 07:49:14 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/categories/git-hook-powershell/</guid>
+      <guid>https://blog.zverev-iv.com/categories/git-hook-powershell/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ConEmu cmd term terminal console chocolatey boxstarter</title>
-      <link>https://blog.zverev-iv.me/categories/conemu-cmd-term-terminal-console-chocolatey-boxstarter/</link>
+      <link>https://blog.zverev-iv.com/categories/conemu-cmd-term-terminal-console-chocolatey-boxstarter/</link>
       <pubDate>Mon, 27 Jan 2020 08:22:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/categories/conemu-cmd-term-terminal-console-chocolatey-boxstarter/</guid>
+      <guid>https://blog.zverev-iv.com/categories/conemu-cmd-term-terminal-console-chocolatey-boxstarter/</guid>
       <description></description>
     </item>
     
     <item>
       <title>docker docker-compose docker-machine WSL ubuntu windows</title>
-      <link>https://blog.zverev-iv.me/categories/docker-docker-compose-docker-machine-wsl-ubuntu-windows/</link>
+      <link>https://blog.zverev-iv.com/categories/docker-docker-compose-docker-machine-wsl-ubuntu-windows/</link>
       <pubDate>Wed, 15 Jan 2020 06:54:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/categories/docker-docker-compose-docker-machine-wsl-ubuntu-windows/</guid>
+      <guid>https://blog.zverev-iv.com/categories/docker-docker-compose-docker-machine-wsl-ubuntu-windows/</guid>
       <description></description>
     </item>
     
     <item>
       <title>azure devops server configuration</title>
-      <link>https://blog.zverev-iv.me/categories/azure-devops-server-configuration/</link>
+      <link>https://blog.zverev-iv.com/categories/azure-devops-server-configuration/</link>
       <pubDate>Tue, 17 Dec 2019 22:25:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/categories/azure-devops-server-configuration/</guid>
+      <guid>https://blog.zverev-iv.com/categories/azure-devops-server-configuration/</guid>
       <description></description>
     </item>
     
     <item>
       <title>azure devops extensions coding</title>
-      <link>https://blog.zverev-iv.me/categories/azure-devops-extensions-coding/</link>
+      <link>https://blog.zverev-iv.com/categories/azure-devops-extensions-coding/</link>
       <pubDate>Mon, 02 Dec 2019 09:17:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/categories/azure-devops-extensions-coding/</guid>
+      <guid>https://blog.zverev-iv.com/categories/azure-devops-extensions-coding/</guid>
       <description></description>
     </item>
     
     <item>
       <title>git openssl certificates</title>
-      <link>https://blog.zverev-iv.me/categories/git-openssl-certificates/</link>
+      <link>https://blog.zverev-iv.com/categories/git-openssl-certificates/</link>
       <pubDate>Fri, 08 Nov 2019 07:22:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/categories/git-openssl-certificates/</guid>
+      <guid>https://blog.zverev-iv.com/categories/git-openssl-certificates/</guid>
       <description></description>
     </item>
     
     <item>
       <title>vpn cisco anyconnect openconnect</title>
-      <link>https://blog.zverev-iv.me/categories/vpn-cisco-anyconnect-openconnect/</link>
+      <link>https://blog.zverev-iv.com/categories/vpn-cisco-anyconnect-openconnect/</link>
       <pubDate>Fri, 08 Nov 2019 06:50:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/categories/vpn-cisco-anyconnect-openconnect/</guid>
+      <guid>https://blog.zverev-iv.com/categories/vpn-cisco-anyconnect-openconnect/</guid>
       <description></description>
     </item>
     
     <item>
       <title>chatops rocket.chat sonarqube</title>
-      <link>https://blog.zverev-iv.me/categories/chatops-rocket.chat-sonarqube/</link>
+      <link>https://blog.zverev-iv.com/categories/chatops-rocket.chat-sonarqube/</link>
       <pubDate>Mon, 16 Sep 2019 07:59:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/categories/chatops-rocket.chat-sonarqube/</guid>
+      <guid>https://blog.zverev-iv.com/categories/chatops-rocket.chat-sonarqube/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ci-cd choco travis</title>
-      <link>https://blog.zverev-iv.me/categories/ci-cd-choco-travis/</link>
+      <link>https://blog.zverev-iv.com/categories/ci-cd-choco-travis/</link>
       <pubDate>Sat, 24 Aug 2019 08:02:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/categories/ci-cd-choco-travis/</guid>
+      <guid>https://blog.zverev-iv.com/categories/ci-cd-choco-travis/</guid>
       <description></description>
     </item>
     
     <item>
       <title>code ps1</title>
-      <link>https://blog.zverev-iv.me/categories/code-ps1/</link>
+      <link>https://blog.zverev-iv.com/categories/code-ps1/</link>
       <pubDate>Fri, 23 Aug 2019 07:29:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/categories/code-ps1/</guid>
+      <guid>https://blog.zverev-iv.com/categories/code-ps1/</guid>
       <description></description>
     </item>
     

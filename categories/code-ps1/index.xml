@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>code ps1 on Zverev IV</title>
-    <link>https://blog.zverev-iv.me/categories/code-ps1/</link>
+    <link>https://blog.zverev-iv.com/categories/code-ps1/</link>
     <description>Recent content in code ps1 on Zverev IV</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ru-ru</language>
-    <lastBuildDate>Fri, 23 Aug 2019 07:29:00 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.me/categories/code-ps1/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 23 Aug 2019 07:29:00 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.com/categories/code-ps1/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>powershell: json -&gt; csv</title>
-      <link>https://blog.zverev-iv.me/posts/2019-08-23-quick-json-2-table/</link>
+      <link>https://blog.zverev-iv.com/posts/2019-08-23-quick-json-2-table/</link>
       <pubDate>Fri, 23 Aug 2019 07:29:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/posts/2019-08-23-quick-json-2-table/</guid>
+      <guid>https://blog.zverev-iv.com/posts/2019-08-23-quick-json-2-table/</guid>
       <description>Иногда бывает необходимость найти что-то в длинном JSON, например вот такого вида:
 { &amp;#34;relations&amp;#34;: [{ &amp;#34;ID&amp;#34;: 8449, &amp;#34;LinkType&amp;#34;: 2, &amp;#34;Changed Date&amp;#34;: &amp;#34;2019-08-23T08:36:52.627Z&amp;#34;, &amp;#34;Revised Date&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;AuthorizedAddedDate&amp;#34;: &amp;#34;2019-08-23T08:36:52.627Z&amp;#34;, &amp;#34;AuthorizedRemovedDate&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;Changed By&amp;#34;: 23953, &amp;#34;Revised By&amp;#34;: -1, &amp;#34;Lock&amp;#34;: false, &amp;#34;Comment&amp;#34;: &amp;#34;&amp;#34; }, { &amp;#34;ID&amp;#34;: 8452, &amp;#34;LinkType&amp;#34;: 2, &amp;#34;Changed Date&amp;#34;: &amp;#34;2019-08-23T08:55:54.503Z&amp;#34;, &amp;#34;Revised Date&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;AuthorizedAddedDate&amp;#34;: &amp;#34;2019-08-23T08:55:54.503Z&amp;#34;, &amp;#34;AuthorizedRemovedDate&amp;#34;: &amp;#34;9999-01-01T00:00:00Z&amp;#34;, &amp;#34;Changed By&amp;#34;: 23953, &amp;#34;Revised By&amp;#34;: -1, &amp;#34;Lock&amp;#34;: false, &amp;#34;Comment&amp;#34;: &amp;#34;&amp;#34; }, { &amp;#34;ID&amp;#34;: 8451, &amp;#34;LinkType&amp;#34;: 2, &amp;#34;Changed Date&amp;#34;: &amp;#34;2019-08-23T08:55:54.</description>
     </item>

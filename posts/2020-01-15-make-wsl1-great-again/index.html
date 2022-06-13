@@ -8,22 +8,22 @@
 	<meta name="theme-color" content="#494f5c">
 	<meta name="msapplication-TileColor" content="#494f5c">
 <meta itemprop="name" content="Как сделать docker доступным в WSL 1">
-<meta itemprop="description" content="У нас есть docker for windows. он работает из windows У нас есть WSL1 с ubuntu 18.4 (вообще версия не так важна) Как их подружить?  Цепочка непроста.
-Включаем порт 2375  В трее выбираем в Docker for Windows → Settings → General → Expose daemon on tcp://localhost:2375 without tls (включаем. Варианта с 2376 и tls я пока не нашел) После перезапуска проверяем что порт открыт telnet localhost 2375 если отобразилось черное окно - всё ок и можно пропустить следующий пункт."><meta itemprop="datePublished" content="2020-01-15T06:54:00+03:00" />
+<meta itemprop="description" content="У нас есть docker for windows. он работает из windows У нас есть WSL1 с ubuntu 18.4 (вообще версия не так важна) Как их подружить? Цепочка непроста.
+Включаем порт 2375 В трее выбираем в Docker for Windows → Settings → General → Expose daemon on tcp://localhost:2375 without tls (включаем. Варианта с 2376 и tls я пока не нашел) После перезапуска проверяем что порт открыт telnet localhost 2375 если отобразилось черное окно - всё ок и можно пропустить следующий пункт."><meta itemprop="datePublished" content="2020-01-15T06:54:00+03:00" />
 <meta itemprop="dateModified" content="2020-01-15T06:54:00+03:00" />
 <meta itemprop="wordCount" content="388">
 <meta itemprop="keywords" content="" /><meta property="og:title" content="Как сделать docker доступным в WSL 1" />
-<meta property="og:description" content="У нас есть docker for windows. он работает из windows У нас есть WSL1 с ubuntu 18.4 (вообще версия не так важна) Как их подружить?  Цепочка непроста.
-Включаем порт 2375  В трее выбираем в Docker for Windows → Settings → General → Expose daemon on tcp://localhost:2375 without tls (включаем. Варианта с 2376 и tls я пока не нашел) После перезапуска проверяем что порт открыт telnet localhost 2375 если отобразилось черное окно - всё ок и можно пропустить следующий пункт." />
+<meta property="og:description" content="У нас есть docker for windows. он работает из windows У нас есть WSL1 с ubuntu 18.4 (вообще версия не так важна) Как их подружить? Цепочка непроста.
+Включаем порт 2375 В трее выбираем в Docker for Windows → Settings → General → Expose daemon on tcp://localhost:2375 without tls (включаем. Варианта с 2376 и tls я пока не нашел) После перезапуска проверяем что порт открыт telnet localhost 2375 если отобразилось черное окно - всё ок и можно пропустить следующий пункт." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.zverev-iv.me/posts/2020-01-15-make-wsl1-great-again/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://blog.zverev-iv.com/posts/2020-01-15-make-wsl1-great-again/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2020-01-15T06:54:00+03:00" />
 <meta property="article:modified_time" content="2020-01-15T06:54:00+03:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Как сделать docker доступным в WSL 1"/>
-<meta name="twitter:description" content="У нас есть docker for windows. он работает из windows У нас есть WSL1 с ubuntu 18.4 (вообще версия не так важна) Как их подружить?  Цепочка непроста.
-Включаем порт 2375  В трее выбираем в Docker for Windows → Settings → General → Expose daemon on tcp://localhost:2375 without tls (включаем. Варианта с 2376 и tls я пока не нашел) После перезапуска проверяем что порт открыт telnet localhost 2375 если отобразилось черное окно - всё ок и можно пропустить следующий пункт."/>
+<meta name="twitter:description" content="У нас есть docker for windows. он работает из windows У нас есть WSL1 с ubuntu 18.4 (вообще версия не так важна) Как их подружить? Цепочка непроста.
+Включаем порт 2375 В трее выбираем в Docker for Windows → Settings → General → Expose daemon on tcp://localhost:2375 without tls (включаем. Варианта с 2376 и tls я пока не нашел) После перезапуска проверяем что порт открыт telnet localhost 2375 если отобразилось черное окно - всё ок и можно пропустить следующий пункт."/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -33,7 +33,7 @@
 	<link rel="shortcut icon" href="/favicon.ico">
 
 	<title>Как сделать docker доступным в WSL 1</title>
-	<link rel="stylesheet" href="https://blog.zverev-iv.me/css/style.min.eac77496566fd7d5768fd650ddb0b2b181ca6a2d7c5fdd6fe6b8ba4bf47e566f.css" integrity="sha256-6sd0llZv19V2j9ZQ3bCysYHKai18X91v5ri6S/R+Vm8=" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://blog.zverev-iv.com/css/style.min.eac77496566fd7d5768fd650ddb0b2b181ca6a2d7c5fdd6fe6b8ba4bf47e566f.css" integrity="sha256-6sd0llZv19V2j9ZQ3bCysYHKai18X91v5ri6S/R+Vm8=" crossorigin="anonymous">
 	
 </head>
 
@@ -43,11 +43,11 @@
 		<div class="hdr-wrapper section-inner">
 			<div class="hdr-left">
 				<div class="site-branding">
-					<a href="https://blog.zverev-iv.me/">Zverev IV</a>
+					<a href="https://blog.zverev-iv.com">Zverev IV</a>
 				</div>
 				<nav class="site-nav hide-in-mobile">
 					
-				<a href="https://blog.zverev-iv.me/posts/">Posts</a>
+				<a href="https://blog.zverev-iv.com/posts/">Posts</a>
 
 				</nav>
 			</div>
@@ -58,7 +58,7 @@
 	</header>
 	<div id="mobile-menu" class="animated fast">
 		<ul>
-			<li><a href="https://blog.zverev-iv.me/posts/">Posts</a></li>
+			<li><a href="https://blog.zverev-iv.com/posts/">Posts</a></li>
 		</ul>
 	</div>
 
@@ -163,10 +163,10 @@
 			</footer>
 		</article>
 		<div class="post-nav thin">
-			<a class="next-post" href="https://blog.zverev-iv.me/posts/2020-01-27-conemu-boxstarter-task/">
+			<a class="next-post" href="https://blog.zverev-iv.com/posts/2020-01-27-conemu-boxstarter-task/">
 				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Boxstarter Task for ConEmu</span>
 			</a>
-			<a class="prev-post" href="https://blog.zverev-iv.me/posts/2019-12-17-list-features-of-azure-devops-server/">
+			<a class="prev-post" href="https://blog.zverev-iv.com/posts/2019-12-17-list-features-of-azure-devops-server/">
 				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>List Azure DevOps Server Features</span>
 			</a>
 		</div>
@@ -175,15 +175,15 @@
 	</main>
 
 	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-		<p>&copy; 2022 <a href="https://blog.zverev-iv.me/">Zverev Ilya</a></p>
+		<p>&copy; 2022 <a href="https://blog.zverev-iv.com">Zverev Ilya</a></p>
 		<p>
-			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://blog.zverev-iv.me/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://blog.zverev-iv.com/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
 		</p>
 	</footer>
 
 
 
-	<script src="https://blog.zverev-iv.me/js/bundle.min.5a42c67b729ee2fa1059251688235399704707e04edb4e28c42c6f6dfa49d1d9.js" integrity="sha256-WkLGe3Ke4voQWSUWiCNTmXBHB+BO204oxCxvbfpJ0dk=" crossorigin="anonymous"></script>
+	<script src="https://blog.zverev-iv.com/js/bundle.min.f60b118ee29d83a3d708c5d850372b3e465ce787986ca854d5e40a42a50c6d44.js" integrity="sha256-9gsRjuKdg6PXCMXYUDcrPkZc54eYbKhU1eQKQqUMbUQ=" crossorigin="anonymous"></script>
 	
 <script type="application/javascript">
 var doNotTrack = false;

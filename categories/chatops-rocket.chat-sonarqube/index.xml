@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>chatops rocket.chat sonarqube on Zverev IV</title>
-    <link>https://blog.zverev-iv.me/categories/chatops-rocket.chat-sonarqube/</link>
+    <link>https://blog.zverev-iv.com/categories/chatops-rocket.chat-sonarqube/</link>
     <description>Recent content in chatops rocket.chat sonarqube on Zverev IV</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ru-ru</language>
-    <lastBuildDate>Mon, 16 Sep 2019 07:59:00 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.me/categories/chatops-rocket.chat-sonarqube/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 16 Sep 2019 07:59:00 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.com/categories/chatops-rocket.chat-sonarqube/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>How to integrate SonarQube with Rocket.Chat</title>
-      <link>https://blog.zverev-iv.me/posts/2019-09-16-rocket-sonar-integration/</link>
+      <link>https://blog.zverev-iv.com/posts/2019-09-16-rocket-sonar-integration/</link>
       <pubDate>Mon, 16 Sep 2019 07:59:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/posts/2019-09-16-rocket-sonar-integration/</guid>
-      <description>SonarQube can send webhooks. Rocket.Chat ca can receive and parse webhooks  You can script it like that:
-class Script { process_incoming_request({ request }) { // console is a global helper to improve debug  //console.log(request.content);  if (request.content.status != &amp;#34;SUCCESS&amp;#34;) { return { error: { success: false, message: &amp;#34;analysis finished with error, task id: &amp;#34; + request.content.taskId } }; } let msgText = &amp;#34;Analysis &amp;#34; + request.content.project.name + &amp;#34; completed&amp;#34;; let attColor = &amp;#34;gray&amp;#34;; switch (request.</description>
+      <guid>https://blog.zverev-iv.com/posts/2019-09-16-rocket-sonar-integration/</guid>
+      <description>SonarQube can send webhooks. Rocket.Chat ca can receive and parse webhooks You can script it like that:
+class Script { process_incoming_request({ request }) { // console is a global helper to improve debug //console.log(request.content); if (request.content.status != &amp;#34;SUCCESS&amp;#34;) { return { error: { success: false, message: &amp;#34;analysis finished with error, task id: &amp;#34; + request.content.taskId } }; } let msgText = &amp;#34;Analysis &amp;#34; + request.content.project.name + &amp;#34; completed&amp;#34;; let attColor = &amp;#34;gray&amp;#34;; switch (request.</description>
     </item>
     
   </channel>

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ConEmu cmd term terminal console chocolatey boxstarter on Zverev IV</title>
-    <link>https://blog.zverev-iv.me/categories/conemu-cmd-term-terminal-console-chocolatey-boxstarter/</link>
+    <link>https://blog.zverev-iv.com/categories/conemu-cmd-term-terminal-console-chocolatey-boxstarter/</link>
     <description>Recent content in ConEmu cmd term terminal console chocolatey boxstarter on Zverev IV</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ru-ru</language>
-    <lastBuildDate>Mon, 27 Jan 2020 08:22:00 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.me/categories/conemu-cmd-term-terminal-console-chocolatey-boxstarter/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 27 Jan 2020 08:22:00 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.com/categories/conemu-cmd-term-terminal-console-chocolatey-boxstarter/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Boxstarter Task for ConEmu</title>
-      <link>https://blog.zverev-iv.me/posts/2020-01-27-conemu-boxstarter-task/</link>
+      <link>https://blog.zverev-iv.com/posts/2020-01-27-conemu-boxstarter-task/</link>
       <pubDate>Mon, 27 Jan 2020 08:22:00 +0300</pubDate>
       
-      <guid>https://blog.zverev-iv.me/posts/2020-01-27-conemu-boxstarter-task/</guid>
+      <guid>https://blog.zverev-iv.com/posts/2020-01-27-conemu-boxstarter-task/</guid>
       <description>Sample task to run Boxstarter from ConEmu.
-  Set name Tools::Boxstarter (Admin)
-  Set commands:
-  powershell.exe -ExecutionPolicy bypass -NoExit -Command &amp;#34;&amp;amp;&amp;#39;C:\ProgramData\Boxstarter\BoxstarterShell.ps1&amp;#39;&amp;#34; -new_console:a </description>
+Set name Tools::Boxstarter (Admin)
+Set commands:
+powershell.exe -ExecutionPolicy bypass -NoExit -Command &amp;#34;&amp;amp;&amp;#39;C:\ProgramData\Boxstarter\BoxstarterShell.ps1&amp;#39;&amp;#34; -new_console:a </description>
     </item>
     
   </channel>
