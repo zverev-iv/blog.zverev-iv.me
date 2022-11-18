@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru-ru">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="Powershell может в Linux, может в MSSQL, может с доменной (Active Directory) аутентификацией">
+<meta itemprop="description" content="POC:
+zverev-iv@linux-server:~$ klist Ticket cache: FILE:/tmp/krb5cc_************* Default principal: zverev-iv@COMPANY.LOCAL Valid starting Expires Service principal 11/16/2022 20:40:40 11/17/2022 06:40:40 krbtgt/COMPANY.LOCAL@COMPANY.LOCAL renew until 11/23/2022 20:40:40 zverev-iv@linux-server:~$ cat mssql/connect-to-mssql.ps1 Write-Output &#34;Q: Is Linux? A: $($IsLinux)&#34; $sqlConn = New-Object System.Data.SqlClient.SqlConnection $sqlConn.ConnectionString = &#34;Data Source=msksrvtfs-bd-5.COMPANY.LOCAL;Initial Catalog=master;Integrated Security=True&#34; $sqlConn.Open() $sqlcmd = $sqlConn.CreateCommand() $sqlcmd.CommandText = &#34;SELECT @@VERSION&#34; $adp = New-Object System.Data.SqlClient.SqlDataAdapter $sqlcmd $data = New-Object System.Data.DataSet $adp.Fill($data) | Out-Null $data.Tables zverev-iv@linux-server:~$ pwsh mssql/connect-to-mssql.ps1 Q: Is Linux? A: True Column1 ------- Microsoft SQL Server 2022 (RTM) - 16."><meta itemprop="datePublished" content="2022-11-18T08:45:21+03:00" />
+<meta itemprop="dateModified" content="2022-11-18T08:45:21+03:00" />
+<meta itemprop="wordCount" content="125">
+<meta itemprop="keywords" content="" /><meta property="og:title" content="Powershell может в Linux, может в MSSQL, может с доменной (Active Directory) аутентификацией" />
+<meta property="og:description" content="POC:
+zverev-iv@linux-server:~$ klist Ticket cache: FILE:/tmp/krb5cc_************* Default principal: zverev-iv@COMPANY.LOCAL Valid starting Expires Service principal 11/16/2022 20:40:40 11/17/2022 06:40:40 krbtgt/COMPANY.LOCAL@COMPANY.LOCAL renew until 11/23/2022 20:40:40 zverev-iv@linux-server:~$ cat mssql/connect-to-mssql.ps1 Write-Output &#34;Q: Is Linux? A: $($IsLinux)&#34; $sqlConn = New-Object System.Data.SqlClient.SqlConnection $sqlConn.ConnectionString = &#34;Data Source=msksrvtfs-bd-5.COMPANY.LOCAL;Initial Catalog=master;Integrated Security=True&#34; $sqlConn.Open() $sqlcmd = $sqlConn.CreateCommand() $sqlcmd.CommandText = &#34;SELECT @@VERSION&#34; $adp = New-Object System.Data.SqlClient.SqlDataAdapter $sqlcmd $data = New-Object System.Data.DataSet $adp.Fill($data) | Out-Null $data.Tables zverev-iv@linux-server:~$ pwsh mssql/connect-to-mssql.ps1 Q: Is Linux? A: True Column1 ------- Microsoft SQL Server 2022 (RTM) - 16." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.zverev-iv.com/posts/2022-11-18-ps1-7-mssql-auth-from-linux/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-11-18T08:45:21+03:00" />
+<meta property="article:modified_time" content="2022-11-18T08:45:21+03:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Powershell может в Linux, может в MSSQL, может с доменной (Active Directory) аутентификацией"/>
+<meta name="twitter:description" content="POC:
+zverev-iv@linux-server:~$ klist Ticket cache: FILE:/tmp/krb5cc_************* Default principal: zverev-iv@COMPANY.LOCAL Valid starting Expires Service principal 11/16/2022 20:40:40 11/17/2022 06:40:40 krbtgt/COMPANY.LOCAL@COMPANY.LOCAL renew until 11/23/2022 20:40:40 zverev-iv@linux-server:~$ cat mssql/connect-to-mssql.ps1 Write-Output &#34;Q: Is Linux? A: $($IsLinux)&#34; $sqlConn = New-Object System.Data.SqlClient.SqlConnection $sqlConn.ConnectionString = &#34;Data Source=msksrvtfs-bd-5.COMPANY.LOCAL;Initial Catalog=master;Integrated Security=True&#34; $sqlConn.Open() $sqlcmd = $sqlConn.CreateCommand() $sqlcmd.CommandText = &#34;SELECT @@VERSION&#34; $adp = New-Object System.Data.SqlClient.SqlDataAdapter $sqlcmd $data = New-Object System.Data.DataSet $adp.Fill($data) | Out-Null $data.Tables zverev-iv@linux-server:~$ pwsh mssql/connect-to-mssql.ps1 Q: Is Linux? A: True Column1 ------- Microsoft SQL Server 2022 (RTM) - 16."/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>Powershell может в Linux, может в MSSQL, может с доменной (Active Directory) аутентификацией</title>
+	<link rel="stylesheet" href="https://blog.zverev-iv.com/css/style.min.eac77496566fd7d5768fd650ddb0b2b181ca6a2d7c5fdd6fe6b8ba4bf47e566f.css" integrity="sha256-6sd0llZv19V2j9ZQ3bCysYHKai18X91v5ri6S/R+Vm8=" crossorigin="anonymous">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://blog.zverev-iv.com">Zverev IV</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					
+				<a href="https://blog.zverev-iv.com/posts/">Posts</a>
+
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://t.me/zvereviv_bot" target="_blank" rel="noopener me" title="Telegram"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-8.609 3.33c-2.068.8-4.133 1.598-5.724 2.21a405.15 405.15 0 0 1-2.849 1.09c-.42.147-.99.332-1.473.901-.728.968.193 1.798.919 2.286 1.61.516 3.275 1.009 4.654 1.472.509 1.793.997 3.592 1.48 5.388.16.36.506.494.864.498l-.002.018s.281.028.555-.038a2.1 2.1 0 0 0 .933-.517c.345-.324 1.28-1.244 1.811-1.764l3.999 2.952.032.018s.442.311 1.09.355c.324.022.75-.04 1.116-.308.37-.27.613-.702.728-1.196.342-1.492 2.61-12.285 2.997-14.072l-.01.042c.27-1.006.17-1.928-.455-2.474a1.654 1.654 0 0 0-1.034-.407z"/></svg></a><a href="https://github.com/zverev-iv" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="https://chocolatey.org/profiles/zverev-iv" target="_blank" rel="noopener me" title="Chocolatey"><svg xmlns="http://www.w3.org/2000/svg" class="feather feather-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://blog.zverev-iv.com/posts/">Posts</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>18 Nov 2022</span></div>
+				<h1>Powershell может в Linux, может в MSSQL, может с доменной (Active Directory) аутентификацией</h1>
+			</header>
+			<div class="content">
+				<p>POC:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">zverev-iv@linux-server:~$ klist
+</span></span><span class="line"><span class="cl">Ticket cache: FILE:/tmp/krb5cc_*************
+</span></span><span class="line"><span class="cl">Default principal: zverev-iv@COMPANY.LOCAL
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Valid starting       Expires              Service principal
+</span></span><span class="line"><span class="cl">11/16/2022 20:40:40  11/17/2022 06:40:40  krbtgt/COMPANY.LOCAL@COMPANY.LOCAL
+</span></span><span class="line"><span class="cl">        renew <span class="k">until</span> 11/23/2022 20:40:40
+</span></span><span class="line"><span class="cl">zverev-iv@linux-server:~$ cat mssql/connect-to-mssql.ps1
+</span></span><span class="line"><span class="cl">Write-Output <span class="s2">&#34;Q: Is Linux?  A: </span><span class="k">$(</span><span class="nv">$IsLinux</span><span class="k">)</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$sqlConn</span> <span class="o">=</span> New-Object System.Data.SqlClient.SqlConnection
+</span></span><span class="line"><span class="cl"><span class="nv">$sqlConn</span>.ConnectionString <span class="o">=</span> <span class="s2">&#34;Data Source=msksrvtfs-bd-5.COMPANY.LOCAL;Initial Catalog=master;Integrated Security=True&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$sqlConn</span>.Open<span class="o">()</span> 
+</span></span><span class="line"><span class="cl"><span class="nv">$sqlcmd</span> <span class="o">=</span> <span class="nv">$sqlConn</span>.CreateCommand<span class="o">()</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$sqlcmd</span>.CommandText <span class="o">=</span> <span class="s2">&#34;SELECT @@VERSION&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$adp</span> <span class="o">=</span> New-Object System.Data.SqlClient.SqlDataAdapter <span class="nv">$sqlcmd</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$data</span> <span class="o">=</span> New-Object System.Data.DataSet
+</span></span><span class="line"><span class="cl"><span class="nv">$adp</span>.Fill<span class="o">(</span><span class="nv">$data</span><span class="o">)</span> <span class="p">|</span> Out-Null
+</span></span><span class="line"><span class="cl"><span class="nv">$data</span>.Tables
+</span></span><span class="line"><span class="cl">zverev-iv@linux-server:~$ pwsh mssql/connect-to-mssql.ps1
+</span></span><span class="line"><span class="cl">Q: Is Linux?  A: True
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Column1
+</span></span><span class="line"><span class="cl">-------
+</span></span><span class="line"><span class="cl">Microsoft SQL Server <span class="m">2022</span> <span class="o">(</span>RTM<span class="o">)</span> - 16.0.1000.6 <span class="o">(</span>X64<span class="o">)</span> …
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">zverev-iv@linux-server:~$
+</span></span></code></pre></div><p>Что может быстро помочь при проблемах:</p>
+<ol>
+<li>не искать способ использовать NTLM fallback в Linux. Kerberos Only.</li>
+<li>в sh сессии <code>export KRB5_TRACE=/dev/stdout</code> позволит быстро понять где проблема с тикетами.</li>
+<li><a href="https://www.microsoft.com/en-us/download/details.aspx?id=39046">https://www.microsoft.com/en-us/download/details.aspx?id=39046</a> - позволит быстро проверить SPN записи ваших SQL серверов. А заодно и поправить</li>
+</ol>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>125 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2022-11-18 08:45 &#43;0300</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="prev-post" href="https://blog.zverev-iv.com/posts/2022-11-18-ssh-hostkey-fingerprint/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Однострочник для получения отпечатка публичного ключа ssh хоста</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2022 <a href="https://blog.zverev-iv.com">Zverev Ilya</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://blog.zverev-iv.com/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+
+	<script src="https://blog.zverev-iv.com/js/bundle.min.580988ed2982bcbb74a1773c7abea97b43e4c43b9324e10cda0813ec6ec4bb67.js" integrity="sha256-WAmI7SmCvLt0oXc8er6pe0PkxDuTJOEM2ggT7G7Eu2c=" crossorigin="anonymous"></script>
+	
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-154739253-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+</body>
+
+</html>

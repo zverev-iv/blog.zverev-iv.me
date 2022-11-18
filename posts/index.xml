@@ -5,8 +5,52 @@
 		<description>Recent content in Posts on Zverev IV</description>
 		<generator>Hugo -- gohugo.io</generator>
 		<language>ru-ru</language>
-		<lastBuildDate>Fri, 18 Nov 2022 08:19:13 +0300</lastBuildDate>
+		<lastBuildDate>Fri, 18 Nov 2022 08:45:21 +0300</lastBuildDate>
 		<atom:link href="https://blog.zverev-iv.com/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Powershell может в Linux, может в MSSQL, может с доменной (Active Directory) аутентификацией</title>
+			<link>https://blog.zverev-iv.com/posts/2022-11-18-ps1-7-mssql-auth-from-linux/</link>
+			<pubDate>Fri, 18 Nov 2022 08:45:21 +0300</pubDate>
+			
+			<guid>https://blog.zverev-iv.com/posts/2022-11-18-ps1-7-mssql-auth-from-linux/</guid>
+			<description>POC:
+zverev-iv@linux-server:~$ klist Ticket cache: FILE:/tmp/krb5cc_************* Default principal: zverev-iv@COMPANY.LOCAL Valid starting Expires Service principal 11/16/2022 20:40:40 11/17/2022 06:40:40 krbtgt/COMPANY.LOCAL@COMPANY.LOCAL renew until 11/23/2022 20:40:40 zverev-iv@linux-server:~$ cat mssql/connect-to-mssql.ps1 Write-Output &amp;#34;Q: Is Linux? A: $($IsLinux)&amp;#34; $sqlConn = New-Object System.Data.SqlClient.SqlConnection $sqlConn.ConnectionString = &amp;#34;Data Source=msksrvtfs-bd-5.COMPANY.LOCAL;Initial Catalog=master;Integrated Security=True&amp;#34; $sqlConn.Open() $sqlcmd = $sqlConn.CreateCommand() $sqlcmd.CommandText = &amp;#34;SELECT @@VERSION&amp;#34; $adp = New-Object System.Data.SqlClient.SqlDataAdapter $sqlcmd $data = New-Object System.Data.DataSet $adp.Fill($data) | Out-Null $data.Tables zverev-iv@linux-server:~$ pwsh mssql/connect-to-mssql.ps1 Q: Is Linux? A: True Column1 ------- Microsoft SQL Server 2022 (RTM) - 16.</description>
+			<content type="html"><![CDATA[<p>POC:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">zverev-iv@linux-server:~$ klist
+</span></span><span class="line"><span class="cl">Ticket cache: FILE:/tmp/krb5cc_*************
+</span></span><span class="line"><span class="cl">Default principal: zverev-iv@COMPANY.LOCAL
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Valid starting       Expires              Service principal
+</span></span><span class="line"><span class="cl">11/16/2022 20:40:40  11/17/2022 06:40:40  krbtgt/COMPANY.LOCAL@COMPANY.LOCAL
+</span></span><span class="line"><span class="cl">        renew <span class="k">until</span> 11/23/2022 20:40:40
+</span></span><span class="line"><span class="cl">zverev-iv@linux-server:~$ cat mssql/connect-to-mssql.ps1
+</span></span><span class="line"><span class="cl">Write-Output <span class="s2">&#34;Q: Is Linux?  A: </span><span class="k">$(</span><span class="nv">$IsLinux</span><span class="k">)</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$sqlConn</span> <span class="o">=</span> New-Object System.Data.SqlClient.SqlConnection
+</span></span><span class="line"><span class="cl"><span class="nv">$sqlConn</span>.ConnectionString <span class="o">=</span> <span class="s2">&#34;Data Source=msksrvtfs-bd-5.COMPANY.LOCAL;Initial Catalog=master;Integrated Security=True&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$sqlConn</span>.Open<span class="o">()</span> 
+</span></span><span class="line"><span class="cl"><span class="nv">$sqlcmd</span> <span class="o">=</span> <span class="nv">$sqlConn</span>.CreateCommand<span class="o">()</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$sqlcmd</span>.CommandText <span class="o">=</span> <span class="s2">&#34;SELECT @@VERSION&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$adp</span> <span class="o">=</span> New-Object System.Data.SqlClient.SqlDataAdapter <span class="nv">$sqlcmd</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$data</span> <span class="o">=</span> New-Object System.Data.DataSet
+</span></span><span class="line"><span class="cl"><span class="nv">$adp</span>.Fill<span class="o">(</span><span class="nv">$data</span><span class="o">)</span> <span class="p">|</span> Out-Null
+</span></span><span class="line"><span class="cl"><span class="nv">$data</span>.Tables
+</span></span><span class="line"><span class="cl">zverev-iv@linux-server:~$ pwsh mssql/connect-to-mssql.ps1
+</span></span><span class="line"><span class="cl">Q: Is Linux?  A: True
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Column1
+</span></span><span class="line"><span class="cl">-------
+</span></span><span class="line"><span class="cl">Microsoft SQL Server <span class="m">2022</span> <span class="o">(</span>RTM<span class="o">)</span> - 16.0.1000.6 <span class="o">(</span>X64<span class="o">)</span> …
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">zverev-iv@linux-server:~$
+</span></span></code></pre></div><p>Что может быстро помочь при проблемах:</p>
+<ol>
+<li>не искать способ использовать NTLM fallback в Linux. Kerberos Only.</li>
+<li>в sh сессии <code>export KRB5_TRACE=/dev/stdout</code> позволит быстро понять где проблема с тикетами.</li>
+<li><a href="https://www.microsoft.com/en-us/download/details.aspx?id=39046">https://www.microsoft.com/en-us/download/details.aspx?id=39046</a> - позволит быстро проверить SPN записи ваших SQL серверов. А заодно и поправить</li>
+</ol>
+]]></content>
+		</item>
 		
 		<item>
 			<title>Однострочник для получения отпечатка публичного ключа ssh хоста</title>

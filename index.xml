@@ -6,7 +6,17 @@
     <description>Recent content on Zverev IV</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ru-ru</language>
-    <lastBuildDate>Fri, 18 Nov 2022 08:19:13 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 18 Nov 2022 08:45:21 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Powershell может в Linux, может в MSSQL, может с доменной (Active Directory) аутентификацией</title>
+      <link>https://blog.zverev-iv.com/posts/2022-11-18-ps1-7-mssql-auth-from-linux/</link>
+      <pubDate>Fri, 18 Nov 2022 08:45:21 +0300</pubDate>
+      
+      <guid>https://blog.zverev-iv.com/posts/2022-11-18-ps1-7-mssql-auth-from-linux/</guid>
+      <description>POC:
+zverev-iv@linux-server:~$ klist Ticket cache: FILE:/tmp/krb5cc_************* Default principal: zverev-iv@COMPANY.LOCAL Valid starting Expires Service principal 11/16/2022 20:40:40 11/17/2022 06:40:40 krbtgt/COMPANY.LOCAL@COMPANY.LOCAL renew until 11/23/2022 20:40:40 zverev-iv@linux-server:~$ cat mssql/connect-to-mssql.ps1 Write-Output &amp;#34;Q: Is Linux? A: $($IsLinux)&amp;#34; $sqlConn = New-Object System.Data.SqlClient.SqlConnection $sqlConn.ConnectionString = &amp;#34;Data Source=msksrvtfs-bd-5.COMPANY.LOCAL;Initial Catalog=master;Integrated Security=True&amp;#34; $sqlConn.Open() $sqlcmd = $sqlConn.CreateCommand() $sqlcmd.CommandText = &amp;#34;SELECT @@VERSION&amp;#34; $adp = New-Object System.Data.SqlClient.SqlDataAdapter $sqlcmd $data = New-Object System.Data.DataSet $adp.Fill($data) | Out-Null $data.Tables zverev-iv@linux-server:~$ pwsh mssql/connect-to-mssql.ps1 Q: Is Linux? A: True Column1 ------- Microsoft SQL Server 2022 (RTM) - 16.</description>
+    </item>
+    
     <item>
       <title>Однострочник для получения отпечатка публичного ключа ssh хоста</title>
       <link>https://blog.zverev-iv.com/posts/2022-11-18-ssh-hostkey-fingerprint/</link>
@@ -98,16 +108,6 @@ USE &amp;#34;Tfs_Configuration&amp;#34;; EXEC dbo.prc_SetRegistryValue @partitio
       
       <guid>https://blog.zverev-iv.com/posts/2019-11-08-from-anyconnect-to-openconnect/</guid>
       <description>Устанавливаем нужный софт Chocolatey (если ещё не установили) - https://chocolatey.org/ choco install openssl choco install openconnect-gui Готовим сертификат для использования Обычно на вход дают сертификат в формате pfx и пароль к нему. Наша цель - получить сертификат в формате crt и ключ key в формате pem открываем cmd в папке с pfx файлом выполняем команду openssl pkcs12 -in [yourfile.pfx] -clcerts -nokeys -out [certificate.crt] вводим пароль нужное количество раз (обычно 1). сертификат crt получен выполняем команду openssl pkcs12 -in [yourfile.</description>
-    </item>
-    
-    <item>
-      <title>How to integrate SonarQube with Rocket.Chat</title>
-      <link>https://blog.zverev-iv.com/posts/2019-09-16-rocket-sonar-integration/</link>
-      <pubDate>Mon, 16 Sep 2019 07:59:00 +0300</pubDate>
-      
-      <guid>https://blog.zverev-iv.com/posts/2019-09-16-rocket-sonar-integration/</guid>
-      <description>SonarQube can send webhooks. Rocket.Chat ca can receive and parse webhooks You can script it like that:
-class Script { process_incoming_request({ request }) { // console is a global helper to improve debug //console.log(request.content); if (request.content.status != &amp;#34;SUCCESS&amp;#34;) { return { error: { success: false, message: &amp;#34;analysis finished with error, task id: &amp;#34; + request.content.taskId } }; } let msgText = &amp;#34;Analysis &amp;#34; + request.content.project.name + &amp;#34; completed&amp;#34;; let attColor = &amp;#34;gray&amp;#34;; switch (request.</description>
     </item>
     
   </channel>
