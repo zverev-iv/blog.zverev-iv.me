@@ -6,7 +6,16 @@
     <description>Recent content on Zverev IV</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ru-ru</language>
-    <lastBuildDate>Thu, 12 May 2022 07:49:14 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 18 Nov 2022 08:19:13 +0300</lastBuildDate><atom:link href="https://blog.zverev-iv.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Однострочник для получения отпечатка публичного ключа ssh хоста</title>
+      <link>https://blog.zverev-iv.com/posts/2022-11-18-ssh-hostkey-fingerprint/</link>
+      <pubDate>Fri, 18 Nov 2022 08:19:13 +0300</pubDate>
+      
+      <guid>https://blog.zverev-iv.com/posts/2022-11-18-ssh-hostkey-fingerprint/</guid>
+      <description>ssh-keygen -lf &amp;lt;(ssh-keyscan -t rsa,dsa -p &amp;lt;port&amp;gt; &amp;lt;host&amp;gt; 2&amp;gt;/dev/null) </description>
+    </item>
+    
     <item>
       <title>Как настроить авторизацию в git с помощью PAT для Azure Devops</title>
       <link>https://blog.zverev-iv.com/posts/2022-05-12-azure-devops-git-with-pat/</link>
@@ -99,16 +108,6 @@ USE &amp;#34;Tfs_Configuration&amp;#34;; EXEC dbo.prc_SetRegistryValue @partitio
       <guid>https://blog.zverev-iv.com/posts/2019-09-16-rocket-sonar-integration/</guid>
       <description>SonarQube can send webhooks. Rocket.Chat ca can receive and parse webhooks You can script it like that:
 class Script { process_incoming_request({ request }) { // console is a global helper to improve debug //console.log(request.content); if (request.content.status != &amp;#34;SUCCESS&amp;#34;) { return { error: { success: false, message: &amp;#34;analysis finished with error, task id: &amp;#34; + request.content.taskId } }; } let msgText = &amp;#34;Analysis &amp;#34; + request.content.project.name + &amp;#34; completed&amp;#34;; let attColor = &amp;#34;gray&amp;#34;; switch (request.</description>
-    </item>
-    
-    <item>
-      <title>How to build and push chocolatey package with Travis CI </title>
-      <link>https://blog.zverev-iv.com/posts/2019-08-26-travis-ci-for-chocolatey-package/</link>
-      <pubDate>Sat, 24 Aug 2019 08:02:00 +0300</pubDate>
-      
-      <guid>https://blog.zverev-iv.com/posts/2019-08-26-travis-ci-for-chocolatey-package/</guid>
-      <description>You can use this code for your .travis.yml:
-os: windows language: shell branches: only: - master script: - choco pack path_to\\package.nuspec after_script: - choco apikey --key $CHOCOAPIKEY --source https://push.chocolatey.org/ - choco push Hide your private api key in CHOCOAPIKEY secret variable. Enjoy!</description>
     </item>
     
   </channel>

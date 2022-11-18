@@ -3,15 +3,21 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://blog.zverev-iv.com/categories/</loc>
-    <lastmod>2022-05-12T07:49:14+03:00</lastmod>
-  </url><url>
-    <loc>https://blog.zverev-iv.com/categories/git-hook-powershell/</loc>
-    <lastmod>2022-05-12T07:49:14+03:00</lastmod>
+    <lastmod>2022-11-18T08:19:13+03:00</lastmod>
   </url><url>
     <loc>https://blog.zverev-iv.com/posts/</loc>
-    <lastmod>2022-05-12T07:49:14+03:00</lastmod>
+    <lastmod>2022-11-18T08:19:13+03:00</lastmod>
+  </url><url>
+    <loc>https://blog.zverev-iv.com/categories/ssh-sh/</loc>
+    <lastmod>2022-11-18T08:19:13+03:00</lastmod>
   </url><url>
     <loc>https://blog.zverev-iv.com/</loc>
+    <lastmod>2022-11-18T08:19:13+03:00</lastmod>
+  </url><url>
+    <loc>https://blog.zverev-iv.com/posts/2022-11-18-ssh-hostkey-fingerprint/</loc>
+    <lastmod>2022-11-18T08:19:13+03:00</lastmod>
+  </url><url>
+    <loc>https://blog.zverev-iv.com/categories/git-hook-powershell/</loc>
     <lastmod>2022-05-12T07:49:14+03:00</lastmod>
   </url><url>
     <loc>https://blog.zverev-iv.com/posts/2022-05-12-azure-devops-git-with-pat/</loc>
